@@ -14,8 +14,11 @@ import type {
 } from "./baseTypes";
 import { isMergable, mergeFile, tryDuplicateFile } from "./conflictLogic";
 import { copyFile, copyFileOrFolder, copyFolder } from "./copyLogic";
+import {
+  checkRemoteEncryption,
+  copyEntityAndCopyKeyEncSizeEnc,
+} from "./encryptedGuard";
 import type { FakeFs } from "./fsAll";
-import type { FakeFsEncrypt } from "./fsEncrypt";
 import {
   clearFileContentHistoryByVaultAndProfile,
   clearPrevSyncRecordByVaultAndProfile,
@@ -364,7 +367,6 @@ const ensembleMixedEnties = async (
   syncUnderscoreItems: boolean,
   ignorePaths: string[],
   onlyAllowPaths: string[],
-  fsEncrypt: FakeFsEncrypt,
   serviceType: SUPPORTED_SERVICES_TYPE,
 
   profiler: Profiler | undefined
@@ -451,7 +453,7 @@ const ensembleMixedEnties = async (
       }
 
       // TODO: abstraction leaking?
-      const prevSyncCopied = await fsEncrypt.encryptEntity(
+      const prevSyncCopied = copyEntityAndCopyKeyEncSizeEnc(
         copyEntityAndFixTimeFormat(prevSync, serviceType)
       );
       if (finalMappings.hasOwnProperty(key)) {
@@ -497,7 +499,7 @@ const ensembleMixedEnties = async (
     // }
 
     // TODO: abstraction leaking?
-    const localCopied = await fsEncrypt.encryptEntity(
+    const localCopied = copyEntityAndCopyKeyEncSizeEnc(
       copyEntityAndFixTimeFormat(local, serviceType)
     );
     if (finalMappings.hasOwnProperty(key)) {
@@ -1402,7 +1404,7 @@ const dispatchOperationToActualV3 = async (
   profileID: string,
   r: MixedEntity,
   fsLocal: FakeFs,
-  fsEncrypt: FakeFsEncrypt,
+  fsRemote: FakeFs,
   db: InternalDBs,
   conflictAction: ConflictActionType
 ) => {
@@ -1509,24 +1511,27 @@ const dispatchOperationToActualV3 = async (
     const { entity, content } = await copyFileOrFolder(
       r.key,
       fsLocal,
-      fsEncrypt
+      fsRemote
     );
+    // the entity is stored as the "prev sync" record, so it must keep the
+    // `keyEnc` / `sizeEnc` mirror fields (PRD v1.3 §5.1.C ①)
+    const remoteEntity = copyEntityAndCopyKeyEncSizeEnc(entity);
     // TODO: abstract away the dirty hack
-    fullfillMTimeOfRemoteEntityInplace(entity, mtimeCli);
+    fullfillMTimeOfRemoteEntityInplace(remoteEntity, mtimeCli);
     // console.debug(`after fullfill, entity=${JSON.stringify(entity,null,2)}`)
     await upsertPrevSyncRecordByVaultAndProfile(
       db,
       vaultRandomID,
       profileID,
-      entity
+      remoteEntity
     );
     if (conflictAction === "smart_conflict") {
-      if (isMergable(entity)) {
+      if (isMergable(remoteEntity)) {
         await upsertFileContentHistoryByVaultAndProfile(
           db,
           vaultRandomID,
           profileID,
-          entity,
+          remoteEntity,
           content!
         );
       }
@@ -1543,7 +1548,7 @@ const dispatchOperationToActualV3 = async (
     if (r.key.endsWith("/")) {
       await fsLocal.mkdir(r.key);
     } else {
-      const { entity, content } = await copyFile(r.key, fsEncrypt, fsLocal);
+      const { entity, content } = await copyFile(r.key, fsRemote, fsLocal);
       e1 = entity;
       c1 = content;
     }
@@ -1566,7 +1571,7 @@ const dispatchOperationToActualV3 = async (
     }
   } else if (r.decision === "local_is_deleted_thus_also_delete_remote") {
     // local is deleted, we need to delete remote now
-    await fsEncrypt.rm(r.key);
+    await fsRemote.rm(r.key);
     await clearPrevSyncRecordByVaultAndProfile(
       db,
       vaultRandomID,
@@ -1619,20 +1624,23 @@ const dispatchOperationToActualV3 = async (
       const { entity, content } = await mergeFile(
         r.key,
         fsLocal,
-        fsEncrypt,
+        fsRemote,
         origContent
       );
+      // the merged entity is written to the remote, so it must keep the
+      // `keyEnc` / `sizeEnc` mirror fields (PRD v1.3 §5.1.C ①)
+      const remoteEntity = copyEntityAndCopyKeyEncSizeEnc(entity);
       await upsertPrevSyncRecordByVaultAndProfile(
         db,
         vaultRandomID,
         profileID,
-        entity
+        remoteEntity
       );
       await upsertFileContentHistoryByVaultAndProfile(
         db,
         vaultRandomID,
         profileID,
-        entity,
+        remoteEntity,
         content
       );
     } else {
@@ -1647,16 +1655,19 @@ const dispatchOperationToActualV3 = async (
       await tryDuplicateFile(
         r.key,
         fsLocal,
-        fsEncrypt,
+        fsRemote,
         async (upload) => {
           if (upload !== undefined) {
+            // the uploaded entity is stored as the "prev sync" record, so it
+            // must keep the `keyEnc` / `sizeEnc` mirror fields
+            const uploadEntity = copyEntityAndCopyKeyEncSizeEnc(upload);
             // TODO: abstract away the dirty hack
-            fullfillMTimeOfRemoteEntityInplace(upload, mtimeCli);
+            fullfillMTimeOfRemoteEntityInplace(uploadEntity, mtimeCli);
             await upsertPrevSyncRecordByVaultAndProfile(
               db,
               vaultRandomID,
               profileID,
-              upload
+              uploadEntity
             );
           }
         },
@@ -1674,12 +1685,12 @@ const dispatchOperationToActualV3 = async (
     }
   } else if (r.decision === "folder_to_be_created") {
     await fsLocal.mkdir(r.key);
-    const { entity } = await copyFolder(r.key, fsLocal, fsEncrypt);
+    const { entity } = await copyFolder(r.key, fsLocal, fsRemote);
     await upsertPrevSyncRecordByVaultAndProfile(
       db,
       vaultRandomID,
       profileID,
-      entity
+      copyEntityAndCopyKeyEncSizeEnc(entity)
     );
     // no need to record file content for folder here
   } else if (
@@ -1697,7 +1708,7 @@ const dispatchOperationToActualV3 = async (
       r.decision === "folder_to_be_deleted_on_both" ||
       r.decision === "folder_to_be_deleted_on_remote"
     ) {
-      await fsEncrypt.rm(r.key);
+      await fsRemote.rm(r.key);
     }
     await clearPrevSyncRecordByVaultAndProfile(
       db,
@@ -1714,7 +1725,7 @@ const dispatchOperationToActualV3 = async (
 export const doActualSync = async (
   mixedEntityMappings: Record<string, MixedEntity>,
   fsLocal: FakeFs,
-  fsEncrypt: FakeFsEncrypt,
+  fsRemote: FakeFs,
   vaultRandomID: string,
   profileID: string,
   concurrency: number,
@@ -1848,7 +1859,7 @@ export const doActualSync = async (
             profileID,
             val,
             fsLocal,
-            fsEncrypt,
+            fsRemote,
             db,
             conflictAction
           );
@@ -1905,7 +1916,6 @@ export type SyncStatusType =
 export async function syncer(
   fsLocal: FakeFs,
   fsRemote: FakeFs,
-  fsEncrypt: FakeFsEncrypt,
   profiler: Profiler | undefined,
   db: InternalDBs,
   triggerSource: SyncTriggerSourceType,
@@ -1950,10 +1960,12 @@ export async function syncer(
     await notifyFunc?.(triggerSource, step);
     await ribboonFunc?.(triggerSource, step);
     await statusBarFunc?.(triggerSource, step, everythingOk);
-    if (fsEncrypt.innerFs !== fsRemote) {
-      throw Error(`your enc should has inner of the remote`);
-    }
-    const passwordCheckResult = await fsEncrypt.isPasswordOk();
+    // PRD v1.3 §5.1.C ③: the guard that aborts the sync when the remote
+    // side holds openssl ciphertext (and the local side has no password).
+    // Without it the ciphertext would be pulled as plaintext and would
+    // overwrite the local notes.
+    const remotePartialEntityList = await fsRemote.walkPartial();
+    const passwordCheckResult = checkRemoteEncryption(remotePartialEntityList);
     if (!passwordCheckResult.ok) {
       throw Error(passwordCheckResult.reason);
     }
@@ -1965,7 +1977,12 @@ export async function syncer(
     await notifyFunc?.(triggerSource, step);
     await ribboonFunc?.(triggerSource, step);
     await statusBarFunc?.(triggerSource, step, everythingOk);
-    const remoteEntityList = await fsEncrypt.walk();
+    // PRD v1.3 §5.1.C ①: the remote entities must still carry the
+    // `keyEnc = keyRaw` / `sizeEnc = sizeRaw` mirror fields, because the
+    // sync plan compares them to detect the remote side changes.
+    const remoteEntityList = (await fsRemote.walk()).map((entity) =>
+      copyEntityAndCopyKeyEncSizeEnc(entity)
+    );
     // console.debug(`remoteEntityList:`);
     // console.debug(remoteEntityList);
     profiler?.insert(`finish step${step} (list remote)`);
@@ -2006,7 +2023,6 @@ export async function syncer(
       settings.syncUnderscoreItems ?? false,
       [], // cstcloud-sync: ignorePaths removed from settings
       [], // cstcloud-sync: onlyAllowPaths removed from settings
-      fsEncrypt,
       settings.serviceType,
       profiler
     );
@@ -2046,7 +2062,7 @@ export async function syncer(
       await doActualSync(
         mixedEntityMappings,
         fsLocal,
-        fsEncrypt,
+        fsRemote,
         vaultRandomID,
         profileID,
         settings.concurrency ?? 5,

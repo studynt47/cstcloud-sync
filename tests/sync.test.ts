@@ -11,15 +11,12 @@ import type {
   RemotelySavePluginSettings,
   SyncTriggerSourceType,
 } from "../src/baseTypes";
+import {
+  checkRemoteEncryption,
+  copyEntityAndCopyKeyEncSizeEnc,
+} from "../src/encryptedGuard";
 import type { InternalDBs } from "../src/localdb";
 import { InMemoryFs, bufferToStr, strToBuffer } from "./helpers/inMemoryFs";
-
-/**
- * `src/encryptRClone.worker.ts` uses the browser `WorkerGlobalScope` at import
- * time. The unit tests run in plain Node, so we provide the minimal shims
- * that the module needs, before importing it.
- */
-const g: any = globalThis;
 
 /**
  * The Obsidian runtime injects a few browser-ish globals (`window.moment`,
@@ -54,9 +51,9 @@ const setupBrowserShims = () => {
   }
 };
 
-setupBrowserShims();
+const g: any = globalThis;
 
-let FakeFsEncryptClass: any = undefined;
+setupBrowserShims();
 
 const CONFIG_DIR = ".obsidian";
 
@@ -427,22 +424,10 @@ describe("Sync: doActualSync", () => {
   const V = "vault1";
   const P = "profile1";
 
-  const newFsEncrypt = async (inner: InMemoryFs) => {
-    if (FakeFsEncryptClass === undefined) {
-      const mod = await import("../src/fsEncrypt");
-      FakeFsEncryptClass = mod.FakeFsEncrypt;
-    }
-    const fsEncrypt = new FakeFsEncryptClass(inner, "", "rclone-base64");
-    // the real sync builds this cache map before doing anything else
-    await fsEncrypt.walk();
-    return fsEncrypt;
-  };
-
   it("should push a locally created file to the remote", async () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
     await local.writeFile("a.md", strToBuffer("hello"), 1000, 1000);
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -456,7 +441,7 @@ describe("Sync: doActualSync", () => {
     await doActualSync(
       mappings,
       local,
-      fsEncrypt,
+      remote,
       V,
       P,
       2,
@@ -479,7 +464,6 @@ describe("Sync: doActualSync", () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
     await remote.writeFile("b.md", strToBuffer("world"), 2000, 2000);
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -493,7 +477,7 @@ describe("Sync: doActualSync", () => {
     await doActualSync(
       mappings,
       local,
-      fsEncrypt,
+      remote,
       V,
       P,
       2,
@@ -513,7 +497,6 @@ describe("Sync: doActualSync", () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
     await local.mkdir("folder/", 3000, 3000);
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -527,7 +510,7 @@ describe("Sync: doActualSync", () => {
     await doActualSync(
       mappings,
       local,
-      fsEncrypt,
+      remote,
       V,
       P,
       2,
@@ -547,7 +530,6 @@ describe("Sync: doActualSync", () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
     await remote.writeFile("c.md", strToBuffer("bye"), 4000, 4000);
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -561,7 +543,7 @@ describe("Sync: doActualSync", () => {
     await doActualSync(
       mappings,
       local,
-      fsEncrypt,
+      remote,
       V,
       P,
       2,
@@ -581,7 +563,6 @@ describe("Sync: doActualSync", () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
     await local.writeFile("d.md", strToBuffer("gone"), 5000, 5000);
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -595,7 +576,7 @@ describe("Sync: doActualSync", () => {
     await doActualSync(
       mappings,
       local,
-      fsEncrypt,
+      remote,
       V,
       P,
       2,
@@ -614,7 +595,6 @@ describe("Sync: doActualSync", () => {
   it("should abort when the protect percentage is exceeded", async () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -629,7 +609,7 @@ describe("Sync: doActualSync", () => {
       await doActualSync(
         mappings,
         local,
-        fsEncrypt,
+        remote,
         V,
         P,
         2,
@@ -648,7 +628,6 @@ describe("Sync: doActualSync", () => {
   it("should throw on an unknown decision", async () => {
     const local = new InMemoryFs("local");
     const remote = new InMemoryFs("remote");
-    const fsEncrypt = await newFsEncrypt(remote);
     const db = makeFakeDb();
 
     const mappings: Record<string, MixedEntity> = {
@@ -662,7 +641,7 @@ describe("Sync: doActualSync", () => {
       await doActualSync(
         mappings,
         local,
-        fsEncrypt,
+        remote,
         V,
         P,
         2,
@@ -683,21 +662,15 @@ describe("Sync: encryption equivalence (PRD v1.3 5.1.C)", () => {
     setupBrowserShims();
   });
 
-  const newFsEncrypt = async (inner: InMemoryFs, password = "") => {
-    if (FakeFsEncryptClass === undefined) {
-      const mod = await import("../src/fsEncrypt");
-      FakeFsEncryptClass = mod.FakeFsEncrypt;
-    }
-    return new FakeFsEncryptClass(inner, password, "rclone-base64");
-  };
-
   it("should report keyEnc === keyRaw and sizeEnc === sizeRaw without a password", async () => {
     const remote = new InMemoryFs("remote");
     await remote.writeFile("a.md", strToBuffer("hello"), 1000, 1000);
     await remote.mkdir("folder/", 1000, 1000);
-    const fsEncrypt = await newFsEncrypt(remote);
 
-    const entities = await fsEncrypt.walk();
+    // this is exactly what `src/sync.ts` does with the remote entity list
+    const entities = (await remote.walk()).map((e) =>
+      copyEntityAndCopyKeyEncSizeEnc(e)
+    );
 
     assert.ok(entities.length >= 2);
     for (const e of entities) {
@@ -707,11 +680,8 @@ describe("Sync: encryption equivalence (PRD v1.3 5.1.C)", () => {
   });
 
   it("should encryptEntity() behave exactly like the plain entity when there is no password", async () => {
-    const remote = new InMemoryFs("remote");
-    const fsEncrypt = await newFsEncrypt(remote);
-
     const input = entityOf("a.md", 42, 1000);
-    const res = await fsEncrypt.encryptEntity(input);
+    const res = copyEntityAndCopyKeyEncSizeEnc(input);
 
     assert.equal(res.keyEnc, res.key);
     assert.equal(res.sizeEnc, res.sizeRaw);
@@ -720,9 +690,8 @@ describe("Sync: encryption equivalence (PRD v1.3 5.1.C)", () => {
 
   it("should accept an empty remote", async () => {
     const remote = new InMemoryFs("remote");
-    const fsEncrypt = await newFsEncrypt(remote);
 
-    const res = await fsEncrypt.isPasswordOk();
+    const res = checkRemoteEncryption(await remote.walk());
     assert.equal(res.ok, true);
     assert.equal(res.reason, "empty_remote");
   });
@@ -731,9 +700,8 @@ describe("Sync: encryption equivalence (PRD v1.3 5.1.C)", () => {
     const remote = new InMemoryFs("remote");
     // the openssl magic prefix
     await remote.writeFile("U2FsdGVkX1abcdef", strToBuffer("x"), 1000, 1000);
-    const fsEncrypt = await newFsEncrypt(remote);
 
-    const res = await fsEncrypt.isPasswordOk();
+    const res = checkRemoteEncryption(await remote.walk());
     assert.equal(res.ok, false);
     assert.equal(res.reason, "remote_encrypted_local_no_password");
   });
@@ -747,14 +715,6 @@ describe("Sync: syncer (the whole engine, with mocked fs and db)", () => {
   const V = "vault1";
   const P = "profile1";
   const CONFIG_DIR = ".obsidian";
-
-  const newFsEncrypt = async (inner: InMemoryFs) => {
-    if (FakeFsEncryptClass === undefined) {
-      const mod = await import("../src/fsEncrypt");
-      FakeFsEncryptClass = mod.FakeFsEncrypt;
-    }
-    return new FakeFsEncryptClass(inner, "", "rclone-base64");
-  };
 
   const baseSettings = (
     extra: Partial<RemotelySavePluginSettings> = {}
@@ -785,14 +745,12 @@ describe("Sync: syncer (the whole engine, with mocked fs and db)", () => {
     }
   ) => {
     const db = opts.db ?? makeFakeDb();
-    const fsEncrypt = await newFsEncrypt(opts.remote);
     const marks: boolean[] = [];
     const errors: Error[] = [];
     const steps: number[] = [];
     await syncer(
       opts.local,
       opts.remote,
-      fsEncrypt,
       undefined, // profiler
       db,
       opts.triggerSource ?? "manual",
@@ -824,11 +782,20 @@ describe("Sync: syncer (the whole engine, with mocked fs and db)", () => {
     const remote = new InMemoryFs("remote");
     await local.writeFile("a.md", strToBuffer("hello"), 1000, 1000);
 
-    const { errors } = await runSyncer({ local, remote });
+    const { db, errors } = await runSyncer({ local, remote });
 
     assert.equal(errors.length, 0, `unexpected error: ${errors[0]?.message}`);
     assert.ok(remote.files.has("a.md"));
     assert.equal(bufferToStr(await remote.readFile("a.md")), "hello");
+
+    // PRD v1.3 §5.1.C ①: the stored "prev sync" record must still carry the
+    // `keyEnc` / `sizeEnc` mirror fields
+    const prevSync = (await db.prevSyncRecordsTbl.getItems())[
+      `${V}\t${P}\ta.md`
+    ];
+    assert.ok(prevSync !== undefined && prevSync !== null);
+    assert.equal(prevSync.keyEnc, prevSync.keyRaw);
+    assert.equal(prevSync.sizeEnc, prevSync.sizeRaw);
   });
 
   it("should pull a remotely created file to the local", async () => {
@@ -946,14 +913,6 @@ describe("Sync: syncer delta scenarios (modified / deleted / conflict)", () => {
   const CONFIG_DIR = ".obsidian";
   const T0 = 1700000000000;
 
-  const newFsEncrypt = async (inner: InMemoryFs) => {
-    if (FakeFsEncryptClass === undefined) {
-      const mod = await import("../src/fsEncrypt");
-      FakeFsEncryptClass = mod.FakeFsEncrypt;
-    }
-    return new FakeFsEncryptClass(inner, "", "rclone-base64");
-  };
-
   const settings = (
     extra: Partial<RemotelySavePluginSettings> = {}
   ): RemotelySavePluginSettings =>
@@ -996,12 +955,10 @@ describe("Sync: syncer delta scenarios (modified / deleted / conflict)", () => {
     db: InternalDBs,
     opts: Partial<RemotelySavePluginSettings> = {}
   ) => {
-    const fsEncrypt = await newFsEncrypt(remote);
     const errors: Error[] = [];
     await syncer(
       local,
       remote,
-      fsEncrypt,
       undefined,
       db,
       "manual",
@@ -1185,14 +1142,6 @@ describe("Sync: syncer conflict and deletion branches", () => {
   const CONFIG_DIR = ".obsidian";
   const T0 = 1700000000000;
 
-  const newFsEncrypt = async (inner: InMemoryFs) => {
-    if (FakeFsEncryptClass === undefined) {
-      const mod = await import("../src/fsEncrypt");
-      FakeFsEncryptClass = mod.FakeFsEncrypt;
-    }
-    return new FakeFsEncryptClass(inner, "", "rclone-base64");
-  };
-
   const settings = (
     extra: Partial<RemotelySavePluginSettings> = {}
   ): RemotelySavePluginSettings =>
@@ -1235,12 +1184,10 @@ describe("Sync: syncer conflict and deletion branches", () => {
     db: InternalDBs,
     opts: Partial<RemotelySavePluginSettings> = {}
   ) => {
-    const fsEncrypt = await newFsEncrypt(remote);
     const errors: Error[] = [];
     await syncer(
       local,
       remote,
-      fsEncrypt,
       undefined,
       db,
       "manual",

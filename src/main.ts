@@ -390,7 +390,6 @@ export default class RemotelySavePlugin extends Plugin {
     await syncer(
       fsLocal,
       fsRemote,
-      fsEncrypt,
       profiler,
       this.db,
       triggerSource,
