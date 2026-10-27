@@ -66,8 +66,6 @@
   "settings_runoncestartup_1sec": "启动后第 1 秒运行一次",
   "settings_runoncestartup_10sec": "启动后第 10 秒运行一次",
   "settings_runoncestartup_30sec": "启动后第 30 秒运行一次",
-  "settings_synconsave_disable": "关闭（默认）",
-  "settings_synconsave_enable": "开启",
   "settings_skiplargefiles": "跳过大文件",
   "settings_skiplargefiles_desc": "跳过大于某一个阈值的文件。这里 1 MB = 10^6 bytes。",
   "settings_skiplargefiles_notset": "（不设置）",
