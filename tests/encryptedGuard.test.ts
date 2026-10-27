@@ -98,7 +98,6 @@ const makeFakeDb = (): any => {
     loggerOutputTbl: t(),
     simpleKVForMiscTbl: t(),
     prevSyncRecordsTbl: t(),
-    profilerResultsTbl: t(),
     fileContentHistoryTbl: t(),
     fileHistoryTbl: t(),
     syncMappingTbl: t(),
@@ -183,7 +182,6 @@ describe("Guard: checkRemoteEncryption", () => {
     await syncer(
       local,
       remote,
-      undefined, // profiler
       db,
       "manual",
       "profile1",

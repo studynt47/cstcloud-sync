@@ -119,7 +119,6 @@ const makeFakeDb = (): InternalDBs => {
     loggerOutputTbl: t(),
     simpleKVForMiscTbl: t(),
     prevSyncRecordsTbl: t(),
-    profilerResultsTbl: t(),
     fileContentHistoryTbl: t(),
     fileHistoryTbl: t(),
     syncMappingTbl: t(),
@@ -448,7 +447,6 @@ describe("Sync: doActualSync", () => {
       -1,
       () => "should not be reached",
       db,
-      undefined,
       "keep_newer",
       "manual",
       undefined
@@ -484,7 +482,6 @@ describe("Sync: doActualSync", () => {
       -1,
       () => "should not be reached",
       db,
-      undefined,
       "keep_newer",
       "manual",
       undefined
@@ -517,7 +514,6 @@ describe("Sync: doActualSync", () => {
       -1,
       () => "should not be reached",
       db,
-      undefined,
       "keep_newer",
       "manual",
       undefined
@@ -550,7 +546,6 @@ describe("Sync: doActualSync", () => {
       -1,
       () => "should not be reached",
       db,
-      undefined,
       "keep_newer",
       "manual",
       undefined
@@ -583,7 +578,6 @@ describe("Sync: doActualSync", () => {
       -1,
       () => "should not be reached",
       db,
-      undefined,
       "keep_newer",
       "manual",
       undefined
@@ -617,7 +611,6 @@ describe("Sync: doActualSync", () => {
         (p: number, modified: number, total: number) =>
           `protected: ${p} ${modified}/${total}`,
         db,
-        undefined,
         "keep_newer",
         "manual",
         undefined
@@ -648,7 +641,6 @@ describe("Sync: doActualSync", () => {
         -1,
         () => "should not be reached",
         db,
-        undefined,
         "keep_newer",
         "manual",
         undefined
@@ -751,7 +743,6 @@ describe("Sync: syncer (the whole engine, with mocked fs and db)", () => {
     await syncer(
       opts.local,
       opts.remote,
-      undefined, // profiler
       db,
       opts.triggerSource ?? "manual",
       P,
@@ -959,7 +950,6 @@ describe("Sync: syncer delta scenarios (modified / deleted / conflict)", () => {
     await syncer(
       local,
       remote,
-      undefined,
       db,
       "manual",
       P,
@@ -1188,7 +1178,6 @@ describe("Sync: syncer conflict and deletion branches", () => {
     await syncer(
       local,
       remote,
-      undefined,
       db,
       "manual",
       P,

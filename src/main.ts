@@ -40,7 +40,6 @@ import {
   upsertPluginVersionByVault,
 } from "./localdb";
 import { changeMobileStatusBar } from "./misc";
-import { DEFAULT_PROFILER_CONFIG, Profiler } from "./profiler";
 import { RemotelySaveSettingTab } from "./settings";
 import { syncer } from "./sync";
 import { SyncAlgoV3Modal } from "./syncAlgoV3Notice";
@@ -67,7 +66,6 @@ const DEFAULT_SETTINGS: RemotelySavePluginSettings = {
   syncDirection: "bidirectional",
   obfuscateSettingFile: true, // P2-6 hardcoded (Step 31)
   enableMobileStatusBar: false,
-  profiler: DEFAULT_PROFILER_CONFIG,
 };
 
 const iconNameSyncWait = `remotely-save-sync-wait`;
@@ -137,21 +135,12 @@ export default class RemotelySavePlugin extends Plugin {
   appContainerObserver?: MutationObserver;
 
   async syncRun(triggerSource: SyncTriggerSourceType = "manual") {
-    let profiler: Profiler | undefined = undefined;
-    if (this.settings.profiler?.enable ?? false) {
-      profiler = new Profiler(
-        undefined,
-        this.settings.profiler?.enablePrinting ?? false,
-        this.settings.profiler?.recordSize ?? false
-      );
-    }
     const fsLocal = new FakeFsLocal(
       this.app.vault,
       this.settings.syncConfigDir ?? false,
       this.settings.syncBookmarks ?? false,
       this.app.vault.configDir,
       this.manifest.id,
-      profiler,
       this.settings.deleteToWhere ?? "system"
     );
     const fsRemote = getClient(
@@ -388,7 +377,6 @@ export default class RemotelySavePlugin extends Plugin {
     await syncer(
       fsLocal,
       fsRemote,
-      profiler,
       this.db,
       triggerSource,
       profileID,
@@ -405,8 +393,6 @@ export default class RemotelySavePlugin extends Plugin {
       statusBarFunc,
       callbackSyncProcess
     );
-
-    (profiler as Profiler | undefined)?.clear();
 
     this.syncEvent?.trigger("SYNC_DONE");
   }
@@ -616,19 +602,6 @@ export default class RemotelySavePlugin extends Plugin {
 
     if (this.settings.enableMobileStatusBar === undefined) {
       this.settings.enableMobileStatusBar = false;
-    }
-
-    if (this.settings.profiler === undefined) {
-      this.settings.profiler = DEFAULT_PROFILER_CONFIG;
-    }
-    if (this.settings.profiler.enable === undefined) {
-      this.settings.profiler.enable = false;
-    }
-    if (this.settings.profiler.enablePrinting === undefined) {
-      this.settings.profiler.enablePrinting = false;
-    }
-    if (this.settings.profiler.recordSize === undefined) {
-      this.settings.profiler.recordSize = false;
     }
 
     await this.saveSettings();
@@ -855,7 +828,6 @@ export default class RemotelySavePlugin extends Plugin {
                   this.settings.syncBookmarks ?? false,
                   this.app.vault.configDir,
                   this.manifest.id,
-                  undefined,
                   this.settings.deleteToWhere ?? "system"
                 );
                 const s = await fsLocal.stat(filePath);

@@ -24,7 +24,6 @@ import type { TransItemType } from "./i18n";
 import { destroyDBs } from "./localdb";
 import type RemotelySavePlugin from "./main"; // unavoidable
 import { stringToFragment } from "./misc";
-import { DEFAULT_PROFILER_CONFIG } from "./profiler";
 
 class SyncConfigDirModal extends Modal {
   plugin: RemotelySavePlugin;

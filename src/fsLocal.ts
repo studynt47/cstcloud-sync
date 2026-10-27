@@ -4,7 +4,6 @@ import { FakeFs } from "./fsAll";
 import { TFile, TFolder, type Vault } from "obsidian";
 import { mkdirpInVault, statFix, unixTimeToStr } from "./misc";
 import { listFilesInObsFolder } from "./obsFolderLister";
-import type { Profiler } from "./profiler";
 
 export class FakeFsLocal extends FakeFs {
   vault: Vault;
@@ -12,7 +11,6 @@ export class FakeFsLocal extends FakeFs {
   syncBookmarks: boolean;
   configDir: string;
   pluginID: string;
-  profiler: Profiler | undefined;
   deleteToWhere: "obsidian" | "system";
   kind: "local";
   constructor(
@@ -21,7 +19,6 @@ export class FakeFsLocal extends FakeFs {
     syncBookmarks: boolean,
     configDir: string,
     pluginID: string,
-    profiler: Profiler | undefined,
     deleteToWhere: "obsidian" | "system"
   ) {
     super();
@@ -31,18 +28,14 @@ export class FakeFsLocal extends FakeFs {
     this.syncBookmarks = syncBookmarks;
     this.configDir = configDir;
     this.pluginID = pluginID;
-    this.profiler = profiler;
     this.deleteToWhere = deleteToWhere;
     this.kind = "local";
   }
 
   async walk(): Promise<Entity[]> {
-    this.profiler?.addIndent();
-    this.profiler?.insert("enter walk for local");
     const local: Entity[] = [];
 
     const localTAbstractFiles = this.vault.getAllLoadedFiles();
-    this.profiler?.insert("finish getting walk for local");
     for (const entry of localTAbstractFiles) {
       let r: Entity | undefined = undefined;
       let key = entry.path;
@@ -97,10 +90,7 @@ export class FakeFsLocal extends FakeFs {
       }
     }
 
-    this.profiler?.insert("finish transforming walk for local");
-
     if (this.syncConfigDir || this.syncBookmarks) {
-      this.profiler?.insert("into syncConfigDir or syncBookmarks");
       const bookmarksOnly = !this.syncConfigDir;
       const syncFiles = await listFilesInObsFolder(
         this.configDir,
@@ -112,11 +102,8 @@ export class FakeFsLocal extends FakeFs {
       for (const f of syncFiles) {
         local.push(f);
       }
-      this.profiler?.insert("finish syncConfigDir");
     }
 
-    this.profiler?.insert("finish walk for local");
-    this.profiler?.removeIndent();
     return local;
   }
 

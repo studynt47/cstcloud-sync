@@ -19,7 +19,6 @@ export const DEFAULT_TBL_VAULT_RANDOM_ID_MAPPING = "vaultrandomidmapping";
 export const DEFAULT_TBL_LOGGER_OUTPUT = "loggeroutput";
 export const DEFAULT_TBL_SIMPLE_KV_FOR_MISC = "simplekvformisc";
 export const DEFAULT_TBL_PREV_SYNC_RECORDS = "prevsyncrecords";
-export const DEFAULT_TBL_PROFILER_RESULTS = "profilerresults";
 export const DEFAULT_TBL_FILE_CONTENT_HISTORY = "filecontenthistory";
 
 /**
@@ -62,7 +61,6 @@ export interface InternalDBs {
   loggerOutputTbl: LocalForage;
   simpleKVForMiscTbl: LocalForage;
   prevSyncRecordsTbl: LocalForage;
-  profilerResultsTbl: LocalForage;
   fileContentHistoryTbl: LocalForage;
 
   /**
@@ -209,10 +207,6 @@ export const prepareDBs = async (
     prevSyncRecordsTbl: localforage.createInstance({
       name: DEFAULT_DB_NAME,
       storeName: DEFAULT_TBL_PREV_SYNC_RECORDS,
-    }),
-    profilerResultsTbl: localforage.createInstance({
-      name: DEFAULT_DB_NAME,
-      storeName: DEFAULT_TBL_PROFILER_RESULTS,
     }),
 
     fileHistoryTbl: localforage.createInstance({
@@ -562,48 +556,6 @@ export const upsertPluginVersionByVault = async (
     oldVersion: oldVersion,
     newVersion: newVersion,
   };
-};
-
-export const insertProfilerResultByVault = async (
-  db: InternalDBs,
-  profilerStr: string,
-  vaultRandomID: string,
-  remoteType: SUPPORTED_SERVICES_TYPE
-) => {
-  const now = Date.now();
-  await db.profilerResultsTbl.setItem(`${vaultRandomID}\t${now}`, profilerStr);
-
-  // clear older one while writing
-  const records = (await db.profilerResultsTbl.keys())
-    .filter((x) => x.startsWith(`${vaultRandomID}\t`))
-    .map((x) => Number.parseInt(x.split("\t")[1]));
-  records.sort((a, b) => -(a - b)); // descending
-  while (records.length > 5) {
-    const ts = records.pop()!;
-    await db.profilerResultsTbl.removeItem(`${vaultRandomID}\t${ts}`);
-  }
-};
-
-export const readAllProfilerResultsByVault = async (
-  db: InternalDBs,
-  vaultRandomID: string
-) => {
-  const records = [] as { val: string; ts: number }[];
-  await db.profilerResultsTbl.iterate((value, key, iterationNumber) => {
-    if (key.startsWith(`${vaultRandomID}\t`)) {
-      records.push({
-        val: value as string,
-        ts: Number.parseInt(key.split("\t")[1]),
-      });
-    }
-  });
-  records.sort((a, b) => -(a.ts - b.ts)); // descending
-
-  if (records === undefined) {
-    return [] as string[];
-  } else {
-    return records.map((x) => x.val);
-  }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
