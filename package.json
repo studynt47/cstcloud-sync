@@ -1,7 +1,7 @@
 {
   "name": "cstcloud-sync",
-  "version": "0.0.1",
-  "description": "cstcloud-sync: Obsidian 笔记双向同步插件（基于 S3/cstcloud.cn，fork 自 remotely-save v0.5.25）",
+  "version": "0.0.2",
+  "description": "cstcloud-sync: Obsidian 笔记双向同步插件（基于 S3 / cstcloud.cn 对象存储）",
   "scripts": {
     "dev2": "node esbuild.config.mjs --watch",
     "build2": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",

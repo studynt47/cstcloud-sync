@@ -3,8 +3,8 @@
   "name": "cstcloud-sync",
   "version": "0.0.2",
   "minAppVersion": "0.13.21",
-  "description": "Obsidian 笔记双向同步插件（基于 S3/cstcloud.cn，fork 自 remotely-save）",
-  "author": "fyears",
-  "authorUrl": "https://github.com/fyears",
+  "description": "基于 cstcloud.cn 对象存储的 Obsidian 双向同步插件",
+  "author": "cstcloud",
+  "authorUrl": "https://github.com/cstcloud/cstcloud-sync",
   "isDesktopOnly": false
 }

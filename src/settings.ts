@@ -123,15 +123,7 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
       return this.plugin.i18n.t(x, vars);
     };
 
-    containerEl.createEl("h1", { text: "Remotely Save" });
-
-    //////////////////////////////////////////////////
-    // below for service chooser (part 1/2)
-    //////////////////////////////////////////////////
-
-    // we need to create the div in advance of any other service divs
-    const serviceChooserDiv = containerEl.createDiv();
-    serviceChooserDiv.createEl("h2", { text: t("settings_chooseservice") });
+    containerEl.createEl("h1", { text: "cstcloud-sync" });
 
     //////////////////////////////////////////////////
     // below for s3
@@ -363,9 +355,6 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
           });
       });
 
-    new Setting(basicDiv)
-      .setName(t("settings_synconsave"))
-      .setDesc(t("settings_synconsave_desc"));
     new Setting(basicDiv)
       .setName(t("settings_skiplargefiles"))
       .setDesc(t("settings_skiplargefiles_desc"))
