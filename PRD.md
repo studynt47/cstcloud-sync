@@ -1,12 +1,12 @@
-# PRD <u>v1.4</u>
+# PRD <u>v1.5</u>
 
-> 项目 cstcloud-sync 计划书 <u>v1.4</u>
+> 项目 cstcloud-sync 计划书 <u>v1.5</u>
 > 基于：remotely-save v0.5.25（Apache-2.0）+ 任务书 /home/WPS/NEW/remotely_save.md + 技术分析 tech_v1.md
 
-**当前版本**：<u>v1.4</u>
+**当前版本**：<u>v1.5</u>
 **生成时间**：2026-10-16
 **修订时间**：2026-10-27
-**状态**：<u>待评审（A+B+C 升级方案 + v1.4 配置目录同步文档化，产品版本统一 0.0.2）</u>
+**状态**：<u>待评审（实施完成，v1.5 勘误版；产品版本统一 0.0.2，发版号待老板书面指定）</u>
 
 ---
 
@@ -21,6 +21,7 @@
 | v1.2 | 2026-10-27 | <u>① 状态收口：v1.1 由"定稿待评审"改标"已实施（v0.0.2）"（实施 commit 4f383e6，44 步 checklist 全通过，manifest.json version=0.0.2）② 本版未新增功能条目，仅推进版本号至 v1.2 作为下一轮升级基线，升级需求待老板明确后叠加</u> |
 | <u>v1.3</u> | <u>2026-10-27</u> | <u>① A 修复类（6 项）② B 质量类（5 项）③ C 瘦身类（5 项）④ 产品版本号统一 0.0.2，不升 0.0.3</u> <u>⑤ 版本号口径澄清：开发/升级阶段产品版本号沿用 0.0.2（开发基线口径，不锁发布版本）；最终发布版本号在 A/B/C 全部验收通过后由老板统一指定（须 ≥ 0.0.3，否则 Obsidian 商店无法覆盖已发布的 0.0.2）⑥ 本行为评审中修订，PRD 版本号不递增</u> |
 | <u>v1.4</u> | <u>2026-10-27</u> | <u>① 新增章节「§5.4 `.obsidian` 配置目录同步（实验性）」—— 记录 `syncConfigDir` 开关的真实同步范围、14 项排除清单、3 个必知坑与使用前提（代码零改动）② 新增风险 R17「配置目录同步为全量不可调」（高）③ 新增 Step 82「补齐 `workspace-mobile.json` 排除」（2 行改动，Phase 7 之后）④ 新增验收标准 AC33（配置目录同步）⑤ AC32 的 Step 覆盖范围由 59–81 扩至 59–82</u> |
+| <u>v1.5</u> | <u>2026-10-27</u> | <u>勘误版：§5.1.C ① 与 R13 的 keyEnc/sizeEnc 引用数 16→15（实测口径）、§6 例外项 Step 1.5 标记为已完成、§9 AC17 例外项 4→3</u> |
 
 > <u>v1.2 升级需求待定：本次仅完成基线收口与版本推进，未新增功能项。需求明确后按版本迭代 SOP 继续叠加，新增内容同样用下划线标注。</u>
 
@@ -382,7 +383,7 @@
 
 <u>**C1 行为等价性约束（实施时必须逐条核对）**：当前 `FakeFsEncrypt` 以空密码构造（`main.ts:163`），其行为等价于「直通 + 实体字段补齐」，因此解耦后必须保持 3 项等价性：</u>
 
-- <u>① `walk()` 返回的每个 Entity 仍带 `keyEnc = keyRaw`、`sizeEnc = sizeRaw`（`fsEncrypt.ts:66-71` 的 `copyEntityAndCopyKeyEncSizeEnc`）。`src/sync.ts` 有 16 处依赖 `keyEnc`/`sizeEnc` 做远端实体比对，解耦时须保留等价字段填充，不得直接改用 `fsRemote.walk()` 的裸实体。</u>
+- <u>① `walk()` 返回的每个 Entity 仍带 `keyEnc = keyRaw`、`sizeEnc = sizeRaw`（<u>原 `src/fsEncrypt.ts` 的 `copyEntityAndCopyKeyEncSizeEnc`，C1 已删除该文件，逻辑迁至 `src/encryptedGuard.ts`</u>）。`src/sync.ts` 有 <u>15 处</u>依赖 `keyEnc`/`sizeEnc` 做远端实体比对<u>（实测 15 处代码引用 + 5 处注释；解耦后逐行 diff 一致）</u>，解耦时须保留等价字段填充，不得直接改用 `fsRemote.walk()` 的裸实体。</u>
 - <u>② `encryptEntity()` 在空密码分支等价于 `copyEntityAndCopyKeyEncSizeEnc()`，须以等价的本地函数替代，不得直接透传原始 Entity。</u>
 - <u>③ `isPasswordOk()`（`sync.ts:1956`）是**远端已加密时的中止保护**：若远端存在 openssl 密文而本地无密码，当前实现会中止同步并抛出 `remote_encrypted_local_no_password`。<u>该保护不可随类一并删除</u>，须以等价的轻量守卫函数替代（扫描首个远端实体 keyRaw 的 openssl magic 前缀），否则将出现「把密文当明文拉取并覆盖本地」的损坏风险。</u>
 - <u>回滚路径：`src/fsEncrypt.ts` 等 4 个文件可从 `_archive/upstream_v0.5.25/src/` 恢复；`src/sync.ts` 的解耦改动须以 C1 前的 git tag/branch（建议 `backup/pre-v1.3-C1`）为回滚点，`_archive/` 内无本 fork 的 `src/sync.ts`。</u>
@@ -639,9 +640,9 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 ### Step Checklist（完整 47 步）<u>（v1.3 A6 复核：实际条目共 59 个，含 Step 1.5）</u>
 
-<u>**v1.3 A6 复核结果：59 个条目中 55 项已完成（`[x]`），4 项未完成或被覆盖（`[ ]`，逐条注明原因）。复核依据为 2026-10-27 实跑校验（`tsc --noEmit`、`grep`、`git diff --numstat`），非依据 `delivery/DELIVERY_REPORT.md` 的自述结论。</u>
+<u>**v1.3 A6 复核结果：59 个条目中 <u>56 项</u>已完成（`[x]`），<u>3 项</u>未完成或被覆盖（`[ ]`，逐条注明原因）。复核依据为 2026-10-27 实跑校验（`tsc --noEmit`、`grep`、`git diff --numstat`），非依据 `delivery/DELIVERY_REPORT.md` 的自述结论。</u>
 
-- [x] Step 1-5：Phase 1 文件删除（<u>其中 Step 1.5 未完成，见下方例外项</u>）
+- [x] Step 1-5：Phase 1 文件删除（<u>其中 Step 1.5 <u>已于 Step 59 补做完成</u>，见下方例外项</u>）
 - [x] Step 6-14：Phase 2 import/handler 删除（<u>其中 Step 11 被 Step 48~54 覆盖，见下方例外项</u>）
 - [x] Step 15-27：Phase 3 settings.ts 大删（<u>其中 Step 22 未完成，见下方例外项</u>）
 - [x] Step 28-30：manifest / package.json / esbuild.config.mjs（<u>Step 28 的 description/author、Step 29 的 version 待 v1.3 A3/A5 处理</u>）
@@ -664,11 +665,11 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 - [x] <u>Step 57：删除 `src/settings.ts:825-855`（`debugDiv` 区段 + 2 个 Setting 块：`delsyncplans` + `delprevsync`）</u>
 - [x] <u>Step 58：删除 3 langs 中 `settings_debug` / `settings_delsyncplans*3` / `settings_delprevsync*3` 键</u>
 
-<u>**4 项未完成 / 被覆盖条目（v1.3 处置）**</u>
+<u>**<u>3 项</u>未完成 / 被覆盖条目（v1.3 处置）**</u>
 
 | <u>Step</u> | <u>状态</u> | <u>未完成原因</u> | <u>v1.3 处置</u> |
 |---|---|---|---|
-| <u>1.5</u> | <u>[ ] 未完成</u> | <u>删除 `tests/fsWebdis.test.ts` 未执行。文件仍在（12 行），`import { getOrigPath } from "../src/fsWebdis"` 指向已删除模块，导致 `tsc --noEmit` 报 `TS2307: Cannot find module '../src/fsWebdis'`，<u>直接阻断 `npm run build2`（其脚本为 `tsc -noEmit && esbuild`）与 `npm test`</u></u> | <u>Phase 5 Step 59（A1）补做</u> |
+| <u>1.5</u> | <u>[x] 已完成</u> | <u>已于 Phase 5 Step 59（A1）补做：`tests/fsWebdis.test.ts` 已删除（`ls tests/fsWebdis.test.ts` → No such file），`tsc --noEmit` 0 error / `npm run build2` exit 0 / `npm test` 142 passing 已恢复</u> | <u>Phase 5 Step 59（A1）补做</u> |
 | <u>11</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（删除 `importExport.ts` 内的 onedrive 收缩函数），该文件已在 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
 | <u>22</u> | <u>[ ] 未完成</u> | <u>删除 `settings.ts` 的 `syncOnSave` Setting 未执行。<u>`src/settings.ts:366-368` 仍存在 `new Setting(basicDiv).setName(t("settings_synconsave")).setDesc(t("settings_synconsave_desc"))`——一个有标题无控件的空壳 Setting</u>。§2.3 已将 syncOnSave 列为非场景，§3.1 P0-14 强制 `syncOnSaveAfterMilliseconds=-1`，故该空壳仅是视觉残留、无功能危害</u> | <u>Phase 5 Step 67（A8）补做</u> |
 | <u>37</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（限制 `exportQrCodeUri` 支持范围），该函数已随 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
@@ -826,7 +827,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>R10</u> | <u>A2 git 基线重建期间的变更丢失风险：重建基线需把当前 54 个 mode-only 文件 + PRD.md 的 v1.2 内容一并纳入一个 commit。若期间有人并行改动工作区、或误用 `git checkout -- .` / `git reset --hard` 归零 mode 变更，可能连带丢弃未提交的实质改动</u> | <u>中</u> | <u>① 重建前先 `git stash list` 与 `git diff --numstat` 快照，确认除 PRD.md 外无内容差异（本次已实测确认）② 重建基线**只做 `git add` 具体文件 + `git commit`，不用 `git add -A` / `git add .`** ③ <u>更稳的替代路径：先 `git config core.fileMode false` 让 54 个 mode-only 条目直接归零，此时工作区只剩 PRD.md 一处实质变更，基线 commit 天然干净，无需任何 `chmod` / `checkout` 操作</u> ④ 禁止使用 `git checkout -- .`、`git reset --hard`</u> |
 | <u>R11</u> | <u>**C1 不可逆：加密能力移除**。删除 `src/fsEncrypt.ts` 等 4 个文件 + 解耦 `src/sync.ts` 后，<u>端到端加密在本插件中不再具备</u>；若未来需重新提供该能力，须重做解耦并重新验证，不可简单回退（`_archive/upstream_v0.5.25/src/` 可提供 4 个原始文件，但本 fork 的 `src/sync.ts` 解耦改动只能靠 git tag 回滚）</u> | <u>**高**</u> | <u>① C1 实施前强制创建 tag/branch `backup/pre-v1.3-C1`（Step 74）② 实施中逐条满足 §5.1.C 的 3 项行为等价性约束，<u>特别是保留"远端已加密则中止同步"的守卫</u>（缺失该守卫会把远端密文当明文拉取，损坏本地笔记）③ B4 单测覆盖 3 项等价性 ④ §2.3 明确登记为非场景，§9 AC23 固化"加密后端确已移除"</u> |
 | <u>R12</u> | <u>**B2 凭证依赖阻塞**：S3 真实连通性测试（HeadBucket + ListObjectsV2）依赖老板提供 cstcloud.cn 的 AccessKey / SecretKey / Bucket。凭证未到位时该项无法执行，<u>但 B3 双向同步 E2E 同样依赖真实凭证</u>，二者会一并阻塞，导致 M7 无法收口</u> | <u>中</u> | <u>① 凭证到位前，B2/B3 在 §6 中保持「阻塞」标记，<u>不得以 Mock / 假凭证 / 本地 minio 冒充通过</u> ② 优先向老板申请一个最小权限的测试账号（仅 1 个 bucket 的读 + 写）③ 若凭证长期无法到位，M7 降级为「B1 + B4 + B5 通过，B2/B3 留待有凭证后补测」，并在发布说明中显式标注该缺口</u> |
-| <u>R13</u> | <u>C1 解耦 `src/sync.ts` 时破坏实体字段契约：`FakeFsEncrypt` 在空密码下并非纯粹直通，它会把 `keyEnc = keyRaw`、`sizeEnc = sizeRaw` 补进 Entity，而 `src/sync.ts` 有 16 处依赖 `keyEnc`/`sizeEnc` 做远端实体比对。解耦时若直接改用 `fsRemote.walk()` 的裸实体，<u>远端变更判定将失准，可能导致漏同步或重复同步</u></u> | <u>**高**</u> | <u>§5.1.C 的 3 项行为等价性约束 + Step 76 完成判据 + Step 72（B4）单测兜底；<u>建议 B4 优先于 C1</u>（见 §7 依赖关系）</u> |
+| <u>R13</u> | <u>C1 解耦 `src/sync.ts` 时破坏实体字段契约：`FakeFsEncrypt` 在空密码下并非纯粹直通，它会把 `keyEnc = keyRaw`、`sizeEnc = sizeRaw` 补进 Entity，而 `src/sync.ts` 有 <u>15 处</u>依赖 `keyEnc`/`sizeEnc` 做远端实体比对。解耦时若直接改用 `fsRemote.walk()` 的裸实体，<u>远端变更判定将失准，可能导致漏同步或重复同步</u></u> | <u>**高**</u> | <u>§5.1.C 的 3 项行为等价性约束 + Step 76 完成判据 + Step 72（B4）单测兜底；<u>建议 B4 优先于 C1</u>（见 §7 依赖关系）<u>（C1 已实施完毕，base vs 新版 worktree 差分对比 FULL EQUAL: True，15 处引用逐行一致）</u></u> |
 | <u>R14</u> | <u>C2 删除 profiler 波及面超预期：`src/profiler.ts` 虽无 UI 入口，但仍被 `src/sync.ts`（62 处）、`src/fsLocal.ts`（12 处）、`src/localdb.ts`（4 处）、`src/main.ts`（7 处）调用，且 `src/main.ts:142` 仍依据 `settings.profiler.enable` 在运行时启用。删除时若漏改任一处即编译失败</u> | <u>中</u> | <u>§5.1.C 的依赖清理点已逐文件列出；完成判据为 `grep -rn "profiler\|Profiler" src/` 为 0 + `npm run build2` + `npm test` 通过。<u>注意 `src/localdb.ts` 的 `profilerresults` 表会成为孤儿表，已建库不受影响</u></u> |
 | <u>R15</u> | <u>C4 误删仍在使用的依赖：`dotenv` 被勘察列为残留，但 `esbuild.config.mjs:1` 与 `webpack.config.js:1` 仍在 import/require，删除后构建链直接断裂；`jsdom` 被 `tests/misc.test.ts` 使用</u> | <u>中</u> | <u>Step 80 完成判据中已逐项标注「删除 / 保留」及判定依据；C4 完成后必须跑通 `npm run build2` + `npm test`</u> |
 | <u>R16</u> | <u>C5 误删仍在渲染的 i18n 键：`settings_chooseservice` / `settings_synconsave` / `settings_synconsave_desc` 当前仍被 UI 引用，若先于 A8 删除，设置页将渲染出 undefined</u> | <u>低</u> | <u>§6 Step 81 已把这 3 键列为「条件删除（须先做 A8）」；执行顺序固定为 A8（Step 67）→ C5（Step 81）</u> |
@@ -863,7 +864,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC14</u> | <u>**（A3）** 产品版本号三处统一为 `0.0.2`：`package.json` / `manifest.json` / PRD §4.3；<u>全仓不出现 `0.0.3`</u></u> | <u>`grep '"version"' package.json manifest.json` → 两处均为 `0.0.2`；`grep -rn "0\.0\.3" package.json manifest.json PRD.md` → 无输出（PRD 中仅版本号口径相关条目——修订记录 v1.3 行 / §6 Step 62 / §7 M11 / §8 R9 / §9 AC14 与 AC32——的文字提及"0.0.3"允许存在）</u> |
 | <u>AC15</u> | <u>**（A4）** `README.md` / `README.zh-cn.md` 标题为 `cstcloud-sync`；<u>保留 Apache-2.0 归属说明与对 fyears（上游原作者）的致谢段落</u>；无上游 star 徽章 / 赞助链接 / 商店链接残留</u> | <u>`grep -n "^# " README.md README.zh-cn.md` → 均为 `# cstcloud-sync`；`grep -n "Apache-2.0\|Apache License\|fyears" README.md README.zh-cn.md` → 有命中；`grep -n "img.shields.io\|remotelysave.com\|fyears/remotely-save" README.md README.zh-cn.md` → 无命中</u> |
 | <u>AC16</u> | <u>**（A5）** `manifest.json` 身份为 cstcloud 口径：`author` = `cstcloud`（<u>待老板确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save"</u> | <u>读 `manifest.json` 三字段逐一比对；`grep -n "fork" manifest.json` → 无命中</u> |
-| <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，4 个例外项（Step 1.5 / 11 / 22 / 37）保留 `[ ]` 并注明原因</u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
+| <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，<u>3 个例外项（Step 11 / 22 / 37）保留 `[ ]` 并注明原因</u>（<u>Step 1.5 已于 Step 59 补做完成</u>）</u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
 | <u>AC18</u> | <u>**（A7）** 设置页顶部标题为 `cstcloud-sync`，不再显示 `Remotely Save`</u> | <u>`grep -n '"Remotely Save"' src/settings.ts` → 无命中；Obsidian 设置页肉眼核对 H1</u> |
 | <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中</u> |
 | <u>AC20</u> | <u>**（A9）** 根 `LICENSE` 已删除失效的 `pro/` → PolyForm Strict License 条款，改为 Apache-2.0 + 派生自 remotely-save v0.5.25（Copyright fyears）声明</u> | <u>`grep -n "PolyForm\|pro" LICENSE` → 无 PolyForm 相关命中；文件中含 "Apache"、"remotely-save"、"fyears"</u> |
