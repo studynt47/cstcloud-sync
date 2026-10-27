@@ -1,12 +1,12 @@
-# PRD v1.1
+# PRD v1.3
 
-> 项目 cstcloud-sync 计划书 v1.1
+> 项目 cstcloud-sync 计划书 v1.3
 > 基于：remotely-save v0.5.25（Apache-2.0）+ 任务书 /home/WPS/NEW/remotely_save.md + 技术分析 tech_v1.md
 
-**当前版本**：v1.1
+**当前版本**：v1.3
 **生成时间**：2026-10-16
-**修订时间**：2026-10-17
-**状态**：定稿待评审
+**修订时间**：2026-10-27
+**状态**：<u>待评审（A+B+C 升级方案，产品版本统一 0.0.2）</u>
 
 ---
 
@@ -14,10 +14,18 @@
 
 | 版本 | 修订时间 | 变更点 |
 |---|---|---|
-| v1.0 | 2026-10-16 | 初始版本，基于 remotly-save v0.5.25 改造为 cstcloud-sync |
-| <u>v1.1</u> | <u>2026-10-17</u> | <u>① 弹窗文案改 3 langs × 6 键（langs 3 文件 + §5.1.A syncAlgoV3Notice.ts / §6 Step45~47 系列 / §9 AC9）</u> |
+| v1.0 | 2026-10-16 | 初始版本，基于 remotly-save v0.5.25 改造为 cstcloud-sync <u>（已实施，对应产品版本 v0.0.1）</u> |
+| <u>v1.1</u> | <u>2026-10-17</u> | <u>① 弹窗文案改 3 langs × 6 键（langs 3 文件 + §5.1.A syncAlgoV3Notice.ts / §6 Step45~47 系列 / §9 AC9）</u> <u>（已实施，对应产品版本 v0.0.2）</u> |
 | | | <u>② 删除"导入导出部分设置"功能（§3.4 NI-12 删 / §5.1 A 类文件 / §6 Step48~54 / §9 AC10）</u> |
 | | | <u>③ 删除"调试-删除同步计划历史"功能 + 删 debugMode.ts（§3.2 P1-13/14 删 / §3.4 NI-12 删 / §5.1 A 类文件 / §6 Step55~58 / §9 AC10）</u> |
+| v1.2 | 2026-10-27 | <u>① 状态收口：v1.1 由"定稿待评审"改标"已实施（v0.0.2）"（实施 commit 4f383e6，44 步 checklist 全通过，manifest.json version=0.0.2）② 本版未新增功能条目，仅推进版本号至 v1.2 作为下一轮升级基线，升级需求待老板明确后叠加</u> |
+| <u>v1.3</u> | <u>2026-10-27</u> | <u>① A 修复类（6 项）② B 质量类（5 项）③ C 瘦身类（5 项）④ 产品版本号统一 0.0.2，不升 0.0.3</u> <u>⑤ 版本号口径澄清：开发/升级阶段产品版本号沿用 0.0.2（开发基线口径，不锁发布版本）；最终发布版本号在 A/B/C 全部验收通过后由老板统一指定（须 ≥ 0.0.3，否则 Obsidian 商店无法覆盖已发布的 0.0.2）⑥ 本行为评审中修订，PRD 版本号不递增</u> |
+
+> <u>v1.2 升级需求待定：本次仅完成基线收口与版本推进，未新增功能项。需求明确后按版本迭代 SOP 继续叠加，新增内容同样用下划线标注。</u>
+
+> <u>本版仅覆盖 A/B/C 范围；D 功能类需求待老板明确后另起版本叠加。</u>
+
+> <u>v1.3 补充说明：本次新增条目一律用下划线标注；§1–§9 中描述 v1.0/v1.1/v1.2 已完成工作的历史内容原样保留，不做全局版本号替换。</u>
 
 ---
 
@@ -69,6 +77,7 @@
 - OAuth 第三方登录（Dropbox/OneDrive/Google 等）
 - PRO 账号体系
 - 端到端加密 UI（密码设置界面）
+- <u>端到端加密（后端代码已随 v1.3 移除）</u>
 - 导入/导出设置（QR / URI）
 - 导出同步计划
 - 性能分析 profiler UI
@@ -111,7 +120,7 @@
 | P1-3 | 启动后自动运行（initRunAfterMilliseconds） | `settings_runoncestartup` | `settings.ts:2126-2150` |
 | P1-4 | 跳过大文件（skipSizeLargerThan） | `settings_skiplargefiles` | `settings.ts:2175-2189` |
 | P1-5 | 状态栏显示开关（enableStatusBarInfo） | `settings_enablestatusbar_info` | `settings.ts:2193-2204` |
-| P1-6 | 重设状态栏时间记录 | `settings_resetstatusbar_time` | `settings.ts:2206-2227` |
+| <u>P1-6</u> | <u>重设状态栏时间记录</u> | <u>`settings_resetstatusbar_time`</u> | <u>`settings.ts:2206-2227`（v1.3 复核：该 Setting ID 在 src/settings.ts 中已不存在，v1.0 大删时随调试区块一并移除 → 标记为已删除）</u> |
 | P1-7 | 并行度（concurrency） | `settings_concurrency` | `settings.ts:2279-2298` |
 | P1-8 | 同步下划线文件（syncUnderscoreItems） | `settings_syncunderscore` | `settings.ts:2300-2314` |
 | P1-9 | 同步配置文件夹（syncConfigDir） | `settings_configdir` | `settings.ts:2316-2347` |
@@ -120,6 +129,13 @@
 | P1-12 | 保护修改百分比（protectModifyPercentage） | `settings_protectmodifypercentage` | `settings.ts:2428-2498` |
 | <u>P1-13</u> | <u>删除同步计划历史</u> | <u>`settings_delsyncplans`</u> | <u>`settings.ts:829-835`（<u>v1.1 删除</u>）</u> |
 | <u>P1-14</u> | <u>删除上次同步明细</u> | <u>`settings_delprevsync`</u> | <u>`settings.ts:840-849`（<u>v1.1 删除</u>）</u> |
+
+<u>v1.3 与 C 类的对应关系说明：</u>
+
+- <u>**C 类不删除本表任何 P1 项**。P1-1 ~ P1-5、P1-7 ~ P1-12 共 11 项在 v1.3 全部保留，其 Setting ID 与 UI 均不受 A/B/C 三类改动影响。</u>
+- <u>P1-13 / P1-14 维持 v1.1 的"已删除"状态（对应 `debugMode.ts` 与调试区块，C 类无后续动作）。</u>
+- <u>P1-6 经 v1.3 实施前源码复核：Setting ID `settings_resetstatusbar_time` 在 `src/settings.ts` 中已不存在，判定为 v1.0 大删时误删而非本版删除，标注为"已删除"。</u>
+- <u>本表"代码位置"列为 v1.0/v1.1 时期的行号快照；C 类删除 `src/profiler.ts` 与加密后端后会引起 `src/settings.ts` 行号漂移，<u>实施后须回填真实行号</u>，行号本身不作为验收判据。</u>
 
 ### 3.3 P2 硬编码（代码存在但 UI 不显示）
 
@@ -190,6 +206,8 @@
 | NI-23 | `reverseProxyNoSignUrl`（S3 反向代理地址） | `fsS3.ts:DEFAULT_S3_CONFIG` + `settings.ts:914-925` Setting 区块 + `src/langs/*.json` 8 个 `modal_remotebasedir_*` key | 字段删除 + Setting 区块删除 + i18n key 全删 |
 | NI-24 | `generateFolderObject`（是否生成文件夹 Object） | `fsS3.ts:DEFAULT_S3_CONFIG` + `copyLogic.ts` 调用点 | 字段删除 + Setting 区块删除 + 调用点全删 |
 
+<u>v1.3 追加（C1 联动）：NI-6 / NI-7 / NI-20 此前仅删除端到端加密的 **UI 与设置字段**，`src/fsEncrypt.ts` / `src/encryptOpenSSL.ts` / `src/encryptRClone.ts` / `src/encryptRClone.worker.ts` 后端实现仍在。v1.3 的 C1 进一步移除加密后端，使端到端加密能力整体退出本插件，对应 §2.3 新增非场景条目、§5.1.C 新增删除行、§6 Phase 7、§8 风险 R11、§9 验收 AC23。</u>
+
 ---
 
 ## 4. 技术栈
@@ -210,7 +228,7 @@
 | `@aws-sdk/lib-storage` | S3 Upload 管理 |
 | `@aws-sdk/signature-v4-crt` | S3 CRT 签名（fsS3 依赖） |
 | `@aws-sdk/types` | AWS 类型定义 |
-| `@fyears/rclone-crypt` | 加密（后端保留） |
+| <u>`@fyears/rclone-crypt`</u> | <u>加密（后端保留）→ v1.3 C1 实施后移入 §4.2 删除依赖</u> |
 | `@fyears/tsqueue` | 队列（copyLogic 依赖） |
 | `localforage` + `localforage-*` | 浏览器端 DB |
 | `@sanity/diff-match-patch` | diff 算法 |
@@ -258,6 +276,9 @@
 | `webdav` | WebDAV 删除 |
 | `@azure/storage-blob` | PRO 删除（azureblobstorage） |
 | `qrcode` | 随 `importExport.ts` 删除（`ExportSettingsQrCodeModal` 依赖） |
+| <u>`@fyears/rclone-crypt`</u> | <u>v1.3 C1 删除 `src/encryptRClone.ts` 后失去唯一调用方，随之移除</u> |
+| <u>`esbuild-plugin-inline-worker`</u> | <u>devDep，v1.3 C1 删除 `src/encryptRClone.worker.ts` 后无 worker 需要内联，可移除（须同步删 `esbuild.config.mjs` 的 `plugins: [inlineWorkerPlugin()]`）</u> |
+| <u>`worker-loader`</u> | <u>devDep，仅服务 `webpack.config.js` 的 worker 打包，v1.3 C1 后无 worker 可打包，可移除</u> |
 
 ### 4.3 manifest.json 改造
 
@@ -265,10 +286,13 @@
 |---|---|---|
 | `id` | `remotely-save` | `cstcloud-sync` |
 | `name` | `Remotely Save` | `cstcloud-sync` |
-| `version` | `0.5.25` | `0.0.1` |
-| `description` | `Yet another unofficial plugin...` | `Obsidian 笔记双向同步插件（基于 S3/cstcloud.cn）` |
-| `author` | `fyears` | 保留 |
+| `version` | `0.5.25` | <u>`0.0.2`</u> <u>（开发基线口径；发布版本号于升级验收后统一指定）</u> |
+| `description` | `Yet another unofficial plugin...` | <u>`基于 cstcloud.cn 对象存储的 Obsidian 双向同步插件`</u> |
+| `author` | `fyears` | <u>`cstcloud`</u> <u>（v1.3 A5 默认方案，author 字符串待老板最终确认）</u> |
+| <u>`authorUrl`</u> | <u>`https://github.com/fyears`</u> | <u>`https://github.com/cstcloud/cstcloud-sync`（v1.3 A5）</u> |
 | `fundingUrl` | `https://remotelysave.com` | **删除** |
+
+<u>v1.3 A5 补充：manifest 的 `author` 改为 `cstcloud` **不构成对上游作者的除名**。Apache-2.0 §4(c) 要求保留声明，原作者 fyears 的署名与致谢统一落在 `README.md` / `README.zh-cn.md`（A4）与根 `LICENSE`（A9），manifest 只承载分发身份。</u>
 
 ### 4.4 esbuild.config.mjs 改造
 
@@ -281,35 +305,32 @@
 
 ## 5. 架构设计
 
-### 5.1 62 文件改造分类（23 保留 + 1 新建 + 6 删除 + 32 pro/）
+### 5.1 62 文件改造分类（<u>v1.3 C 类后：18 保留 + 1 新建 + 11 删除 + 32 pro/</u>）
 
-#### A. 保留文件（25 行，v1.1 删 2 个后实际保留 23）
+#### A. 保留文件（<u>v1.3 C 类实施后为 18 个</u>）
 
+> <u>v1.3 调整：原 A 类保留 23 个文件中，`src/profiler.ts`（C2）、`src/encryptOpenSSL.ts` / `src/encryptRClone.ts` / `src/encryptRClone.worker.ts` / `src/fsEncrypt.ts`（C1）共 5 个已移出 A 类，改列入 §5.1.C 删除文件表。剩余 A 类实际保留 18 个文件。</u>
+>
 > 含 2 个 v1.1 标记删除项（`importExport.ts` / `debugMode.ts`），见 §5.1.C
 
 | 文件 | 改造说明 |
 |---|---|
-| `src/main.ts` | 改：删除 pro/src import / OAuth handler / cloud 初始化；硬编码 s3/info/true；保留 sync 核心 |
+| `src/main.ts` | 改：删除 pro/src import / OAuth handler / cloud 初始化；硬编码 s3/info/true；保留 sync 核心 <u>；v1.3 C1 追加：删除 L26 / L163 / L393 / L412 的 FakeFsEncrypt 接线；v1.3 C2 追加：删除 L44 / L71 / L141-146 / L155 / L394 / L413 / L625-635 的 Profiler 接线</u> |
 | `src/settings.ts` | 改：删除 80+ 云服务 Setting 区块（Dropbox/WebDAV/Webdis/OneDrive/PRO）；保留 S3 三字段 + <u>12 个 P1 Setting（v1.1 删除 P1-13/P1-14 调试功能）</u> |
 | `src/fsS3.ts` | 保留（25KB）：DEFAULT_S3_CONFIG 改为 `s3Endpoint=s3.cstcloud.cn` / `region=us-east-1` / `forcePathStyle=true` |
 | `src/fsAll.ts` | 保留：FakeFs 抽象基类 |
-| `src/baseTypes.ts` | 改：删除 pro/src/baseTypesPro.ts import；<u>删除 `QRExportType` 类型（v1.1 随 importExport.ts 删除）</u>；保留 S3/Webdav/Dropbox/Onedrive 类型（兼容旧配置） |
+| `src/baseTypes.ts` | 改：删除 pro/src/baseTypesPro.ts import；<u>删除 `QRExportType` 类型（v1.1 随 importExport.ts 删除）</u>；保留 S3/Webdav/Dropbox/Onedrive 类型（兼容旧配置）<u>；v1.3 C1 追加：<u>勘察结论中的「清理 `password`/`encryptionMethod` @deprecated 字段」不成立——该两字段已随 v1.0 NI-7 删除，`src/baseTypes.ts` 中不存在</u>；实际残留的 @deprecated 项为 L36-42 `remotePrefix`/`useAccurateMTime`/`generateFolderObject`/`reverseProxyNoSignUrl`、L40 `bypassCorsLocally`、L92 `agreeToUploadExtraMetadata`、L97 `vaultRandomID`、L195 `FileOrFolderMixedState`，均为旧 data.json 兼容用（运行时忽略），仅做类型标注清理、不改运行时行为；v1.3 C2 追加：删除 L54 `ProfilerConfig` / L88 `profiler?` / L227 悬空 i18n 键</u> |
 | `src/baseTypesObs.ts` | 保留 |
 | `src/configPersist.ts` | 保留（加密配置读写） |
 | `src/copyLogic.ts` | 保留（文件 diff/copy 核心）；需确认是否删除 `ignorePaths`/`onlyAllowPaths` 读取 |
 | <u>`src/importExport.ts`</u> | <u>v1.1 删除（105 行）</u> |
 | `src/i18n.ts` | 改：删除 `LANGS_PRO` merge（L5,8）；改为 `const LANGS = LANGS_BASIC` |
-| `src/localdb.ts` | 保留（DB 操作）；<u>`SyncPlanType` 已确认（v1.0 Step 12 完成）：已删除 pro/src/sync import，`SyncPlanType` 在 `src/sync.ts:358` 重新 export</u> |
+| `src/localdb.ts` | 保留（DB 操作）；<u>`SyncPlanType` 已确认（v1.0 Step 12 完成）：已删除 pro/src/sync import，`SyncPlanType` 在 `src/sync.ts:358` 重新 export</u> <u>；v1.3 C2 追加：删除 L22 `DEFAULT_TBL_PROFILER_RESULTS` / L65 字段 / L213 `createInstance` / L567-600 三个 profiler 结果读写函数（已建库中的 `profilerresults` 表成为孤儿表，不影响同步主流程）</u> |
 | `src/metadataOnRemote.ts` | 保留 |
 | `src/misc.ts` | 保留 |
 | `src/obsFolderLister.ts` | 保留 |
-| `src/profiler.ts` | 保留（无 UI 调用方） |
 | `src/syncAlgoV3Notice.ts` | 保留（删除 pro import） |
 | `src/worker.d.ts` | 保留 |
-| `src/encryptOpenSSL.ts` | 保留（后端加密实现） |
-| `src/encryptRClone.ts` | 保留（后端加密实现） |
-| `src/encryptRClone.worker.ts` | 保留（web worker 加密） |
-| `src/fsEncrypt.ts` | 保留（FakeFs wrapper，password 为空时 passthrough） |
 | <u>`src/debugMode.ts`</u> | <u>v1.1 删除（95 行）</u> |
 | `src/fsGetter.ts` | 改：switch 仅剩 s3 case + 12 case 全删（详见 Step 7） |
 | `src/fsLocal.ts` | 保留：本地 vault 抽象（无改动） |
@@ -319,9 +340,9 @@
 
 | 文件 | 说明 |
 |---|---|
-| `src/sync.ts` | **从 `pro/src/sync.ts` 提取核心逻辑**，替代 `main.ts` 中 `import { syncer } from "../pro/src/sync"` |
+| `src/sync.ts` | **从 `pro/src/sync.ts` 提取核心逻辑**，替代 `main.ts` 中 `import { syncer } from "../pro/src/sync"` <u>；v1.3 C1 追加：解耦 FakeFsEncrypt 包装层（8 处签名/传参 + 7 处方法调用，须满足 §5.1.C 的 3 项行为等价性约束）；v1.3 C3 追加：清理 L54 / L65 / L76 / L87 四处 `serviceType === "dropbox"` 死分支</u> |
 
-#### C. 删除文件（6 个，v1.1 新增 2 个）
+#### C. 删除文件（<u>v1.3 后为 11 个（v1.0/v1.1 6 个 + v1.3 C1/C2 新增 5 个）</u>）
 
 | 文件 | 大小 |
 |---|---|
@@ -331,6 +352,28 @@
 | `src/fsWebdis.ts` | 8KB |
 | <u>`src/importExport.ts`</u> | <u>105 行（v1.1 删除）</u> |
 | <u>`src/debugMode.ts`</u> | <u>95 行（v1.1 删除）</u> |
+| <u>`src/fsEncrypt.ts`</u> | <u>587 行（v1.3 C1 删除）</u> |
+| <u>`src/encryptOpenSSL.ts`</u> | <u>186 行（v1.3 C1 删除）</u> |
+| <u>`src/encryptRClone.ts`</u> | <u>257 行（v1.3 C1 删除）</u> |
+| <u>`src/encryptRClone.worker.ts`</u> | <u>184 行（v1.3 C1 删除）</u> |
+| <u>`src/profiler.ts`</u> | <u>153 行（v1.3 C2 删除）</u> |
+
+<u>**v1.3 新增删除项的依赖清理点**（逐文件列出须连带修改的位置，缺一即编译失败）：</u>
+
+| <u>删除文件</u> | <u>行数</u> | <u>连带清理点</u> |
+|---|---|---|
+| <u>`src/fsEncrypt.ts`</u> | <u>587</u> | <u>`src/sync.ts`：1 处 `import type { FakeFsEncrypt }`（L18）+ 8 处函数签名/传参（L367 / L1405 / L1717 / L1908）+ 7 处方法调用（L454 `encryptEntity`、L500 `encryptEntity`、L1569 `rm`、L1700 `rm`、L1953 `innerFs`、L1956 `isPasswordOk`、L1968 `walk`）需改为直连 `fsRemote`；`src/main.ts`：L26 import、L163 `new FakeFsEncrypt(fsRemote, "", "rclone-base64")`、L393 传给 `syncer()`、L412 `fsEncrypt.closeResources()`。<u>注意：`src/fsGetter.ts` 实际无 fsEncrypt 引用（勘察结论有误），无需改动。</u></u> |
+| <u>`src/encryptOpenSSL.ts`</u> | <u>186</u> | <u>唯一调用方 `src/fsEncrypt.ts`（L2 / L40-46 / L453-454 / L521-522 / L537 / L568）；连带删除 `tests/encryptOpenSSL.test.ts`（163 行）</u> |
+| <u>`src/encryptRClone.ts`</u> | <u>257</u> | <u>唯一调用方 `src/fsEncrypt.ts`（L3 / L77 / L96 / L408 / L460 / L484 / L505 / L554 / L570）；连带 `package.json` 移除运行时依赖 `@fyears/rclone-crypt`（§4.2）</u> |
+| <u>`src/encryptRClone.worker.ts`</u> | <u>184</u> | <u>唯一调用方 `src/encryptRClone.ts`（L7）；连带 `esbuild.config.mjs` 移除 `inlineWorkerPlugin()` 插件与 `esbuild-plugin-inline-worker` devDep、`webpack.config.js` 移除 `worker-loader` 规则与 devDep</u> |
+| <u>`src/profiler.ts`</u> | <u>153</u> | <u>`src/main.ts`：L44 import、L71 `DEFAULT_SETTINGS.profiler`、L141-146 构造、L155/L394 传参、L413 `clear()`、L625-635 `loadSettings()` 兼容块；`src/settings.ts`：L27 `import { DEFAULT_PROFILER_CONFIG }`；`src/sync.ts`：`import type { Profiler }`（L44）+ 61 处 `profiler?.insert(...)` 调用；`src/fsLocal.ts`：L7 import + 11 处 `this.profiler?.xxx(...)` 调用；`src/localdb.ts`：L22 `DEFAULT_TBL_PROFILER_RESULTS`、L65 字段、L213 `createInstance`、L567-600 三个 profiler 结果读写函数；`src/baseTypes.ts`：L54 `ProfilerConfig` 接口、L88 `profiler?` 字段、L227 i18n 键 `"profiler_results_exported_on_"`（该键在 3 个 langs 中已不存在，属悬空引用）</u> |
+
+<u>**C1 行为等价性约束（实施时必须逐条核对）**：当前 `FakeFsEncrypt` 以空密码构造（`main.ts:163`），其行为等价于「直通 + 实体字段补齐」，因此解耦后必须保持 3 项等价性：</u>
+
+- <u>① `walk()` 返回的每个 Entity 仍带 `keyEnc = keyRaw`、`sizeEnc = sizeRaw`（`fsEncrypt.ts:66-71` 的 `copyEntityAndCopyKeyEncSizeEnc`）。`src/sync.ts` 有 16 处依赖 `keyEnc`/`sizeEnc` 做远端实体比对，解耦时须保留等价字段填充，不得直接改用 `fsRemote.walk()` 的裸实体。</u>
+- <u>② `encryptEntity()` 在空密码分支等价于 `copyEntityAndCopyKeyEncSizeEnc()`，须以等价的本地函数替代，不得直接透传原始 Entity。</u>
+- <u>③ `isPasswordOk()`（`sync.ts:1956`）是**远端已加密时的中止保护**：若远端存在 openssl 密文而本地无密码，当前实现会中止同步并抛出 `remote_encrypted_local_no_password`。<u>该保护不可随类一并删除</u>，须以等价的轻量守卫函数替代（扫描首个远端实体 keyRaw 的 openssl magic 前缀），否则将出现「把密文当明文拉取并覆盖本地」的损坏风险。</u>
+- <u>回滚路径：`src/fsEncrypt.ts` 等 4 个文件可从 `_archive/upstream_v0.5.25/src/` 恢复；`src/sync.ts` 的解耦改动须以 C1 前的 git tag/branch（建议 `backup/pre-v1.3-C1`）为回滚点，`_archive/` 内无本 fork 的 `src/sync.ts`。</u>
 
 #### D. pro/ 目录整体删除（24 个 .ts + 1 个 .d.ts + 1 个 .md + 4 个 langs/ + 2 个 tests/ = 32 个文件）
 
@@ -498,30 +541,98 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | 43 | 修改 `settings.ts:902-913` + `914-925`：删除 endpoint/region input，默认值改为 cstcloud.cn/us-east-1 | `settings.ts` |
 | 44 | 修改 `main.ts:553`：删除 OAuth expire check（`checkIfOauthExpires()` 调用） | `main.ts` |
 
-### Step Checklist（完整 47 步）
+### Step Checklist（完整 47 步）<u>（v1.3 A6 复核：实际条目共 59 个，含 Step 1.5）</u>
 
-- [ ] Step 1-5：Phase 1 文件删除（含 Step 1.5 tests/fsWebdis.test.ts）
-- [ ] Step 6-14：Phase 2 import/handler 删除
-- [ ] Step 15-27：Phase 3 settings.ts 大删
-- [ ] Step 28-30：manifest / package.json / esbuild.config.mjs
-- [ ] Step 31-33：硬编码 + backward compat
-- [ ] Step 34：新建 src/sync.ts
-- [ ] Step 35-39：import 修复 + i18n 改造
-- [ ] Step 40-44：UI 清理 + command 删除
-- [ ] <u>Step 45：修改 `src/langs/en.json:191-196` 弹窗 6 个 i18n key（新文案：cstcloud-sync 同步算法说明口径、复选框 2 改为"我理解仅支持 S3 协议 + 默认端点 cstcloud.cn"、GitHub 链接占位 `https://github.com/cstcloud/cstcloud-sync`）</u>
-- [ ] <u>Step 46：修改 `src/langs/zh_cn.json:191-196` 同上 6 个 key</u>
-- [ ] <u>Step 47：修改 `src/langs/zh_tw.json:191-196` 同上 6 个 key</u>
-- [ ] <u>Step 48：删除 `src/importExport.ts`（105 行）</u>
-- [ ] <u>Step 49：删除 `src/settings.ts:25-29`（importExport import）</u>
-- [ ] <u>Step 50：删除 `src/settings.ts:108`（`exportQrCodeUri` 调用）</u>
-- [ ] <u>Step 51：删除 `src/settings.ts:737-820`（`importExportDiv` 区段 + `ExportSettingsQrCodeModal` 整类）</u>
-- [ ] <u>Step 52：删除 `src/settings.ts:782-783`（`parseUriByHand` / `importQrCodeUri` 调用）</u>
-- [ ] <u>Step 53：删除 3 langs 中 `settings_importexport` / `settings_export` / `settings_export_desc` / `settings_export_basic_and_advanced_button` / `settings_export_s3_button` / `settings_import` / `settings_import_desc` / `modal_qr_*` / `protocol_saveqr` 键</u>
-- [ ] <u>Step 54：删除 `baseTypes.ts:54` `QRExportType` 类型</u>
-- [ ] <u>Step 55：删除 `src/debugMode.ts`（95 行）</u>
-- [ ] <u>Step 56：删除 `src/settings.ts:30-34`（localdb import 中的 `clearAllSyncPlanRecords` / `clearAllPrevSyncRecordByVault`，`destroyDBs` 保留）</u>
-- [ ] <u>Step 57：删除 `src/settings.ts:825-855`（`debugDiv` 区段 + 2 个 Setting 块：`delsyncplans` + `delprevsync`）</u>
-- [ ] <u>Step 58：删除 3 langs 中 `settings_debug` / `settings_delsyncplans*3` / `settings_delprevsync*3` 键</u>
+<u>**v1.3 A6 复核结果：59 个条目中 55 项已完成（`[x]`），4 项未完成或被覆盖（`[ ]`，逐条注明原因）。复核依据为 2026-10-27 实跑校验（`tsc --noEmit`、`grep`、`git diff --numstat`），非依据 `delivery/DELIVERY_REPORT.md` 的自述结论。</u>
+
+- [x] Step 1-5：Phase 1 文件删除（<u>其中 Step 1.5 未完成，见下方例外项</u>）
+- [x] Step 6-14：Phase 2 import/handler 删除（<u>其中 Step 11 被 Step 48~54 覆盖，见下方例外项</u>）
+- [x] Step 15-27：Phase 3 settings.ts 大删（<u>其中 Step 22 未完成，见下方例外项</u>）
+- [x] Step 28-30：manifest / package.json / esbuild.config.mjs（<u>Step 28 的 description/author、Step 29 的 version 待 v1.3 A3/A5 处理</u>）
+- [x] Step 31-33：硬编码 + backward compat
+- [x] Step 34：新建 src/sync.ts
+- [x] Step 35-39：import 修复 + i18n 改造（<u>其中 Step 37 被 Step 48~54 覆盖，见下方例外项；Step 39 主体完成，残留死键由 C5 清理</u>）
+- [x] Step 40-44：UI 清理 + command 删除
+- [x] <u>Step 45：修改 `src/langs/en.json:191-196` 弹窗 6 个 i18n key（新文案：cstcloud-sync 同步算法说明口径、复选框 2 改为"我理解仅支持 S3 协议 + 默认端点 cstcloud.cn"、GitHub 链接占位 `https://github.com/cstcloud/cstcloud-sync`）</u>
+- [x] <u>Step 46：修改 `src/langs/zh_cn.json:191-196` 同上 6 个 key</u>
+- [x] <u>Step 47：修改 `src/langs/zh_tw.json:191-196` 同上 6 个 key</u>
+- [x] <u>Step 48：删除 `src/importExport.ts`（105 行）</u>
+- [x] <u>Step 49：删除 `src/settings.ts:25-29`（importExport import）</u>
+- [x] <u>Step 50：删除 `src/settings.ts:108`（`exportQrCodeUri` 调用）</u>
+- [x] <u>Step 51：删除 `src/settings.ts:737-820`（`importExportDiv` 区段 + `ExportSettingsQrCodeModal` 整类）</u>
+- [x] <u>Step 52：删除 `src/settings.ts:782-783`（`parseUriByHand` / `importQrCodeUri` 调用）</u>
+- [x] <u>Step 53：删除 3 langs 中 `settings_importexport` / `settings_export` / `settings_export_desc` / `settings_export_basic_and_advanced_button` / `settings_export_s3_button` / `settings_import` / `settings_import_desc` / `modal_qr_*` / `protocol_saveqr` 键</u>
+- [x] <u>Step 54：删除 `baseTypes.ts:54` `QRExportType` 类型</u>
+- [x] <u>Step 55：删除 `src/debugMode.ts`（95 行）</u>
+- [x] <u>Step 56：删除 `src/settings.ts:30-34`（localdb import 中的 `clearAllSyncPlanRecords` / `clearAllPrevSyncRecordByVault`，`destroyDBs` 保留）</u>
+- [x] <u>Step 57：删除 `src/settings.ts:825-855`（`debugDiv` 区段 + 2 个 Setting 块：`delsyncplans` + `delprevsync`）</u>
+- [x] <u>Step 58：删除 3 langs 中 `settings_debug` / `settings_delsyncplans*3` / `settings_delprevsync*3` 键</u>
+
+<u>**4 项未完成 / 被覆盖条目（v1.3 处置）**</u>
+
+| <u>Step</u> | <u>状态</u> | <u>未完成原因</u> | <u>v1.3 处置</u> |
+|---|---|---|---|
+| <u>1.5</u> | <u>[ ] 未完成</u> | <u>删除 `tests/fsWebdis.test.ts` 未执行。文件仍在（12 行），`import { getOrigPath } from "../src/fsWebdis"` 指向已删除模块，导致 `tsc --noEmit` 报 `TS2307: Cannot find module '../src/fsWebdis'`，<u>直接阻断 `npm run build2`（其脚本为 `tsc -noEmit && esbuild`）与 `npm test`</u></u> | <u>Phase 5 Step 59（A1）补做</u> |
+| <u>11</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（删除 `importExport.ts` 内的 onedrive 收缩函数），该文件已在 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
+| <u>22</u> | <u>[ ] 未完成</u> | <u>删除 `settings.ts` 的 `syncOnSave` Setting 未执行。<u>`src/settings.ts:366-368` 仍存在 `new Setting(basicDiv).setName(t("settings_synconsave")).setDesc(t("settings_synconsave_desc"))`——一个有标题无控件的空壳 Setting</u>。§2.3 已将 syncOnSave 列为非场景，§3.1 P0-14 强制 `syncOnSaveAfterMilliseconds=-1`，故该空壳仅是视觉残留、无功能危害</u> | <u>Phase 5 Step 67（A8）补做</u> |
+| <u>37</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（限制 `exportQrCodeUri` 支持范围），该函数已随 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
+
+<u>**另记（Step 20 局部残留）**：Step 20「删除 serviceType dropdown」已完成，但 `src/settings.ts:133-134` 的 `settings_chooseservice` 标题（"选择服务"）仍在渲染，dropdown 本身已不存在，属标题孤儿。</u>
+
+### Phase 5：A 修复类（6 项 + 3 项实施前新增发现）
+
+| Step | 动作 | 文件位置 | 完成判据 |
+|---|---|---|---|
+| 59 | <u>**（A1）**</u> 删除残留 Webdis 测试 | `tests/fsWebdis.test.ts`（12 行） | 文件不存在；`npx tsc --noEmit` 输出 0 error（消除唯一的 `TS2307`）；`npm run build2` 与 `npm test` 均可执行 |
+| 60 | <u>**（A2-a）**</u> 统一文件权限位模式 | 仓库根：`git config core.fileMode false`；<u>（可选）</u> 对受影响文件 `chmod 644` 归位 | `git diff --numstat` 中不再出现 mode-only 条目；<u>注意：`core.fileMode=false` 是本地仓库配置、不随 commit 分发，若需对其他克隆生效须同时做 chmod 归位</u> |
+| 61 | <u>**（A2-b）**</u> 产出干净基线 commit | 全仓（<u>须包含 PRD.md 的 v1.2 内容与本 v1.3 变更</u>） | `git log --oneline -1` 为基线 commit；`git status --porcelain` 输出为空；`git show --stat` 的内容差异与预期一致 |
+| 62 | <u>**（A3）**</u> <u>统一开发基线产品版本号到 0.0.2</u> | `package.json`（`version`）、`manifest.json`（`version`）、本 PRD §4.3 | `grep '"version"' package.json manifest.json` 均为 `0.0.2`；§4.3 表 version 单元格为 `0.0.2`；<u>不出现 0.0.3</u>；<u>本步骤仅锁定开发基线口径；发布版本号在 Step 81 之后由老板统一指定（见 §9 AC32），本版不预设具体发布号</u> |
+| 63 | <u>**（A4）**</u> README 品牌化改写 | `README.md`、`README.zh-cn.md` | 标题为 `cstcloud-sync`；<u>必须保留 Apache-2.0 归属说明与对 fyears（上游原作者）的致谢段落</u>；无上游 star 徽章 / 赞助链接 / 商店链接 / "Remotely Save" 标题 |
+| 64 | <u>**（A5）**</u> manifest 身份统一 | `manifest.json` | `author` = `cstcloud`（<u>字符串待老板最终确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save" |
+| 65 | <u>**（A6）**</u> 勾选 §6 历史 58 步 checklist | 本 PRD §6 | 59 个条目逐一勾选；未完成项同行注明原因（见上方例外项表） |
+| 66 | <u>**（A7）**</u> 设置页 H1 品牌残留修复 | `src/settings.ts:126`（`containerEl.createEl("h1", { text: "Remotely Save" })`） | 设置页顶部标题显示 `cstcloud-sync`，不再显示 `Remotely Save` |
+| 67 | <u>**（A8）**</u> 设置页空壳元素清理 | `src/settings.ts:133-134`（`settings_chooseservice` 孤儿标题）、`src/settings.ts:366-368`（`settings_synconsave` 空 Setting） | 设置页不再出现"选择服务"标题与"保存时自动同步"空标签；对应 i18n 键按 C5 一并清理 |
+| 68 | <u>**（A9）**</u> 根 LICENSE 文本更新 | `LICENSE` | <u>删除已失效的 `pro/` → PolyForm Strict License 条款</u>（`pro/` 已于 v1.0 整体删除）；改为 Apache-2.0 + "本项目派生自 remotely-save v0.5.25（Copyright fyears）"声明 |
+
+### Phase 6：B 质量类（5 项）
+
+| Step | 动作 | 文件位置 | 完成判据 |
+|---|---|---|---|
+| 69 | <u>**（B1）**</u> E2E-1 Obsidian 桌面版加载测试 | 产物 `main.js` + `manifest.json` | manifest 校验通过（id / name / version / minAppVersion）；插件可启用且无报错；设置页可渲染（S3 三字段 + 12 个 P1）；ribbon 图标可见可点；命令面板出现 `start-sync` 与 `start-sync-dry-run` |
+| 70 | <u>**（B2）**</u> E2E-2 S3 真实连通性测试 | 设置页「检查连接」按钮 → `src/fsS3.ts` `checkConnect()` | HeadBucket + ListObjectsV2 均返回成功；<u>**依赖老板提供 cstcloud.cn 的 AccessKey / SecretKey / Bucket，凭证未到位时本 Step 标记为「阻塞」，不得以 Mock / 假凭证冒充通过**</u> |
+| 71 | <u>**（B3）**</u> E2E-3 双向同步 E2E | 同步核心 `src/sync.ts` + `src/copyLogic.ts` | 4 条用例全部通过：① 本地新增 → 远端可见 ② 远端改动 → 本地拉取 ③ 删除双向同步 ④ 冲突处理策略按设置生效 |
+| 72 | <u>**（B4）**</u> 核心逻辑单测补齐 | 新增 `tests/sync.test.ts`、`tests/copyLogic.test.ts`、`tests/conflictLogic.test.ts` | `npm test` 全绿；`src/sync.ts` / `src/copyLogic.ts` / `src/conflictLogic.ts` <u>关键路径行覆盖率 ≥ 70%</u>（建议下限），<u>整体行覆盖率 ≥ 50%</u>；测试须覆盖 §5.1.C 的 3 项加密解耦行为等价性（若 C1 先于 B4 实施） |
+| 73 | <u>**（B5）**</u> 打包产物自检 | `main.js` | grep 校验：`s3.cstcloud.cn` 存在；`dropbox` / `webdav` / `onedrive` / `pro/` / `qrcode` / `openssl` / `rclone` / `profiler` 计数为 0；`syncalgov3` 6 个 i18n 键存在；<u>注意 esbuild 默认 ascii 输出，`main.js` 内不含中文字面量，中文文案须在 `src/langs/zh_cn.json` / `zh_tw.json` 源文件中校验，不可对 `main.js` 直接 grep 中文</u> |
+
+### Phase 7：C 瘦身类（5 项）
+
+| Step | 动作 | 文件位置 | 完成判据 |
+|---|---|---|---|
+| 74 | <u>**（C1-a）**</u> 建立回滚点 | 仓库 | 先创建 tag/branch `backup/pre-v1.3-C1`，`git tag`/`git branch` 列表中可见；<u>`_archive/upstream_v0.5.25/src/` 可恢复 4 个加密文件，但无本 fork 的 `src/sync.ts`，故解耦改动的回滚必须依赖此 tag</u> |
+| 75 | <u>**（C1-b）**</u> 删除加密后端 | `src/fsEncrypt.ts`(587)、`src/encryptOpenSSL.ts`(186)、`src/encryptRClone.ts`(257)、`src/encryptRClone.worker.ts`(184)、`tests/encryptOpenSSL.test.ts`(163) | 5 个文件全部不存在；`grep -rn "fsEncrypt\|encryptRClone\|encryptOpenSSL" src/ tests/` 为 0 |
+| 76 | <u>**（C1-c）**</u> 解耦 `src/sync.ts` 的加密包装层 | `src/sync.ts`（8 处签名/传参 + 7 处方法调用） | 所有 `fsEncrypt` 引用消除；<u>满足 §5.1.C 的 3 项行为等价性</u>：① `walk()` 结果仍带 `keyEnc = keyRaw` / `sizeEnc = sizeRaw` ② `encryptEntity()` 以等价本地函数替代 ③ 远端 openssl 密文中止守卫保留（不得随类一并删除） |
+| 77 | <u>**（C1-d）**</u> 清理 `main.ts` 接线与构建依赖 | `src/main.ts`(L26/163/393/412)、`package.json`（删运行时依赖 `@fyears/rclone-crypt`）、`esbuild.config.mjs`（删 `inlineWorkerPlugin()`）、`webpack.config.js`（删 worker-loader 规则） | `grep -rn "FakeFsEncrypt" src/` 为 0；`npm run build2` 通过；产物 `main.js` 中 `openssl` / `rclone` 计数为 0 |
+| 78 | <u>**（C2）**</u> 删除 profiler | `src/profiler.ts`(153)、`src/main.ts`(7 处)、`src/settings.ts`(1 处)、`src/sync.ts`(62 处)、`src/fsLocal.ts`(12 处)、`src/localdb.ts`(4 处)、`src/baseTypes.ts`(3 处) | `grep -rn "profiler\|Profiler" src/` 为 0（含悬空 i18n 键 `"profiler_results_exported_on_"`）；`npm run build2` + `npm test` 通过；<u>已建库中的 `profilerresults` 表成为孤儿表，不影响同步主流程</u> |
+| 79 | <u>**（C3）**</u> 清理 dropbox 死分支 | `src/sync.ts` L54 / L65 / L76 / L87 | 4 处 `serviceType === "s3" \|\| serviceType === "dropbox"` 条件删除，仅保留 `serviceType === "s3"`；`grep -c "dropbox" src/sync.ts` 为 0（L1381 的历史沿革注释可保留，不计入） |
+| 80 | <u>**（C4）**</u> 清理 devDependencies 残留 | `package.json` `devDependencies` | <u>**删除**：`webdav-server`（已删 WebDAV 的测试服务器）、`openapi-typescript`、`npm-check-updates`、`@types/chai`、`@types/chai-as-promised`（<u>全部测试只用 node 内置 `assert`，无任何 chai 引用</u>）、`esbuild-plugin-inline-worker`（C1 后无 worker）、`worker-loader`（C1 后无 worker）。<u>**保留**：`dotenv`（`esbuild.config.mjs:1` 与 `webpack.config.js:1` 仍 `import`/`require`，属仍在使用的构建链依赖）、`jsdom` + `@types/jsdom`（`tests/misc.test.ts` 使用）、`mocha` / `tsx` / `typescript` / `esbuild` / `webpack` / `ts-loader` / `cross-env` / `builtin-modules` / `tslib` / `@types/*` 其余项</u>；`npm run build2` + `npm test` 仍通过 |
+| 81 | <u>**（C5）**</u> 复核 i18n 键 | `src/langs/en.json`、`src/langs/zh_cn.json`、`src/langs/zh_tw.json` | 删除下表 <u>40 处</u>死键（<u>31 处可直接删 + 9 处须待 A8 后删</u>）；<u>3 个 langs 文件的键集合完全一致</u>（当前 en.json 189 键 / zh_cn.json 179 键 / zh_tw.json 179 键，差 10 键；<u>清理后各为 169 键</u>：en 189−20 / zh_cn 179−10 / zh_tw 179−10）；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` 为 0 |
+
+<u>**C5 死键清单（40 处 = 31 处可直接删 + 9 处条件删，实施前实测）**</u>
+
+| <u>类别</u> | <u>键</u> | <u>处数</u> | <u>分布</u> | <u>依据</u> |
+|---|---|---|---|---|
+| <u>已删功能的空 Setting</u> | <u>`settings_remoteprefix_s3` / `_desc`</u> | <u>6</u> | <u>3 语言</u> | <u>NI-22 已删 Setting，`src/settings.ts` 中 0 引用</u> |
+| <u>已删功能的空 Setting</u> | <u>`settings_remotebasedir` / `_desc`</u> | <u>6</u> | <u>3 语言</u> | <u>NI-23 已删 Setting，0 引用</u> |
+| <u>已删功能的空 Setting</u> | <u>`settings_s3_reverse_proxy_no_sign_url` / `_desc`</u> | <u>6</u> | <u>3 语言</u> | <u>NI-23 已删 Setting，0 引用</u> |
+| <u>已删的协议处理提示</u> | <u>`protocol_callbacknotsupported`</u> | <u>3</u> | <u>3 语言</u> | <u>OAuth callback handler 已删（Step 14），0 引用</u> |
+| <u>已删功能的空 Setting</u> | <u>`settings_debuglevel` / `_desc`</u> | <u>2</u> | <u>仅 en.json</u> | <u>NI-13 已删 UI，0 引用</u> |
+| <u>已删功能的空 Setting</u> | <u>`settings_obfuscatesettingfile` / `_desc`</u> | <u>2</u> | <u>仅 en.json</u> | <u>NI-14 已删 UI，0 引用</u> |
+| <u>已删功能的空 Setting</u> | <u>`settings_outputsettingsconsole` / `_button` / `_desc` / `_notice`</u> | <u>4</u> | <u>仅 en.json</u> | <u>NI-15 已删 UI，0 引用</u> |
+| <u>已删功能的空 Setting</u> | <u>`settings_viewconsolelog` / `_desc`</u> | <u>2</u> | <u>仅 en.json</u> | <u>NI-15 已删 UI，0 引用</u> |
+| <u>条件删除（须先做 A8）</u> | <u>`settings_chooseservice` / `settings_synconsave` / `settings_synconsave_desc`</u> | <u>9</u> | <u>3 语言</u> | <u>当前仍被 `src/settings.ts:134` / `366-368` 渲染，<u>A8 删除对应 UI 后方可删除，否则 `t()` 取不到值、UI 渲染为 undefined</u></u> |
+
+<u>**必须保留（易被误判为死键）**：`settings_protectmodifypercentage*`（10 个，P1-12 保留）、`syncrun_abort_protectmodifypercentage`（P1-12 联动）、`syncalgov3_checkbox_manual_backup` / `syncalgov3_checkbox_requiremultidevupdate`（v1.1 弹窗 6 键之一，AC9）、`settings_s3_prod` / `settings_s3_prod1` / `settings_s3_prod2` / `settings_s3_prod3`（<u>虽为 AWS 文档外链、在 cstcloud 定位下不适用，但当前仍在 `src/settings.ts:168-186` 渲染中，属"残留但仍使用"，本版不删，列为后续 D 类候选</u>）。</u>
+
 
 ---
 
@@ -535,6 +646,44 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | M4：E2E 验证 | Obsidian 中安装插件，配置 AccessKey/SecretKey/Bucket，检查连接通过，单向同步通过，双向同步通过 | 4h |
 
 **总估时：16h（约 2 人日）**
+
+<u>**v1.3 排期（A/B/C 三阶段）**</u>
+
+| <u>里程碑</u> | <u>内容</u> | <u>对应 Step</u> | <u>估时</u> |
+|---|---|---|---|
+| <u>M5：基线可编译</u> | <u>A1 修 tsc（Step 59）→ A2 重建 git 基线（Step 60-61）→ A3 版本号统一（Step 62）</u> | <u>59-62</u> | <u>2h</u> |
+| <u>M6：身份与品牌</u> | <u>A4 README 品牌化（Step 63）+ A5 manifest 身份（Step 64）+ A6 checklist 勾选（Step 65）+ A7~A9 补充修复（Step 66-68）</u> | <u>63-68</u> | <u>4h</u> |
+| <u>M7：质量验证</u> | <u>B1 加载测试 + B3 双向同步 E2E + B4 单测补齐 + B5 产物自检</u> | <u>69、71-73</u> | <u>12h</u> |
+| <u>M8：瘦身</u> | <u>C1 加密后端移除 + C2 profiler 移除 + C3 dropbox 死分支 + C4 依赖清理 + C5 i18n 复核</u> | <u>74-81</u> | <u>14h</u> |
+| <u>M9：阻塞项</u> | <u>B2 S3 真实连通性测试（依赖老板提供 cstcloud.cn AccessKey / SecretKey / Bucket）</u> | <u>70</u> | <u>2h</u> |
+| <u>M10：发布</u> | <u>产出 v0.0.2 插件包（§7.1 交付物形态）+ 副本同步至 `/home/WPS/ls/cstcloud-sync/`</u> | <u>—</u> | <u>1h</u> |
+| <u>M11：发版版本号统一</u> | <u>老板指定发布版本号（≥ 0.0.3）并同步 manifest.json / package.json / PRD §4.3</u> | <u>—</u> | <u>0.5h</u> |
+
+<u>**v1.3 总估时：35h（约 4.5 人日）**，不含 B2 阻塞等待时间与 D/E 类（待定/暂缓）。</u>
+
+<u>**关键路径与依赖关系**</u>
+
+- <u>A1（Step 59）必须早于 A2（Step 60-61）</u>：基线 commit 要么包含"构建链已修复"这一事实，要么包含一个已知断裂的构建链。<u>先修 tsc 再建基线</u>，基线 commit 才是可用的起点；反之则基线一落地就是坏的，后续所有 diff 都要额外排除 P0-1 噪声。</u>
+- <u>A2（Step 61）必须早于 C 类全部步骤</u>：C 类要删 5 个文件、改 3 个核心文件，没有干净基线就无法做真实 diff、无法确认"只删了该删的"、无法回滚。
+- <u>B4（Step 72）建议早于 C1（Step 74-77）</u>：`src/sync.ts` 的加密解耦是全项目风险最高的一次改动，若先有 `sync.ts` / `copyLogic.ts` / `conflictLogic.ts` 的单测兜底，解耦的回归可被自动捕获；反之只能靠 E2E 人工兜底。<u>若工期紧张，B4 可后置，但 C1 之后必须补做。</u>
+- <u>B5（Step 73）必须最后做</u>：它是 C 类成果的终检。
+- <u>B2（Step 70）不受其他步骤阻塞，但受凭证阻塞</u>：可与 M5~M8 并行推进，凭证到位前保持「阻塞」状态。
+
+<u>### 7.1 v0.0.2 目标交付物形态</u>
+
+<u>Obsidian 插件分发包（zip）应包含下列文件，目录层级为插件 id `cstcloud-sync/`：</u>
+
+| <u>文件</u> | <u>必需</u> | <u>说明</u> |
+|---|---|---|
+| <u>`main.js`</u> | <u>必需</u> | <u>esbuild 产物，C1/C2/C3 完成后重新构建</u> |
+| <u>`manifest.json`</u> | <u>必需</u> | <u>version = 0.0.2，author = cstcloud（待确认）</u> |
+| <u>`LICENSE`</u> | <u>必需</u> | <u>A9 更新后的 Apache-2.0 文本 + 派生自 remotely-save v0.5.25（Copyright fyears）声明</u> |
+| <u>`README.md`</u> | <u>必需</u> | <u>A4 品牌化后的英文 README，含 Apache-2.0 归属与上游致谢</u> |
+| <u>`README.zh-cn.md`</u> | <u>推荐</u> | <u>A4 品牌化后的中文 README</u> |
+| <u>`versions.json`</u> | <u>推荐</u> | <u>BRAT / 手动安装用户依赖；<u>当前仅有上游 `0.3.2` / `0.3.25` 两条，须补 `"0.0.2": "0.13.21"`</u></u> |
+| <u>`styles.css`</u> | <u>不适用</u> | <u>manifest 未声明 `styles` 字段，本插件不使用自定义样式</u> |
+
+<u>不需要包含：`node_modules/`、`src/`、`tests/`、`package.json`（Obsidian 运行时不需要）、`manifest-beta.json`（上游遗留、内容仍为 remotely-save 0.5.25，<u>应在本轮删除或同步更新，避免误装</u>）。</u>
 
 ---
 
@@ -550,6 +699,14 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | R6 | i18n key 大面积删除，可能导致 `mustache.render` 报错（missing key） | 低 | 英文 fallback 会兜底；确认 `t()` 函数对 missing key 的容错 |
 | <u>R7</u> | <u>v1.1 已删</u>：`qrcode` / `ExportSettingsQrCodeModal` / `importExport.ts` 均已删除，此风险消除 | 低 | —（v1.1 修订后消除） |
 | R8 | `localdb.ts:9` SyncPlanType import 删除可能影响 `clearAllSyncPlanRecords()` 功能 | 低 | 确认 SyncPlanType 是否定义在 src 层，或需要在 src/sync.ts 中保留 |
+| <u>R9</u> | <u>**发布版本号未递增导致已装用户收不到更新推送**：若最终发布版本号仍停留在 `0.0.2`，Obsidian 商店按 `id + version` 判重，同版本号的第二次提交**不会触发商店的更新推送**，已装 0.0.2 的用户**收不到更新推送**；社区插件审核侧也可能以"同版本号重复发布"为由驳回或要求重发</u> | <u>**高**</u> | <u>① 开发/升级阶段沿用 0.0.2 作为开发基线口径，不阻塞 A/B/C 实施 ② Step 81 全部完成后、正式发版前，由老板统一指定发布版本号（≥ 0.0.3）③ §9 AC32 固化"发版前必须完成版本号指定"这一前置动作</u> |
+| <u>R10</u> | <u>A2 git 基线重建期间的变更丢失风险：重建基线需把当前 54 个 mode-only 文件 + PRD.md 的 v1.2 内容一并纳入一个 commit。若期间有人并行改动工作区、或误用 `git checkout -- .` / `git reset --hard` 归零 mode 变更，可能连带丢弃未提交的实质改动</u> | <u>中</u> | <u>① 重建前先 `git stash list` 与 `git diff --numstat` 快照，确认除 PRD.md 外无内容差异（本次已实测确认）② 重建基线**只做 `git add` 具体文件 + `git commit`，不用 `git add -A` / `git add .`** ③ <u>更稳的替代路径：先 `git config core.fileMode false` 让 54 个 mode-only 条目直接归零，此时工作区只剩 PRD.md 一处实质变更，基线 commit 天然干净，无需任何 `chmod` / `checkout` 操作</u> ④ 禁止使用 `git checkout -- .`、`git reset --hard`</u> |
+| <u>R11</u> | <u>**C1 不可逆：加密能力移除**。删除 `src/fsEncrypt.ts` 等 4 个文件 + 解耦 `src/sync.ts` 后，<u>端到端加密在本插件中不再具备</u>；若未来需重新提供该能力，须重做解耦并重新验证，不可简单回退（`_archive/upstream_v0.5.25/src/` 可提供 4 个原始文件，但本 fork 的 `src/sync.ts` 解耦改动只能靠 git tag 回滚）</u> | <u>**高**</u> | <u>① C1 实施前强制创建 tag/branch `backup/pre-v1.3-C1`（Step 74）② 实施中逐条满足 §5.1.C 的 3 项行为等价性约束，<u>特别是保留"远端已加密则中止同步"的守卫</u>（缺失该守卫会把远端密文当明文拉取，损坏本地笔记）③ B4 单测覆盖 3 项等价性 ④ §2.3 明确登记为非场景，§9 AC23 固化"加密后端确已移除"</u> |
+| <u>R12</u> | <u>**B2 凭证依赖阻塞**：S3 真实连通性测试（HeadBucket + ListObjectsV2）依赖老板提供 cstcloud.cn 的 AccessKey / SecretKey / Bucket。凭证未到位时该项无法执行，<u>但 B3 双向同步 E2E 同样依赖真实凭证</u>，二者会一并阻塞，导致 M7 无法收口</u> | <u>中</u> | <u>① 凭证到位前，B2/B3 在 §6 中保持「阻塞」标记，<u>不得以 Mock / 假凭证 / 本地 minio 冒充通过</u> ② 优先向老板申请一个最小权限的测试账号（仅 1 个 bucket 的读 + 写）③ 若凭证长期无法到位，M7 降级为「B1 + B4 + B5 通过，B2/B3 留待有凭证后补测」，并在发布说明中显式标注该缺口</u> |
+| <u>R13</u> | <u>C1 解耦 `src/sync.ts` 时破坏实体字段契约：`FakeFsEncrypt` 在空密码下并非纯粹直通，它会把 `keyEnc = keyRaw`、`sizeEnc = sizeRaw` 补进 Entity，而 `src/sync.ts` 有 16 处依赖 `keyEnc`/`sizeEnc` 做远端实体比对。解耦时若直接改用 `fsRemote.walk()` 的裸实体，<u>远端变更判定将失准，可能导致漏同步或重复同步</u></u> | <u>**高**</u> | <u>§5.1.C 的 3 项行为等价性约束 + Step 76 完成判据 + Step 72（B4）单测兜底；<u>建议 B4 优先于 C1</u>（见 §7 依赖关系）</u> |
+| <u>R14</u> | <u>C2 删除 profiler 波及面超预期：`src/profiler.ts` 虽无 UI 入口，但仍被 `src/sync.ts`（62 处）、`src/fsLocal.ts`（12 处）、`src/localdb.ts`（4 处）、`src/main.ts`（7 处）调用，且 `src/main.ts:142` 仍依据 `settings.profiler.enable` 在运行时启用。删除时若漏改任一处即编译失败</u> | <u>中</u> | <u>§5.1.C 的依赖清理点已逐文件列出；完成判据为 `grep -rn "profiler\|Profiler" src/` 为 0 + `npm run build2` + `npm test` 通过。<u>注意 `src/localdb.ts` 的 `profilerresults` 表会成为孤儿表，已建库不受影响</u></u> |
+| <u>R15</u> | <u>C4 误删仍在使用的依赖：`dotenv` 被勘察列为残留，但 `esbuild.config.mjs:1` 与 `webpack.config.js:1` 仍在 import/require，删除后构建链直接断裂；`jsdom` 被 `tests/misc.test.ts` 使用</u> | <u>中</u> | <u>Step 80 完成判据中已逐项标注「删除 / 保留」及判定依据；C4 完成后必须跑通 `npm run build2` + `npm test`</u> |
+| <u>R16</u> | <u>C5 误删仍在渲染的 i18n 键：`settings_chooseservice` / `settings_synconsave` / `settings_synconsave_desc` 当前仍被 UI 引用，若先于 A8 删除，设置页将渲染出 undefined</u> | <u>低</u> | <u>§6 Step 81 已把这 3 键列为「条件删除（须先做 A8）」；执行顺序固定为 A8（Step 67）→ C5（Step 81）</u> |
 
 ---
 
@@ -568,3 +725,31 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC9</u> | <u>同步算法说明弹窗在 3 个 langs（en / zh_cn / zh_tw）中均正确显示对应语言文案，6 个 key（`syncalgov3_title` / `syncalgov3_texts` / `syncalgov3_checkbox_manual_backup` / `syncalgov3_checkbox_requiremultidevupdate` / `syncalgov3_button_agree` / `syncalgov3_button_disagree`）均有值；复选框 2 文案包含"仅支持 S3 协议 + 默认端点 cstcloud.cn"语义；GitHub 链接占位为 `https://github.com/cstcloud/cstcloud-sync`</u> | <u>E2E 测试：分别切换 3 种语言触发弹窗，肉眼核对文案</u> |
 | <u>AC10</u> | <u>Settings 页面中"导入/导出设置"区块和"调试"区块均已消失；`src/importExport.ts` 和 `src/debugMode.ts` 文件不存在</u> | <u>Step 48~54（importExport）/ Step 55~58（debugMode）后检查文件存在性 + 手动检查 Settings UI</u> |
 | <u>AC11</u> | <u>`src/syncAlgoV3Notice.ts` TS 结构未被修改（弹窗触发/同意行为保持不变）</u> | <u>代码审查 `src/syncAlgoV3Notice.ts` + `main.ts:570, 903-907`</u> |
+
+<u>**v1.3 新增验收项（AC12 起）**</u>
+
+<u>v1.1 的 AC11 保持原编号不变；v1.3 的新增条目自 AC12 起编号，避免改动历史条目编号。</u>
+
+| ID | AC | 验证方式 |
+|---|---|---|
+| <u>AC12</u> | <u>**（A1）** `tests/fsWebdis.test.ts` 不存在；`npx tsc --noEmit` 输出 0 error（`TS2307: Cannot find module '../src/fsWebdis'` 消除）；`npm run build2` 与 `npm test` 均可执行完毕</u> | <u>`ls tests/fsWebdis.test.ts` → No such file；`npx tsc --noEmit` → 无 error 行；`npm run build2` → exit 0 且 `main.js` 时间戳更新</u> |
+| <u>AC13</u> | <u>**（A2）** git 基线干净：`git status --porcelain` 输出为空；`git diff --numstat` 无 mode-only 条目；基线 commit 已产出</u> | <u>`git config core.fileMode` → `false`（或文件权限位已归位为 644）；`git status --porcelain` → 空；`git log --oneline -1` → 基线 commit；`git show --stat HEAD` → 内容差异与预期一致</u> |
+| <u>AC14</u> | <u>**（A3）** 产品版本号三处统一为 `0.0.2`：`package.json` / `manifest.json` / PRD §4.3；<u>全仓不出现 `0.0.3`</u></u> | <u>`grep '"version"' package.json manifest.json` → 两处均为 `0.0.2`；`grep -rn "0\.0\.3" package.json manifest.json PRD.md` → 无输出（PRD 中仅版本号口径相关条目——修订记录 v1.3 行 / §6 Step 62 / §7 M11 / §8 R9 / §9 AC14 与 AC32——的文字提及"0.0.3"允许存在）</u> |
+| <u>AC15</u> | <u>**（A4）** `README.md` / `README.zh-cn.md` 标题为 `cstcloud-sync`；<u>保留 Apache-2.0 归属说明与对 fyears（上游原作者）的致谢段落</u>；无上游 star 徽章 / 赞助链接 / 商店链接残留</u> | <u>`grep -n "^# " README.md README.zh-cn.md` → 均为 `# cstcloud-sync`；`grep -n "Apache-2.0\|Apache License\|fyears" README.md README.zh-cn.md` → 有命中；`grep -n "img.shields.io\|remotelysave.com\|fyears/remotely-save" README.md README.zh-cn.md` → 无命中</u> |
+| <u>AC16</u> | <u>**（A5）** `manifest.json` 身份为 cstcloud 口径：`author` = `cstcloud`（<u>待老板确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save"</u> | <u>读 `manifest.json` 三字段逐一比对；`grep -n "fork" manifest.json` → 无命中</u> |
+| <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，4 个例外项（Step 1.5 / 11 / 22 / 37）保留 `[ ]` 并注明原因</u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
+| <u>AC18</u> | <u>**（A7）** 设置页顶部标题为 `cstcloud-sync`，不再显示 `Remotely Save`</u> | <u>`grep -n '"Remotely Save"' src/settings.ts` → 无命中；Obsidian 设置页肉眼核对 H1</u> |
+| <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中</u> |
+| <u>AC20</u> | <u>**（A9）** 根 `LICENSE` 已删除失效的 `pro/` → PolyForm Strict License 条款，改为 Apache-2.0 + 派生自 remotely-save v0.5.25（Copyright fyears）声明</u> | <u>`grep -n "PolyForm\|pro" LICENSE` → 无 PolyForm 相关命中；文件中含 "Apache"、"remotely-save"、"fyears"</u> |
+| <u>AC21</u> | <u>**（B1）** Obsidian 桌面版加载测试通过：manifest 校验通过、插件可启用无报错、设置页可渲染、ribbon 图标可见可点、命令面板出现 `start-sync` 与 `start-sync-dry-run`</u> | <u>Obsidian 内加载 `main.js` + `manifest.json`；开发者控制台无报错；命令面板搜索 `sync` 见 2 条命令</u> |
+| <u>AC22</u> | <u>**（B2）** S3 真实连通性通过：设置页「检查连接」按钮 → HeadBucket + ListObjectsV2 均成功。<u>**凭证未到位时本条状态为「阻塞」，不计为通过**</u></u> | <u>填入老板提供的 AccessKey / SecretKey / Bucket → 点击「检查连接」→ UI 提示成功且控制台无 S3 错误码</u> |
+| <u>AC23</u> | <u>**（B3）** 双向同步 E2E 4 条用例全通过：① 本地新增 → 远端可见 ② 远端改动 → 本地拉取 ③ 删除双向同步 ④ 冲突处理策略按设置生效</u> | <u>Obsidian + 真实 bucket 逐条执行，每条记录远端对象列表与本地文件状态</u> |
+| <u>AC24</u> | <u>**（B4）** 核心逻辑单测补齐：`src/sync.ts` / `src/copyLogic.ts` / `src/conflictLogic.ts` 关键路径行覆盖率 ≥ 70%，整体行覆盖率 ≥ 50%；`npm test` 全绿</u> | <u>`npm test` → 0 failing；覆盖率报告（c8 / nyc）核对三文件关键路径行覆盖率；<u>若 C1 已实施，测试须覆盖 §5.1.C 的 3 项行为等价性</u></u> |
+| <u>AC25</u> | <u>**（B5）** 打包产物自检：`main.js` 含 `s3.cstcloud.cn`；不含 `dropbox` / `webdav` / `onedrive` / `pro/` / `qrcode` / `openssl` / `rclone` / `profiler` 关键字；含 6 个 `syncalgov3` 弹窗键</u> | <u>`grep -c "s3.cstcloud.cn" main.js` → ≥ 1；`grep -c "dropbox\|webdav\|onedrive\|qrcode\|openssl\|rclone\|profiler" main.js` → 0；`grep -c "syncalgov3" main.js` → 6；<u>中文文案在 `src/langs/zh_cn.json` / `zh_tw.json` 中核对（esbuild ascii 输出，main.js 内无中文字面量）</u></u> |
+| <u>AC26</u> | <u>**（C1）** 加密后端确已移除：`src/fsEncrypt.ts` / `src/encryptOpenSSL.ts` / `src/encryptRClone.ts` / `src/encryptRClone.worker.ts` / `tests/encryptOpenSSL.test.ts` 均不存在；`src/` 内 `fsEncrypt` 引用为 0；`package.json` 不含 `@fyears/rclone-crypt`；<u>且 §5.1.C 的 3 项行为等价性成立（`keyEnc`/`sizeEnc` 填充、encryptEntity 等价替换、远端 openssl 密文中止守卫保留）</u></u> | <u>`ls src/fsEncrypt.ts src/encryptOpenSSL.ts src/encryptRClone.ts src/encryptRClone.worker.ts tests/encryptOpenSSL.test.ts` → 全部 No such file；`grep -rn "fsEncrypt\|FakeFsEncrypt" src/ tests/` → 0；`grep -n "rclone-crypt" package.json` → 0；`grep -rn "remote_encrypted_local_no_password\|MAGIC_ENCRYPTED_PREFIX" src/` → <u>仍有命中（守卫函数保留）</u>；`npm run build2` → exit 0</u> |
+| <u>AC27</u> | <u>**（C2）** profiler 确已移除：`src/profiler.ts` 不存在；`src/` 内 `profiler` / `Profiler` 引用为 0（含 `baseTypes.ts` 的 `ProfilerConfig` 与悬空 i18n 键 `"profiler_results_exported_on_"`）</u> | <u>`ls src/profiler.ts` → No such file；`grep -rni "profiler" src/` → 0；`npm run build2` + `npm test` → exit 0</u> |
+| <u>AC28</u> | <u>**（C3）** `src/sync.ts` 中 4 处 `serviceType === "dropbox"` 死分支已清理，仅保留 `serviceType === "s3"`</u> | <u>`grep -n "dropbox" src/sync.ts` → 仅命中 L1381 的历史沿革注释，<u>无 `serviceType === "dropbox"` 条件</u>；`npm run build2` → exit 0</u> |
+| <u>AC29</u> | <u>**（C4）** devDependencies 残留已清理：`webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` 已从 `package.json` 移除；<u>`dotenv` / `jsdom` / `@types/jsdom` 保留</u></u> | <u>`grep -n "webdav-server\|openapi-typescript\|npm-check-updates\|@types/chai\|esbuild-plugin-inline-worker\|worker-loader" package.json` → 0；`grep -n "\"dotenv\"\|\"jsdom\"" package.json` → 有命中；`npm run build2` + `npm test` → exit 0</u> |
+| <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 169 键</u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 169；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u></u> |
+| <u>AC31</u> | <u>**（发布）** v0.0.2 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；`versions.json` 含 `"0.0.2": "0.13.21"`</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 `"0.0.2": "0.13.21"`；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
+| <u>AC32</u> | <u>发版前置：A/B/C 全部 Step（59–81）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布</u> | <u>老板书面确认 + grep 三处版本号一致</u> |
