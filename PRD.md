@@ -1,12 +1,12 @@
-# PRD <u>v1.5</u>
+# PRD <u>v1.6</u>
 
-> 项目 cstcloud-sync 计划书 <u>v1.5</u>
+> 项目 cstcloud-sync 计划书 <u>v1.6</u>
 > 基于：remotely-save v0.5.25（Apache-2.0）+ 任务书 /home/WPS/NEW/remotely_save.md + 技术分析 tech_v1.md
 
-**当前版本**：<u>v1.5</u>
+**当前版本**：<u>v1.6</u>
 **生成时间**：2026-10-16
 **修订时间**：2026-10-27
-**状态**：<u>待评审（实施完成，v1.5 勘误版；产品版本统一 0.0.2，发版号待老板书面指定）</u>
+**状态**：<u>待评审（实施完成，v1.6 收口版；产品版本统一 0.0.2，发版号待老板书面指定）</u>
 
 ---
 
@@ -22,6 +22,7 @@
 | <u>v1.3</u> | <u>2026-10-27</u> | <u>① A 修复类（6 项）② B 质量类（5 项）③ C 瘦身类（5 项）④ 产品版本号统一 0.0.2，不升 0.0.3</u> <u>⑤ 版本号口径澄清：开发/升级阶段产品版本号沿用 0.0.2（开发基线口径，不锁发布版本）；最终发布版本号在 A/B/C 全部验收通过后由老板统一指定（须 ≥ 0.0.3，否则 Obsidian 商店无法覆盖已发布的 0.0.2）⑥ 本行为评审中修订，PRD 版本号不递增</u> |
 | <u>v1.4</u> | <u>2026-10-27</u> | <u>① 新增章节「§5.4 `.obsidian` 配置目录同步（实验性）」—— 记录 `syncConfigDir` 开关的真实同步范围、14 项排除清单、3 个必知坑与使用前提（代码零改动）② 新增风险 R17「配置目录同步为全量不可调」（高）③ 新增 Step 82「补齐 `workspace-mobile.json` 排除」（2 行改动，Phase 7 之后）④ 新增验收标准 AC33（配置目录同步）⑤ AC32 的 Step 覆盖范围由 59–81 扩至 59–82</u> |
 | <u>v1.5</u> | <u>2026-10-27</u> | <u>勘误版：§5.1.C ① 与 R13 的 keyEnc/sizeEnc 引用数 16→15（实测口径）、§6 例外项 Step 1.5 标记为已完成、§9 AC17 例外项 4→3</u> |
+| <u>v1.6</u> | <u>2026-10-27</u> | <u>收口版：§6 例外表 Step 22 标记为已完成（例外项 3→2：Step 11/37）、i18n 键数判据 169→167（commit 31c7a30 清理 2 个孤儿键）、§9 AC17 例外项 3→2、AC19 标注已满足</u> |
 
 > <u>v1.2 升级需求待定：本次仅完成基线收口与版本推进，未新增功能项。需求明确后按版本迭代 SOP 继续叠加，新增内容同样用下划线标注。</u>
 
@@ -640,11 +641,11 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 ### Step Checklist（完整 47 步）<u>（v1.3 A6 复核：实际条目共 59 个，含 Step 1.5）</u>
 
-<u>**v1.3 A6 复核结果：59 个条目中 <u>56 项</u>已完成（`[x]`），<u>3 项</u>未完成或被覆盖（`[ ]`，逐条注明原因）。复核依据为 2026-10-27 实跑校验（`tsc --noEmit`、`grep`、`git diff --numstat`），非依据 `delivery/DELIVERY_REPORT.md` 的自述结论。</u>
+<u>**v1.3 A6 复核结果：59 个条目中 <u>57 项</u>已完成（`[x]`），<u>2 项</u>未完成或被覆盖（`[ ]`，逐条注明原因）。复核依据为 2026-10-27 实跑校验（`tsc --noEmit`、`grep`、`git diff --numstat`），非依据 `delivery/DELIVERY_REPORT.md` 的自述结论。<u>（v1.6 复核：Step 22 经实测已完成，例外项由 3 项收敛为 2 项——Step 11 / 37）</u></u>
 
-- [x] Step 1-5：Phase 1 文件删除（<u>其中 Step 1.5 <u>已于 Step 59 补做完成</u>，见下方例外项</u>）
+- [x] Step 1-5：Phase 1 文件删除（<u>其中 Step 1.5 <u>已于 Step 59 补做完成</u></u>）
 - [x] Step 6-14：Phase 2 import/handler 删除（<u>其中 Step 11 被 Step 48~54 覆盖，见下方例外项</u>）
-- [x] Step 15-27：Phase 3 settings.ts 大删（<u>其中 Step 22 未完成，见下方例外项</u>）
+- [x] Step 15-27：Phase 3 settings.ts 大删（<u>其中 Step 22 <u>已完成</u>（`src/settings.ts` 中 `syncOnSave` 零命中，Setting 已删除，PM 实测）</u>）
 - [x] Step 28-30：manifest / package.json / esbuild.config.mjs（<u>Step 28 的 description/author、Step 29 的 version 待 v1.3 A3/A5 处理</u>）
 - [x] Step 31-33：硬编码 + backward compat
 - [x] Step 34：新建 src/sync.ts
@@ -665,16 +666,18 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 - [x] <u>Step 57：删除 `src/settings.ts:825-855`（`debugDiv` 区段 + 2 个 Setting 块：`delsyncplans` + `delprevsync`）</u>
 - [x] <u>Step 58：删除 3 langs 中 `settings_debug` / `settings_delsyncplans*3` / `settings_delprevsync*3` 键</u>
 
-<u>**<u>3 项</u>未完成 / 被覆盖条目（v1.3 处置）**</u>
+<u>**<u>2 项</u>未完成 / 被覆盖条目（v1.3 处置）**</u>
 
 | <u>Step</u> | <u>状态</u> | <u>未完成原因</u> | <u>v1.3 处置</u> |
 |---|---|---|---|
 | <u>1.5</u> | <u>[x] 已完成</u> | <u>已于 Phase 5 Step 59（A1）补做：`tests/fsWebdis.test.ts` 已删除（`ls tests/fsWebdis.test.ts` → No such file），`tsc --noEmit` 0 error / `npm run build2` exit 0 / `npm test` 142 passing 已恢复</u> | <u>Phase 5 Step 59（A1）补做</u> |
 | <u>11</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（删除 `importExport.ts` 内的 onedrive 收缩函数），该文件已在 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
-| <u>22</u> | <u>[ ] 未完成</u> | <u>删除 `settings.ts` 的 `syncOnSave` Setting 未执行。<u>`src/settings.ts:366-368` 仍存在 `new Setting(basicDiv).setName(t("settings_synconsave")).setDesc(t("settings_synconsave_desc"))`——一个有标题无控件的空壳 Setting</u>。§2.3 已将 syncOnSave 列为非场景，§3.1 P0-14 强制 `syncOnSaveAfterMilliseconds=-1`，故该空壳仅是视觉残留、无功能危害</u> | <u>Phase 5 Step 67（A8）补做</u> |
+| <u>22</u> | <u>[x] 已完成</u> | <u>删除 `settings.ts` 的 `syncOnSave` Setting <u>已执行</u>：<u>`src/settings.ts` 中 `syncOnSave` 零命中（`grep -n "syncOnSave" src/settings.ts` → 0 命中，PM 实测），该空壳 Setting 已随 Step 67（A8「设置页空壳元素清理」，commit `f376a9f`）一并删除</u>。<u>v1.5 及之前版本记为「未完成」，系 PRD 文本未回填，与实际实施状态不符</u>。§2.3 已将 syncOnSave 列为非场景，§3.1 P0-14 强制 `syncOnSaveAfterMilliseconds=-1`（该项属自动同步间隔定时器，是另一功能，勿与本 Step 混判）</u> | <u>Phase 5 Step 67（A8）已补做</u> |
 | <u>37</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（限制 `exportQrCodeUri` 支持范围），该函数已随 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
 
-<u>**另记（Step 20 局部残留）**：Step 20「删除 serviceType dropdown」已完成，但 `src/settings.ts:133-134` 的 `settings_chooseservice` 标题（"选择服务"）仍在渲染，dropdown 本身已不存在，属标题孤儿。</u>
+<u>**另记（Step 20 局部残留）**：Step 20「删除 serviceType dropdown」已完成，但 `src/settings.ts:133-134` 的 `settings_chooseservice` 标题（"选择服务"）仍在渲染，dropdown 本身已不存在，属标题孤儿。<u>（v1.6 复核：该孤儿标题亦已随 Step 67（A8）删除——`grep -n "settings_chooseservice" src/settings.ts src/langs/*.json` → 0 命中，故 Step 20 无残留，AC19 成立）</u></u>
+
+<u>**编号口径注（v1.6 新增）**：本 PRD §6 的 **Step 22** 指「删除 `settings.ts` 的 `syncOnSave` Setting」（见 §6 Phase 3 表与上方例外项表）。`delivery/DELIVERY_REPORT.md` §1 中的「Step 22：删除 s3 urlstyle dropdown」沿用 **v1.0 实施编号**，对应本 PRD §6 的 **Step 42**（`settings.ts:968-987`，删除 S3 URL style dropdown，写死 forcePathStyle），二者**不是同一项**，勿混判。</u>
 
 ### Phase 5：A 修复类（6 项 + 3 项实施前新增发现）
 
@@ -712,7 +715,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | 78 | <u>**（C2）**</u> 删除 profiler | `src/profiler.ts`(153)、`src/main.ts`(7 处)、`src/settings.ts`(1 处)、`src/sync.ts`(62 处)、`src/fsLocal.ts`(12 处)、`src/localdb.ts`(4 处)、`src/baseTypes.ts`(3 处) | `grep -rn "profiler\|Profiler" src/` 为 0（含悬空 i18n 键 `"profiler_results_exported_on_"`）；`npm run build2` + `npm test` 通过；<u>已建库中的 `profilerresults` 表成为孤儿表，不影响同步主流程</u> |
 | 79 | <u>**（C3）**</u> 清理 dropbox 死分支 | `src/sync.ts` L54 / L65 / L76 / L87 | 4 处 `serviceType === "s3" \|\| serviceType === "dropbox"` 条件删除，仅保留 `serviceType === "s3"`；`grep -c "dropbox" src/sync.ts` 为 0（L1381 的历史沿革注释可保留，不计入） |
 | 80 | <u>**（C4）**</u> 清理 devDependencies 残留 | `package.json` `devDependencies` | <u>**删除**：`webdav-server`（已删 WebDAV 的测试服务器）、`openapi-typescript`、`npm-check-updates`、`@types/chai`、`@types/chai-as-promised`（<u>全部测试只用 node 内置 `assert`，无任何 chai 引用</u>）、`esbuild-plugin-inline-worker`（C1 后无 worker）、`worker-loader`（C1 后无 worker）。<u>**保留**：`dotenv`（`esbuild.config.mjs:1` 与 `webpack.config.js:1` 仍 `import`/`require`，属仍在使用的构建链依赖）、`jsdom` + `@types/jsdom`（`tests/misc.test.ts` 使用）、`mocha` / `tsx` / `typescript` / `esbuild` / `webpack` / `ts-loader` / `cross-env` / `builtin-modules` / `tslib` / `@types/*` 其余项</u>；`npm run build2` + `npm test` 仍通过 |
-| 81 | <u>**（C5）**</u> 复核 i18n 键 | `src/langs/en.json`、`src/langs/zh_cn.json`、`src/langs/zh_tw.json` | 删除下表 <u>40 处</u>死键（<u>31 处可直接删 + 9 处须待 A8 后删</u>）；<u>3 个 langs 文件的键集合完全一致</u>（当前 en.json 189 键 / zh_cn.json 179 键 / zh_tw.json 179 键，差 10 键；<u>清理后各为 169 键</u>：en 189−20 / zh_cn 179−10 / zh_tw 179−10）；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` 为 0 |
+| 81 | <u>**（C5）**</u> 复核 i18n 键 | `src/langs/en.json`、`src/langs/zh_cn.json`、`src/langs/zh_tw.json` | 删除下表 <u>40 处</u>死键（<u>31 处可直接删 + 9 处须待 A8 后删</u>）；<u>3 个 langs 文件的键集合完全一致</u>（当前 en.json 189 键 / zh_cn.json 179 键 / zh_tw.json 179 键，差 10 键；<u>清理后各为 169 键</u>：en 189−20 / zh_cn 179−10 / zh_tw 179−10<u>；v1.6 补注：Step 81 完成时各为 169 键，Step 81 之后 AC19 收口（commit `31c7a30`）再清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable`（源码 0 引用），现各为 <u>167 键</u>，三语言键集合仍完全一致</u>）；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` 为 0 |
 
 <u>**C5 死键清单（40 处 = 31 处可直接删 + 9 处条件删，实施前实测）**</u>
 
@@ -864,9 +867,9 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC14</u> | <u>**（A3）** 产品版本号三处统一为 `0.0.2`：`package.json` / `manifest.json` / PRD §4.3；<u>全仓不出现 `0.0.3`</u></u> | <u>`grep '"version"' package.json manifest.json` → 两处均为 `0.0.2`；`grep -rn "0\.0\.3" package.json manifest.json PRD.md` → 无输出（PRD 中仅版本号口径相关条目——修订记录 v1.3 行 / §6 Step 62 / §7 M11 / §8 R9 / §9 AC14 与 AC32——的文字提及"0.0.3"允许存在）</u> |
 | <u>AC15</u> | <u>**（A4）** `README.md` / `README.zh-cn.md` 标题为 `cstcloud-sync`；<u>保留 Apache-2.0 归属说明与对 fyears（上游原作者）的致谢段落</u>；无上游 star 徽章 / 赞助链接 / 商店链接残留</u> | <u>`grep -n "^# " README.md README.zh-cn.md` → 均为 `# cstcloud-sync`；`grep -n "Apache-2.0\|Apache License\|fyears" README.md README.zh-cn.md` → 有命中；`grep -n "img.shields.io\|remotelysave.com\|fyears/remotely-save" README.md README.zh-cn.md` → 无命中</u> |
 | <u>AC16</u> | <u>**（A5）** `manifest.json` 身份为 cstcloud 口径：`author` = `cstcloud`（<u>待老板确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save"</u> | <u>读 `manifest.json` 三字段逐一比对；`grep -n "fork" manifest.json` → 无命中</u> |
-| <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，<u>3 个例外项（Step 11 / 22 / 37）保留 `[ ]` 并注明原因</u>（<u>Step 1.5 已于 Step 59 补做完成</u>）</u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
+| <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，<u>2 个例外项（Step 11 / 37）保留 `[ ]` 并注明原因</u>（<u>Step 1.5 已于 Step 59 补做完成；Step 22 亦已完成——`src/settings.ts` 中 `syncOnSave` 零命中，Setting 已随 Step 67（A8）删除</u>）。<u>计数口径：57 条 `[x]` + 2 条 `[ ]` = 59 条</u></u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
 | <u>AC18</u> | <u>**（A7）** 设置页顶部标题为 `cstcloud-sync`，不再显示 `Remotely Save`</u> | <u>`grep -n '"Remotely Save"' src/settings.ts` → 无命中；Obsidian 设置页肉眼核对 H1</u> |
-| <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中</u> |
+| <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中。<u>已满足（2026-10-27 实测）：commit `31c7a30` 清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable` 后，三语言各 167 键、键集合完全一致，`grep -rn "settings_synconsave" src/langs/` → 0 命中，`grep -c "settings_synconsave" main.js` → 0</u></u> |
 | <u>AC20</u> | <u>**（A9）** 根 `LICENSE` 已删除失效的 `pro/` → PolyForm Strict License 条款，改为 Apache-2.0 + 派生自 remotely-save v0.5.25（Copyright fyears）声明</u> | <u>`grep -n "PolyForm\|pro" LICENSE` → 无 PolyForm 相关命中；文件中含 "Apache"、"remotely-save"、"fyears"</u> |
 | <u>AC21</u> | <u>**（B1）** Obsidian 桌面版加载测试通过：manifest 校验通过、插件可启用无报错、设置页可渲染、ribbon 图标可见可点、命令面板出现 `start-sync` 与 `start-sync-dry-run`</u> | <u>Obsidian 内加载 `main.js` + `manifest.json`；开发者控制台无报错；命令面板搜索 `sync` 见 2 条命令</u> |
 | <u>AC22</u> | <u>**（B2）** S3 真实连通性通过：设置页「检查连接」按钮 → HeadBucket + ListObjectsV2 均成功。<u>**凭证未到位时本条状态为「阻塞」，不计为通过**</u></u> | <u>填入老板提供的 AccessKey / SecretKey / Bucket → 点击「检查连接」→ UI 提示成功且控制台无 S3 错误码</u> |
@@ -877,7 +880,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC27</u> | <u>**（C2）** profiler 确已移除：`src/profiler.ts` 不存在；`src/` 内 `profiler` / `Profiler` 引用为 0（含 `baseTypes.ts` 的 `ProfilerConfig` 与悬空 i18n 键 `"profiler_results_exported_on_"`）</u> | <u>`ls src/profiler.ts` → No such file；`grep -rni "profiler" src/` → 0；`npm run build2` + `npm test` → exit 0</u> |
 | <u>AC28</u> | <u>**（C3）** `src/sync.ts` 中 4 处 `serviceType === "dropbox"` 死分支已清理，仅保留 `serviceType === "s3"`</u> | <u>`grep -n "dropbox" src/sync.ts` → 仅命中 L1381 的历史沿革注释，<u>无 `serviceType === "dropbox"` 条件</u>；`npm run build2` → exit 0</u> |
 | <u>AC29</u> | <u>**（C4）** devDependencies 残留已清理：`webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` 已从 `package.json` 移除；<u>`dotenv` / `jsdom` / `@types/jsdom` 保留</u></u> | <u>`grep -n "webdav-server\|openapi-typescript\|npm-check-updates\|@types/chai\|esbuild-plugin-inline-worker\|worker-loader" package.json` → 0；`grep -n "\"dotenv\"\|\"jsdom\"" package.json` → 有命中；`npm run build2` + `npm test` → exit 0</u> |
-| <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 169 键</u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 169；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u></u> |
+| <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 <u>167 键</u></u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 <u>167</u>；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u>。<u>计数沿革：Step 81（C5）复检时各 169 键 → AC19 收口（commit `31c7a30`）再删 2 个孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）→ 现各 167 键，键集合仍完全一致</u></u> |
 | <u>AC31</u> | <u>**（发布）** v0.0.2 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；`versions.json` 含 `"0.0.2": "0.13.21"`</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 `"0.0.2": "0.13.21"`；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
 | <u>AC32</u> | <u>发版前置：A/B/C 全部 Step（<u>59–82</u>）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布</u> | <u>老板书面确认 + grep 三处版本号一致</u> |
 | <u>AC33</u> | <u>**（v1.4 · 配置目录同步（实验性））** ① `syncConfigDir` 开关可在 `设置 → 高级` 正常开启（走 `modal_syncconfig_attn` → `modal_syncconfig_secondconfirm` → `modal_syncconfig_notice` 三键二次确认链路）；② 开启后 `.obsidian` **整个配置目录**进入同步清单（顶层 `app.json` / `appearance.json` / `core-plugins.json` / `community-plugins.json` / `hotkeys.json` / `bookmarks.json` 与各插件目录均可见）；③ §5.4.3 的 14 项排除项**确实被排除**（尤其 `workspace` / `workspace.json` / `workspace-mobile.json` / `.git` / `node_modules`）；④ 本插件目录 `.obsidian/plugins/cstcloud-sync/` **只同步白名单 5 文件**（`data.json` / `main.js` / `manifest.json` / `.gitignore` / `styles.css`），`plugins/cstcloud-sync/LICENSE` **不被同步**；⑤ 其他插件目录为全量放行</u> | <u>在测试 vault 中开启开关并执行一次 dry-run（`start-sync-dry-run`），逐条比对同步清单：① 开关 UI 链路可走通 ② `.obsidian` 顶层文件均在清单内 ③ 14 项排除项均不在清单内 ④ 本插件目录仅 5 文件在清单内、`LICENSE` 不在 ⑤ 其他插件目录文件均在清单内。<u>另：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` 命中 2 处（Step 82 已实施）</u></u> |
