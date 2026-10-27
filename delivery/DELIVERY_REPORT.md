@@ -39,7 +39,7 @@
 - ✅ Step 19：删除 generateClearDupFilesSettingsPart
 - ✅ Step 20：删除 s3 endpoint text input
 - ✅ Step 21：删除 s3 region text input
-- ✅ Step 22：删除 s3 urlstyle dropdown
+- ✅ Step 22：删除 s3 urlstyle dropdown（**编号口径注**：本节沿用 v1.0 实施编号，与 PRD §6 编号不一致；PRD §6 的 Step 22 指「删除 `settings.ts` 的 syncOnSave Setting」，该项经复核**实际已完成**，见 §8.8）
 - ✅ Step 23：删除 s3 reverseProxyNoSignUrl 残留
 - ✅ Step 24：删除 s3 useAccurateMTime dropdown
 - ✅ Step 25：删除 s3 generateFolderObject dropdown
@@ -146,7 +146,7 @@ esbuild version = 0.23.1
 - `src/localdb.ts`：删除 `profilerresults` 表定义与 3 个读写函数（48 行）
 - `src/baseTypes.ts`：删除 `ProfilerConfig` / `profiler?` / 悬空 i18n 键（10 行）
 - `src/obsFolderLister.ts`：两处排除数组各增 1 个字符串 `"workspace-mobile.json"`（Step 82；命中行号 L100 / L116。**逻辑改动 2 处字符串**，因数组改为多行排版，diff 为 +9/-3；同一 commit 另重建 `main.js`）
-- `src/langs/{en,zh_cn,zh_tw}.json`：清理 40 处死键，三语言各 169 键
+- `src/langs/{en,zh_cn,zh_tw}.json`：清理 40 处死键（Step 81）+ 2 处孤儿键（`settings_synconsave_disable/_enable`，AC19 收口），三语言各 **167** 键
 - `package.json`：删除运行时依赖 `@fyears/rclone-crypt`；删除 5 个无用 devDependencies
 - `esbuild.config.mjs` / `webpack.config.js`：删除 worker 接线
 - `PRD.md`：v1.4（§5.4 配置目录同步 + R17 + Step 82 + AC33）
@@ -163,7 +163,7 @@ esbuild version = 0.23.1
 | 62 | A3 | 产品版本号统一到 0.0.2 | ✅ 完成 | `package.json` / `manifest.json` 均 `"version": "0.0.2"` |
 | 63 | A4 | README 品牌化改写 | ✅ 完成 | `README.md` / `README.zh-cn.md` 首行均为 `# cstcloud-sync` |
 | 64 | A5 | manifest 身份统一 | ✅ 完成 | `manifest.json` → `author=cstcloud`、`authorUrl=https://github.com/cstcloud/cstcloud-sync` |
-| 65 | A6 | 勾选 §6 历史 checklist | ✅ 完成 | PRD §6 历史清单 59 条中 55 条 `[x]`，4 条 `[ ]` 均同行注明原因（AC17） |
+| 65 | A6 | 勾选 §6 历史 checklist | ✅ 完成 | PRD §6 历史清单 59 条中 **57 条 `[x]`**、**2 条 `[ ]`**（Step 11 / 37）均同行注明原因（AC17；Step 1.5 / 22 经复核亦已完成，见 §8.8） |
 | 66 | A7 | 设置页 H1 品牌残留修复 | ✅ 完成 | `grep -c "Remotely Save" src/settings.ts` → 0 |
 | 67 | A8 | 设置页空壳元素清理 | ✅ 完成 | `grep -rn "settings_chooseservice\|settings_synconsave_desc" src/settings.ts src/langs/` → 0 |
 | 68 | A9 | 根 LICENSE 文本更新 | ✅ 完成 | `LICENSE` → Apache License 2.0（9 处）；`grep -c PolyForm LICENSE` → 0 |
@@ -179,7 +179,7 @@ esbuild version = 0.23.1
 | 78 | C2 | 删除 profiler | ✅ 完成 | `src/profiler.ts` 不存在；`grep -rni "profiler" src/ tests/` → **0** |
 | 79 | C3 | 清理 dropbox 死分支 | ✅ 完成 | `grep -n "dropbox" src/sync.ts` → 仅 L1340 历史沿革注释，无 `serviceType === "dropbox"` 条件 |
 | 80 | C4 | 清理 devDependencies 残留 | ✅ 完成 | 6 个目标依赖 → 0 命中；`dotenv` / `jsdom` 保留（`package.json` L37 / L39） |
-| 81 | C5 | 复核 i18n 键 | ✅ 完成 | 三语言各 **169** 键，键集合一致；40 处死键已清（2 处遗留见 §8） |
+| 81 | C5 | 复核 i18n 键 | ✅ 完成 | 三语言键集合完全一致：Step 81 复检时各 **169** 键，AC19 收口再删 2 处孤儿键后现各 **167** 键（详见 §8.2） |
 | 82 | v1.4-1 | 补齐 `workspace-mobile.json` 排除 | ✅ 完成 | `grep -n "workspace-mobile.json" src/obsFolderLister.ts` → **2 处**（L100 / L116）；commit `43e36a1` |
 
 ## 5. 已知风险与遗留问题
@@ -376,10 +376,11 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 - **处置**：**历史未改写** —— 为保住回滚点连续性（`backup/pre-v1.3-C1` → `7badfc3` 需保持可达且语义清晰），不做 `rebase` / `amend`；剩余引用清理由后续 `71ff8e2`（Step 78）承接。
 - **影响**：**仅提交元数据不准**；代码内容本身正确，已通过 `npm test` 142 passing / `tsc` 0 error / `npm run build2` exit 0 全部验证。
 
-### 8.2 i18n 2 个死键未清（登记为遗留项）
+### 8.2 i18n 2 个孤儿键已清理（AC19 收口）+ PRD 键数判据待 v1.6 同步
 
-- `settings_synconsave_disable` / `settings_synconsave_enable`（`src/langs/{en,zh_cn,zh_tw}.json` L69 / L70），**源码 0 引用**（`grep -rn "settings_synconsave_disable\|settings_synconsave_enable" src/ tests/` → 仅命中 3 个 langs 文件本身）。
-- **本轮不删的理由**：为保持 PRD v1.4 的「三语言各 169 键」判据不变（AC30），本轮**不删**，登记为遗留项。后续如需清理，三语言同时删除即可，键数变为 167。
+- `settings_synconsave_disable` / `settings_synconsave_enable`（原 `src/langs/{en,zh_cn,zh_tw}.json` L69 / L70）—— 「保存时自动同步」Setting 的文案；该 Setting 已由 A8/Step 67 删除，故这 2 个键成为**孤儿键**，**源码 0 引用**（`grep -rn "settings_synconsave" src/ --include=*.ts` → 0 命中）。
+- **本轮已删（不再是遗留项）**：3 语言按**精确键名**同时删除（未按前缀模糊删，避免误伤同前缀键），**三语言各 169 → 167 键，键集合仍完全一致**；`grep -rn "settings_synconsave" src/langs/` → 0 命中；重建 `main.js` 后 `grep -c "settings_synconsave" main.js` → 0；`npm test` 142 passing / `npm run build2` exit 0。
+- **已知遗留（仅 PRD 文本待回填）**：PRD v1.4 的「三语言各 169 键」判据（AC30）需在 **PRD v1.6** 同步改为 **167 键**；v1.6 落地后本条即可关闭。**不影响**代码与验收结论（键集合一致性、构建、单测均已验证）。
 
 ### 8.3 `profilerresults` 孤儿表
 
@@ -405,9 +406,12 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 - 配置目录同步（`.obsidian`）的 5 项清单比对（开关 UI 链路 / 顶层文件入清单 / 14 项排除生效 / 本插件目录仅 5 文件白名单 / 其他插件目录全量放行）**需老板在测试 vault 开启开关并 dry-run 比对清单**。
 - 代码侧已完成：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` → 2 处（L100 / L116），Step 82 已实施。
 
-### 8.8 PRD 文档内的一处陈旧表述（非缺陷）
+### 8.8 PRD 文档内的两处陈旧表述（非缺陷）
 
-- PRD §6 历史 checklist 中 Step 1.5 的未完成理由仍写「文件仍在（12 行）」，但 `tests/fsWebdis.test.ts` 已由 Step 59 删除；Step 22 / 11 / 37 的 `[ ]` 标注仍有效。属 PRD 文本未回填，**不影响代码与验收结论**。
+- **Step 1.5（PRD v1.5 已回填）**：PRD §6 历史 checklist 原写「文件仍在（12 行）」，但 `tests/fsWebdis.test.ts` 已由 Step 59 删除；PRD v1.5 已将该条改为 `[x] 已完成`，仅 v1.5 之前的版本仍留旧理由文本。
+- **Step 22（PRD 文本尚未回填，实际已完成）**：PRD §6 例外表仍写「未完成」并引用 `src/settings.ts:366-368` 的 `settings_synconsave` 空壳 Setting。**实测该 Setting 已不存在**：`grep -n "syncOnSave" src/settings.ts` → **0 命中**，`grep -in "synconsave" src/settings.ts` → **0 命中**；该空壳已在 commit `f376a9f`（A8 / Step 67）随「设置页空壳元素清理」一并删除。**故 Step 22 实际已完成**。
+  - 注：`src/` 别处仍有 20 处 `syncOnSave` 前缀命中，全部落在 `src/baseTypes.ts` / `src/main.ts`（其中 `syncOnSaveAfterMilliseconds` 7 处），那是**自动同步间隔定时器**（另一功能，AC30 强制为 `-1`），**不是** Step 22 的对象，勿混判。
+- **结论**：Step 1.5 与 Step 22 **均已实际完成**，PRD §6 真实例外项只剩 **Step 11 / 37** 两项（二者均属「被 Step 48~54 覆盖，未按原描述完成」）；PRD 将在 **v1.6** 收口（例外 3 → 2、AC17 口径 56 `[x]` + 3 `[ ]` → 57 `[x]` + 2 `[ ]`）。属 PRD 文本未回填，**不影响代码与验收结论**。
 
 ## 9. AC 终验对账表（AC1-AC33）
 
@@ -431,7 +435,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC14 | 产品版本号三处统一 0.0.2，全仓不出现 0.0.3 | ✅ 通过 | `package.json` L3 / `manifest.json` L4 均 `"version": "0.0.2"`；PRD §4.3 同口径。**注**：`0.0.3` 字样仅出现在 PRD.md 的 AC32/R9 **需求描述**中，以及 `package-lock.json` 的第三方依赖 `@fyears/eme@0.0.3` —— **产品版本字段无一处为 0.0.3** |
 | AC15 | README 品牌化 + 保留 Apache-2.0 归属与上游致谢 | ✅ 通过 | `README.md` / `README.zh-cn.md` 首行均为 `# cstcloud-sync`；两份 README 均含 Apache-2.0 与 fyears 上游致谢段 |
 | AC16 | manifest 身份为 cstcloud 口径 | ✅ 通过 | `manifest.json` L7-L8 → `author = "cstcloud"`、`authorUrl = "https://github.com/cstcloud/cstcloud-sync"` |
-| AC17 | §6 历史 checklist 59 条完成，4 条例外保留 `[ ]` 并注明原因 | ✅ 通过 | PRD §6 历史清单 55 条 `[x]` + 4 条 `[ ]`（Step 1.5 / 11 / 22 / 37）均同行注明原因，与 AC17 口径一致 |
+| AC17 | §6 历史 checklist 59 条完成，2 条例外保留 `[ ]` 并注明原因 | ✅ 通过 | PRD §6 历史清单 **57 条 `[x]` + 2 条 `[ ]`**（Step 11 / 37）均同行注明原因，与 AC17 口径一致。**计数口径**：§6 共 59 个条目（Step 1-44 含 Step 1.5 计 45 条 + Step 45-58 计 14 条）；PRD v1.5 例外表 4 行中 Step 1.5 已标 `[x] 已完成`，余 `[ ]` 为 11 / 22 / 37（故 v1.5 记为 56 + 3）；本轮复核 Step 22 实际已完成（`grep -n "syncOnSave" src/settings.ts` → 0 命中，空壳已于 A8/Step 67 删除），故实为 **57 + 2** |
 | AC18 | 设置页 H1 不再显示 `Remotely Save` | ✅ 通过 | `grep -c "Remotely Save" src/settings.ts` → **0** |
 | AC19 | 无「选择服务」孤儿标题与「保存时自动同步」空标签 | ✅ 通过 | `grep -rn "settings_chooseservice\|settings_synconsave_desc" src/settings.ts src/langs/` → **0**（键已随 Step 67 / 81 删除） |
 | AC20 | LICENSE 改为 Apache-2.0 + 派生声明 | ✅ 通过 | `LICENSE` 首部为 Apache License 2.0（`grep -c "Apache License"` → 9）；`grep -c PolyForm LICENSE` → **0**；含 remotely-save v0.5.25 / Copyright fyears 派生声明 |
@@ -444,7 +448,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC27 | **（C2）** profiler 确已移除 | ✅ 通过 | `ls src/profiler.ts` → No such file；`grep -rni "profiler" src/ tests/` → **0**；`npm run build2` exit 0 + `npm test` 142 passing |
 | AC28 | **（C3）** `src/sync.ts` 4 处 dropbox 死分支已清理 | ✅ 通过 | `grep -n "dropbox" src/sync.ts` → **仅 L1340** 历史沿革注释，无 `serviceType === "dropbox"` 条件（符合 Step 79 判据「L1381 历史沿革注释可保留」） |
 | AC29 | **（C4）** devDependencies 残留已清理 | ✅ 通过 | `webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` → `package.json` 命中 **0**；`dotenv`（L37）/ `jsdom`（L39）/ `@types/jsdom` **保留**；`npm run build2` exit 0 + `npm test` 142 passing |
-| AC30 | **（C5）** i18n 复核：40 处死键已删，3 语言键集合一致 | ✅ 通过 | 三语言各 **169** 键，键集合完全一致；40 处死键已清。**遗留 2 键**（`settings_synconsave_disable` / `_enable`，源码 0 引用）按 §8.2 登记，**不影响**「三语言各 169 键」判据本身 |
+| AC30 | **（C5）** i18n 复核：40 处死键已删，3 语言键集合一致 | ✅ 通过 | 三语言键集合完全一致：Step 81 复检时各 **169** 键，AC19 收口再删 2 处孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）后现各 **167** 键（详见 §8.2）。**PRD v1.4 的「三语言各 169 键」判据需在 v1.6 同步改为 167** |
 | AC31 | **（发布）** v0.0.2 交付包形态符合 §7.1 | ⚠️ 部分 | **实际解包核对结果见 §9.1**：`cstcloud-sync0.0.1.zip` 为 **v0.0.1 时期的全仓快照**（278 个条目），与 §7.1 目标形态有 5 处差异 |
 | AC32 | 发版前置：老板统一指定版本号 ≥ 0.0.3 且三处一致 | ➖ 后续发版项 | 当前 `package.json` / `manifest.json` 均为 **0.0.2**，系按老板「升级后统一」口径的开发基线，**尚未发版**。发布版本号须由老板**书面指定**（≥ 0.0.3），并同步 `manifest.json` / `package.json` / PRD §4.3 三处 |
 | AC33 | **（v1.4）** 配置目录同步 5 项清单比对 | ⛔ 未执行（待老板实测） | 代码侧已完成：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` → **2 处**（L100 / L116，Step 82 已实施）；`src/obsFolderLister.ts` L100 / L116 的排除数组各增 `"workspace-mobile.json"`。**但 5 项清单比对需老板在测试 vault 开启 `syncConfigDir` 开关并执行一次 dry-run 逐条核对**，本轮未做真实 dry-run |
