@@ -1,5 +1,8 @@
 # Sync Algorithm
 
+> [!WARNING]
+> **⚠️ 本页为历史归档** —— 下表中的 `password === ""` / `password !== ""` 维度来自上游的 E2E 密码模式，该能力已于 cstcloud-sync v0.0.2 / PRD v1.3 Step 75-77 **移除**（已失效）。cstcloud-sync 现在只有“无密码”这一种情形，永远走 `password === ""` 的分支。
+
 ## Sources
 
 We have three record sources:
@@ -20,7 +23,7 @@ We list all combinations mutually exclusive and collectively exhaustive.
 | 2   | exist        | exist       | ignore                      | mtime_remote < mtime_local                                                    | upload local file, create remote folder if not exists, clear local history if exists                     |
 | 3   | exist        | exist       | ignore                      | mtime_remote === mtime_local && password === "" && size_remote === size_local | clear local history if exists (the file was synced and no changes after last sync)                       |
 | 4   | exist        | exist       | ignore                      | mtime_remote === mtime_local && password === "" && size_remote !== size_local | upload local file, clear local history if exists (we always prefer local to remote)                      |
-| 5   | exist        | exist       | ignore                      | mtime_remote === mtime_local && password !== ""                               | clear local history if exists (in encryption mode, file sizes are unequal. we can only rely on mtime(s)) |
+| 5   | exist        | exist       | ignore                      | mtime_remote === mtime_local && password !== "" (已移除)                              | clear local history if exists (in encryption mode, file sizes are unequal. we can only rely on mtime(s)) |
 | 6   | exist        | exist       | ignore                      | If local is a folder. mtime_local === undefined                               | clear local history if exists. TODO: what if a folder and a previous file share the same name?           |
 | 7   | exist        | not exist   | exist                       | mtime_remote >= delete_time_local                                             | download remote file, create folder if not exists                                                        |
 | 8   | exist        | not exist   | exist                       | mtime_remote < delete_time_local                                              | delete remote file, clear local history                                                                  |

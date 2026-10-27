@@ -3,8 +3,10 @@
 - **This plugin is NOT an official Microsoft / OneDrive product.** The plugin just uses Microsoft's [OneDrive's public API](https://docs.microsoft.com/en-us/onedrive/developer/rest-api).
 - After the authorization, the plugin can read your name and email, and read and write files in your OneDrive's `/Apps/remotely-save` folder.**The free version of Remotely Save only connects to App Folder, while the PRO version can connect to the root folder in Onedrive.** 
 - If you decide to authorize this plugin to connect to OneDrive, please go to plugin's settings, and choose OneDrive then follow the instructions.
-- Password-based end-to-end encryption is also supported. But please be aware that **the vault name itself is not encrypted**.
 - If you want to sync the files across multiple devices, **your vault name should be the same** while using default settings.
+
+> [!WARNING]
+> **⚠️ 上述「Password-based end-to-end encryption is also supported」已失效** —— 端到端加密能力已于 cstcloud-sync v0.0.2 / PRD v1.3 Step 75-77 移除，插件不再提供密码设置项，文件以明文上传。（另：OneDrive 服务本身在 cstcloud-sync 中也已不再支持，本页仅作历史归档。）
 
 ## FAQ
 

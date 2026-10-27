@@ -1,5 +1,8 @@
 # ClaudeCode 需求拆解 v1（PRD 启动前置）
 
+> [!WARNING]
+> **⚠️ 本文档为历史归档（v1.0/v1.1 规划期记录）** —— 其中关于端到端加密「保留」的结论**已失效**：加密后端已于 cstcloud-sync v0.0.2 / PRD v1.3 Step 75-77 全部移除（历史归档）。
+
 > 基于 3 个输入：tech_v1.md / remotely_save.md / https://github.com/remotely-save/remotely-save
 
 ---

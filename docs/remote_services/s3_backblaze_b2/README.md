@@ -10,7 +10,10 @@ https://www.backblaze.com/cloud-storage
 
 2. Please be aware that, though B2 provides some free quota, **it may still cost you money if the usage of storage or api requests exceed a certain value!!!** Especially pay attention to the api requests!!!
 
-3. Create a **bucket**, you can leave the default settings, or you can enable the encryption (which is different from what you can set in Remotely Save):
+3. Create a **bucket**, you can leave the default settings, or you can enable the encryption (which is different from what you can set in Remotely Save —— **该插件端加密设置已失效**):
+
+   > [!NOTE]
+   > **已失效** —— 「what you can set in Remotely Save」所指的插件端到端加密能力已于 cstcloud-sync v0.0.2 / PRD v1.3 Step 75-77 移除，插件不再提供密码设置项。此处提及的**桶端服务端加密**（B2 自带能力）仍然可用。
 
    ![](./s3_backblaze_b2-1-bucket.png)
    ![](./s3_backblaze_b2-2-create_bucket.png)
