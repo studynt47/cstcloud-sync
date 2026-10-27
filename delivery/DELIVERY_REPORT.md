@@ -1,5 +1,12 @@
 # cstcloud-sync 交付报告
 
+> **更新记录（v1.3 实施轮次）**
+> - 本轮执行范围：PRD v1.3 §6 **Step 59-73**（Phase 5 修复类 + Phase 6 质量类）。
+> - **Phase 7（Step 74-81，C 瘦身类，含 C1 加密解耦）本轮未执行**，待下一轮单独实施。
+> - Step 70（B2）/ Step 71（B3）按老板指示**未执行**，真实环境测试由老板本人做；状态一律记为「⛔ 未执行 — 按老板指示，真实环境测试由老板本人执行」，详见 §5。
+> - 基线与本轮 commit：`5268dbe`（Step 59-61 基线）→ `f376a9f`（Step 62-68 A3-A9）→ `89e9b07`（Step 72 B4 单测）。
+> - 全文不记录 AccessKey / SecretKey 明文。
+
 ## 1. 44 步 Checklist 完成情况
 
 ### Phase 1 (Step 1-5)：文件删除
@@ -113,10 +120,10 @@ esbuild version = 0.23.1
 ## 4. 已知风险与遗留问题
 
 ### 4.1 编译/构建
-- ✅ tsc 0 错误
-- ✅ esbuild production build 成功
-- ✅ mocha 52/52 测试通过
-- ⚠️ 2 个 OpenSSL binary 测试已用 `it.skip` 标记，需要单独运行 `openssl enc` 重新生成 .enc 文件以恢复测试
+- ✅ tsc 0 错误（`npx tsc --noEmit -skipLibCheck`；裸跑 `npx tsc --noEmit` 报 32 个错误，**全部来自 `node_modules/typescript/lib/lib.webworker.d.ts`(25) 与 `lib.dom.d.ts`(7)**，源于 `tsconfig.json` 的 `lib` 同时含 `"dom"` 与 `"webworker"`，项目源码 0 错误）
+- ✅ esbuild production build 成功（main.js 1,212,205 字节，md5 `94f2fea402196d20f5a913c55d82282c`）
+- ✅ mocha 单元测试 **140 passing / 2 pending**（2 个 OpenSSL binary 测试仍为 `it.skip`，需单独运行 `openssl enc` 重新生成 .enc 文件以恢复）
+- ✅ 核心逻辑行覆盖率（c8 实测）：`src/sync.ts` 76.41% / `src/copyLogic.ts` 100% / `src/conflictLogic.ts` 98.72%，整体行覆盖率 **63.24%**（均达到 PRD Step 72 判据：关键路径 ≥70%、整体 ≥50%）
 
 ### 4.2 代码保留
 - 保留 `wrapTextWithPasswordHide` 函数（用于 S3 accesskey/secret 密码隐藏，P1-2）
@@ -131,33 +138,109 @@ esbuild version = 0.23.1
 - 删除了 `debugMode.ts`（用于 export sync plans 调试功能），5 个 export sync plans 按钮 + 4 个 export profiler buttons 都已删除
 
 ### 4.4 Obsidian 集成
-- 未做 Obsidian 实际加载测试（需要 Obsidian 桌面版 + DevTools console）
-- 未做 S3 真实连通测试（需要 cstcloud.cn 凭证）
-- 未做 E2E 双向同步测试
+- ✅ **已做** Obsidian 桌面版实际加载测试（Step 69 / B1）：真实 Obsidian 1.13.7 + Xvfb 验证通过（详见 §5）
+- ⛔ **未执行** S3 真实连通测试（Step 70 / B2）——按老板指示，真实环境测试由老板本人执行
+- ⛔ **未执行** E2E 双向同步测试（Step 71 / B3）——按老板指示，真实环境测试由老板本人执行
 
 ## 5. E2E 验证结果
 
 ### 已完成
-- ✅ tsc 编译 0 错误
-- ✅ esbuild production build 成功（main.js 1.19 MB）
-- ✅ mocha 单元测试 52/52 通过
+- ✅ tsc 编译 0 错误（`-skipLibCheck`；裸跑的 32 个错误全在 node_modules，见 §4.1）
+- ✅ esbuild production build 成功（main.js 1,212,205 字节）
+- ✅ mocha 单元测试 **140 passing / 2 pending**（Step 72 / B4 新增 3 个测试文件）
 - ✅ 静态验证：所有 i18n key 与 UI 使用一致（17 个误删已恢复）
 
+### Step 69 / B1 — E2E-1 Obsidian 桌面版加载测试：✅ 通过
+
+真实环境：Obsidian 1.13.7（installer 1.13.7，headless Xvfb `:99`，1400x1000x24），插件产物 `main.js`（md5 `94f2fea402196d20f5a913c55d82282c`）。
+
+| 判据 | 实测结果 |
+|---|---|
+| manifest 校验（id / name / version / minAppVersion） | ✅ `cstcloud-sync` / `cstcloud-sync` / `0.0.2` / `0.13.21` |
+| 插件可启用且无报错 | ✅ 社区插件成功加载（安全模式关闭后 `cstcloud-sync` 与对照插件 `claudian-mobile-jy` 均正常加载，console 无插件级报错） |
+| 设置页可渲染（S3 三字段 + 12 个 P1） | ✅ H1 `cstcloud-sync`；H2 `S3 或兼容 S3 的服务的设置` / `基本设置` / `进阶设置`；共 18 个设置项（含 `Access Key ID`、`Secret Access Key`、`存储桶（Bucket）的名字`），`选择服务` / `保存时同步` / `Remotely Save` 均已不存在 |
+| ribbon 图标可见可点 | ✅ ribbon 按钮已注册 |
+| 命令面板 2 个命令 | ✅ `cstcloud-sync:start-sync`、`cstcloud-sync:start-sync-dry-run` |
+
+> 备注：无头环境下 Obsidian 的设置弹窗不会渲染为可查询 DOM，故设置页校验改为直接调用 `app.setting.pluginTabs` 中本插件 Tab 的 `display()` 后检查其 `containerEl`。
+
+### Step 70 / B2 — E2E-2 S3 真实连通性测试：⛔ 未执行 — 按老板指示，真实环境测试由老板本人执行
+
+> **状态口径：未执行，不标记为通过。** 以下仅为中断前的尝试过程记录（参考信息），**不构成任何“通过”结论**。本轮已按老板指示停止一切真实凭证测试。
+
+已跑的尝试过程（命令 / 报错 / 现象）：
+
+| # | 尝试 | 命令 / 方式 | 观察到的现象 |
+|---|---|---|---|
+| 1 | 插件设置页「检查连接」 | Obsidian 1.13.7 无头实例中点击 `检查` 按钮 | 按钮无成功反馈，无明确报错；同步流程在 S3 阶段无进展 |
+| 2 | SDK 直连 HeadBucket | 用项目自带 `@aws-sdk/client-s3`，endpoint `https://s3.cstcloud.cn`、region `us-east-1`、`forcePathStyle=true` | **HTTP 401**，`Unknown: UnknownError`，错误元数据 `{"httpStatusCode":401,"attempts":1,"totalRetryDelay":0}` |
+| 3 | SDK 直连 ListObjectsV2 | 同上，换用 ListObjectsV2 | **HTTP 401**，同上错误 |
+| 4 | 独立 SigV4 curl 复核 | 手写 SigV4 签名，curl 请求桶 | `curl: (6) Could not resolve host: 9d4bba35fd6241dabd17e5439fd55950.s3.cstcloud.cn`（虚拟主机式域名无法解析；path-style 走 `s3.cstcloud.cn/<bucket>` 则返回 **401** 空响应体） |
+| 5 | 插件内 dry-run 同步 | `cstcloud-sync:start-sync-dry-run` | 状态栏长时间停在 `空跑：正在同步`，日志仅有 `startting sync.`，无后续推进（与 S3 请求未被服务端正常应答一致） |
+
+DNS 侧：`s3.cstcloud.cn` 可解析（`223.193.44.135`），故 401 属**服务端拒绝**而非网络不通。
+
+> **注：本节及全文均不记录 AccessKey / SecretKey 明文，仅以 `AKIA****JUVG` 形式脱敏引用；测试凭证仅存放于测试 vault 的 `.creds.json`（未入库、未提交、未打印）。**
+
+老板自行测试步骤清单（可直接照做）：
+
+1. **准备**：确认 cstcloud.cn 的 S3 账号可用，且拿到 `Access Key ID` / `Secret Access Key` / `Bucket` 三项；确认桶名与密钥属同一账号。
+2. **装插件**：把 `main.js` + `manifest.json` 拷到目标 vault 的 `.obsidian/plugins/cstcloud-sync/`。
+3. **启用**：Obsidian 设置 → 第三方插件 → 关闭安全模式 → 启用 `cstcloud-sync`。
+4. **填配置**：插件设置 → `Access Key ID` / `Secret Access Key` / `存储桶（Bucket）的名字` 三项填好（Endpoint/Region 已硬编码 `s3.cstcloud.cn` / `us-east-1`，无需填）。
+5. **测连通（B2）**：点「检查」按钮 → 观察是否提示连接成功（内部走 `HeadBucket` + `ListObjectsV2`）；失败时把 Obsidian 控制台日志贴回（注意先遮蔽密钥）。
+6. **测双向同步（B3）**，在测试 vault 里准备 4 条用例：
+   - ① 本地新增 → 远端可见：新建 `b3-1.md` → 同步 → 在 S3 控制台看到该对象。
+   - ② 远端改动 → 本地拉取：改 `b3-2.md` 的远端内容 → 同步 → 本地内容被更新。
+   - ③ 删除双向同步：删 `b3-3.md` → 同步 → 远端对象也被删除。
+   - ④ 冲突策略生效：本地与远端同时改 `b3-4.md` → 分别用 `处理冲突 = 保留较新` / `保留较大` / 智能合并 各验一次。
+7. **跑空跑**：命令面板执行 `cstcloud-sync:start-sync-dry-run`，确认状态栏与计划输出符合预期。
+8. **回收**：删除测试 vault 的 `.obsidian/plugins/cstcloud-sync/data.json`（含密钥）或整包删除插件目录。
+
+### Step 71 / B3 — E2E-3 双向同步 E2E：⛔ 未执行 — 按老板指示，真实环境测试由老板本人执行
+
+> **状态口径：未执行，不标记为通过。** 本轮因 B2 未通（HTTP 401）且按老板指示停止真实环境测试，4 条用例均未执行。执行步骤见上方 Step 70 清单第 6 步。
+
+### Step 72 / B4 — 核心逻辑单测补齐：✅ 通过
+
+- 新增 `tests/sync.test.ts`（55 个用例）、`tests/copyLogic.test.ts`（9 个）、`tests/conflictLogic.test.ts`（24 个）、辅助 `tests/helpers/inMemoryFs.ts`（内存版 FakeFs）
+- `npm test` 全绿：**140 passing / 2 pending**
+- 覆盖率（c8 实测）：`src/sync.ts` **76.41%**、`src/copyLogic.ts` **100%**、`src/conflictLogic.ts` **98.72%**，整体行覆盖率 **63.24%**
+- 额外覆盖 PRD §5.1.C 的 3 项加密解耦行为等价性（为 Phase 7 C1 解耦预留回归网）：`walk()` 的 `keyEnc = keyRaw` / `sizeEnc = sizeRaw`、`encryptEntity()` 等价性、远端 openssl 密文中止守卫
+
+### Step 73 / B5 — 打包产物自检：🟡 部分通过（4 项待 Phase 7 后复检）
+
+对 `main.js` 执行 grep 自检：
+
+| 检查项 | 期望 | 实测 | 结论 |
+|---|---|---|---|
+| `s3.cstcloud.cn` | 存在 | 3 | ✅ |
+| `webdav` | 0 | 0 | ✅ |
+| `onedrive` | 0 | 0 | ✅ |
+| `pro/` | 0 | 0 | ✅ |
+| `qrcode` | 0 | 0 | ✅ |
+| `dropbox` | 0 | 4 | ⏳ 残留于 `src/sync.ts` 的 4 处 `serviceType === "s3" \|\| serviceType === "dropbox"`（Phase 7 Step 79 / C3 清理） |
+| `openssl` | 0 | 8 | ⏳ 来自 `src/encryptOpenSSL.ts`（Phase 7 Step 75 / C1-b 删除） |
+| `rclone` | 0 | 9 | ⏳ 来自 `src/encryptRClone.ts` + worker（Phase 7 Step 75 / C1-b 删除） |
+| `profiler` | 0 | 27 | ⏳ 来自 `src/profiler.ts`（Phase 7 Step 78 / C2 删除） |
+| `syncalgov3` 6 个 i18n 键存在 | 3 语言各 6 个 | en/zh_cn/zh_tw 各 6 个 | ✅（中文文案在 `src/langs/*.json` 校验，esbuild 默认 ascii 输出故 `main.js` 内不含中文字面量） |
+
+> B5 是 C 类成果的终检（PRD §7），故上表 4 项 ⏳ 需在 **Phase 7（Step 74-81）执行完成后复跑一次** 方可终判「全绿」。本轮按任务边界未执行 Phase 7。
+
 ### 未做
-- ❌ Obsidian 加载测试（需要 Obsidian 桌面版）
-- ❌ S3 真实连通测试（需要 cstcloud.cn 凭证）
-- ❌ 双向同步 E2E 测试
+- ❌ S3 真实连通测试（Step 70 / B2）——⛔ 按老板指示由老板本人执行
+- ❌ 双向同步 E2E 测试（Step 71 / B3）——⛔ 按老板指示由老板本人执行
 
 ## 6. 交付物清单
 
 ### 源码（`/home/WPS/ls/cstcloud-sync/` 或 `/root/Projects/cstcloud-sync/`）
-- `main.js` (1.19 MB, build 产物)
-- `manifest.json` (id=cstcloud-sync, version=0.0.1)
-- `package.json` (name=cstcloud-sync, version=0.0.1)
+- `main.js` (1,212,205 字节, build 产物, md5 `94f2fea402196d20f5a913c55d82282c`)
+- `manifest.json` (id=cstcloud-sync, version=0.0.2)
+- `package.json` (name=cstcloud-sync, version=0.0.2)
 - `esbuild.config.mjs`
 - `tsconfig.json`
 - `src/` (26 个 .ts 文件, 包含新增 sync.ts + conflictLogic.ts)
-- `tests/` (4 个 test 文件)
+- `tests/` (7 个 test 文件 + `tests/helpers/inMemoryFs.ts`)
 - `assets/`, `styles.css`, `versions.json`, `LICENSE`, 等
 - 无 `pro/` 目录
 
@@ -178,7 +261,7 @@ esbuild version = 0.23.1
 - ✅ AC3：Endpoint/Region/URL Style/Log Level/Obfuscate 不在 UI 显示（已删除对应 input/dropdown）
 - ✅ AC4：检查连接按钮可用（settings_checkonnectivity 保留）
 - ✅ AC5：Ribbon "同步" + 命令面板 2 个命令（"开始同步" + "空运行"）可用
-- ✅ AC6：`npm run build2` 无错误（0 errors, main.js 1.19 MB）
-- ✅ AC7：`npm test` 无新增失败（52/52 passing, 2 upstream 已知 OpenSSL binary 测试已 skip）
+- ✅ AC6：`npm run build2` 无错误（0 errors, main.js 1,212,205 字节）
+- ✅ AC7：`npm test` 无新增失败（**140 passing / 2 pending**，2 个 upstream 已知 OpenSSL binary 测试已 skip）
 - ✅ AC8：data.json 加载后 6 项关键字段被强制覆盖（loadSettings 行 681-696）
 
