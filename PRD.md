@@ -1,12 +1,12 @@
-# PRD v1.3
+# PRD <u>v1.4</u>
 
-> 项目 cstcloud-sync 计划书 v1.3
+> 项目 cstcloud-sync 计划书 <u>v1.4</u>
 > 基于：remotely-save v0.5.25（Apache-2.0）+ 任务书 /home/WPS/NEW/remotely_save.md + 技术分析 tech_v1.md
 
-**当前版本**：v1.3
+**当前版本**：<u>v1.4</u>
 **生成时间**：2026-10-16
 **修订时间**：2026-10-27
-**状态**：<u>待评审（A+B+C 升级方案，产品版本统一 0.0.2）</u>
+**状态**：<u>待评审（A+B+C 升级方案 + v1.4 配置目录同步文档化，产品版本统一 0.0.2）</u>
 
 ---
 
@@ -20,12 +20,23 @@
 | | | <u>③ 删除"调试-删除同步计划历史"功能 + 删 debugMode.ts（§3.2 P1-13/14 删 / §3.4 NI-12 删 / §5.1 A 类文件 / §6 Step55~58 / §9 AC10）</u> |
 | v1.2 | 2026-10-27 | <u>① 状态收口：v1.1 由"定稿待评审"改标"已实施（v0.0.2）"（实施 commit 4f383e6，44 步 checklist 全通过，manifest.json version=0.0.2）② 本版未新增功能条目，仅推进版本号至 v1.2 作为下一轮升级基线，升级需求待老板明确后叠加</u> |
 | <u>v1.3</u> | <u>2026-10-27</u> | <u>① A 修复类（6 项）② B 质量类（5 项）③ C 瘦身类（5 项）④ 产品版本号统一 0.0.2，不升 0.0.3</u> <u>⑤ 版本号口径澄清：开发/升级阶段产品版本号沿用 0.0.2（开发基线口径，不锁发布版本）；最终发布版本号在 A/B/C 全部验收通过后由老板统一指定（须 ≥ 0.0.3，否则 Obsidian 商店无法覆盖已发布的 0.0.2）⑥ 本行为评审中修订，PRD 版本号不递增</u> |
+| <u>v1.4</u> | <u>2026-10-27</u> | <u>① 新增章节「§5.4 `.obsidian` 配置目录同步（实验性）」—— 记录 `syncConfigDir` 开关的真实同步范围、14 项排除清单、3 个必知坑与使用前提（代码零改动）② 新增风险 R17「配置目录同步为全量不可调」（高）③ 新增 Step 82「补齐 `workspace-mobile.json` 排除」（2 行改动，Phase 7 之后）④ 新增验收标准 AC33（配置目录同步）⑤ AC32 的 Step 覆盖范围由 59–81 扩至 59–82</u> |
 
 > <u>v1.2 升级需求待定：本次仅完成基线收口与版本推进，未新增功能项。需求明确后按版本迭代 SOP 继续叠加，新增内容同样用下划线标注。</u>
 
 > <u>本版仅覆盖 A/B/C 范围；D 功能类需求待老板明确后另起版本叠加。</u>
 
 > <u>v1.3 补充说明：本次新增条目一律用下划线标注；§1–§9 中描述 v1.0/v1.1/v1.2 已完成工作的历史内容原样保留，不做全局版本号替换。</u>
+
+> <u>**v1.4 新增内容导航（便于快速复核）**：</u>
+>
+> - <u>**§5.4 `.obsidian` 配置目录同步（实验性）`** —— 新增独立章节，含 5.4.1 开关与位置 / 5.4.2 同步范围 / 5.4.3 排除清单 / 5.4.4 三个必知坑 / 5.4.5 使用前提</u>
+> - <u>**§6 Phase 8** —— 新增 Step 82「补齐 `workspace-mobile.json` 排除」</u>
+> - <u>**§7** —— 新增「v1.4 排期」小表（M12）</u>
+> - <u>**§8** —— 新增 R17「配置目录同步为全量不可调」（等级：高）</u>
+> - <u>**§9** —— 新增 AC33「配置目录同步（实验性）验收」</u>
+>
+> <u>**v1.4 补充说明**：本版仅新增内容与 §9 AC32 的一处范围修订（59–81 → 59–82），未改动 §1–§9 的既有章节结构、编号与 AC 编号（AC1–AC32 保持不变）。新增条目一律用下划线标注。</u>
 
 ---
 
@@ -136,6 +147,7 @@
 - <u>P1-13 / P1-14 维持 v1.1 的"已删除"状态（对应 `debugMode.ts` 与调试区块，C 类无后续动作）。</u>
 - <u>P1-6 经 v1.3 实施前源码复核：Setting ID `settings_resetstatusbar_time` 在 `src/settings.ts` 中已不存在，判定为 v1.0 大删时误删而非本版删除，标注为"已删除"。</u>
 - <u>本表"代码位置"列为 v1.0/v1.1 时期的行号快照；C 类删除 `src/profiler.ts` 与加密后端后会引起 `src/settings.ts` 行号漂移，<u>实施后须回填真实行号</u>，行号本身不作为验收判据。</u>
+- <u>**v1.4 追加**：P1-9（同步配置文件夹 / `syncConfigDir`）在 v1.4 单独成节，见 **§5.4 `.obsidian` 配置目录同步（实验性）`**。v1.4 实测真实实现位置为 `src/settings.ts:436-457`（原快照行号已失效），默认关闭（`src/main.ts:58`）。该功能**代码零改动**，本节仅补文档与使用指引。</u>
 
 ### 3.3 P2 硬编码（代码存在但 UI 不显示）
 
@@ -472,6 +484,90 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | `SyncConfigDirModal` | `settings.ts:681-732` | **保留**，用于选择 vault 目录 |
 | `ExportSettingsQrCodeModal` | <u>`settings.ts:734-796`</u> | <u>v1.1 已删（随 `importExport.ts` 全文删除 + `ExportSettingsQrCodeModal` 整类删除）</u> |
 
+### 5.4 `.obsidian` 配置目录同步（实验性）
+
+<u>**v1.4 新增章节。** 本节内容为实测结论（源码逐行核对 + Obsidian 1.14.5 `app.asar` 实地查验），目的是把 `syncConfigDir` 开关开启后的**真实行为与风险**写清楚，避免使用者误判同步范围。**本插件代码零改动** —— 该开关是上游既有功能，本轮只补文档与使用指引。</u>
+
+#### 5.4.1 开关与位置
+
+| 项 | 值 |
+|---|---|
+| Setting ID | `settings_configdir` |
+| UI 文案 | 「同步配置文件夹（实验性质）」 |
+| UI 位置 | `设置 → 高级`（`src/settings.ts:392-397` 的 `advDiv` 区块） |
+| 控件形态 | 下拉（`disable` / `enable` 两项），非 checkbox |
+| 实现位置 | `src/settings.ts:436-457` |
+| 默认状态 | **关闭**（`src/main.ts:58` `syncConfigDir: false`） |
+| 二次确认 | 有（3 个 i18n 键，见下表） |
+| 弹窗类 | `SyncConfigDirModal`（`src/settings.ts:28-75`） |
+
+<u>**二次确认弹窗**（`src/langs/en.json` / `zh_cn.json` / `zh_tw.json` 各 3 键）：</u>
+
+| i18n 键 | 作用 |
+|---|---|
+| <u>`modal_syncconfig_attn`</u> | <u>选择 `enable` 后弹出的风险告知：「只同步（复制）整个 Obsidian 的配置文件夹」「各插件的设置或许会出错，且 Obsidian 或许需要重启来重载各插件的新配置」「如果您同意自行承受以上风险」</u> |
+| <u>`modal_syncconfig_secondconfirm`</u> | <u>弹窗内的二次确认按钮（中文文案「再次确认开启」）。**只有点击该按钮**，下拉才真正切到 `enable`；点「返回」则维持 `disable`（`src/settings.ts:456-459` 的 `SyncConfigDirModal` 回调）</u> |
+| <u>`modal_syncconfig_notice`</u> | <u>开启成功后的提示（中文文案「您已开启配置文件夹的同步！」，`src/settings.ts:63`）</u> |
+
+<u>**代码零改动声明**：开关、二次确认弹窗、配置目录列举、排除逻辑均已存在于插件代码中且默认关闭，本节**不引入任何实现改动**。本轮唯一的代码改动是 Step 82（`workspace-mobile.json` 排除），且与本开关无耦合关系。</u>
+
+#### 5.4.2 同步范围（实测结论：不是只同步插件目录）
+
+<u>**结论先行**：开启 `syncConfigDir` 后，插件同步的是**整个 `.obsidian` 配置目录**，**不是**只同步 `.obsidian/plugins/` 下的插件目录。</u>
+
+<u>**强制放行依据**：`src/sync.ts:207-233` 的 `isInsideObsFolder` 分支在 `syncConfigDir` 开启时对配置目录内路径一律置 `finalIsIgnored = false`（即「force sync everything」），不区分文件类型。</u>
+
+| 层级 | 是否放行 | 说明 |
+|---|---|---|
+| <u>`.obsidian/` 顶层配置文件</u> | <u>全量放行</u> | <u>含 `app.json`、`appearance.json`、`core-plugins.json`、`community-plugins.json`、`hotkeys.json`、`bookmarks.json` 等</u> |
+| <u>`.obsidian/plugins/<其他插件>/`</u> | <u>全量放行</u> | <u>其他插件目录**不做任何白名单过滤**，其全部子文件均进入同步清单</u> |
+| <u>`.obsidian/plugins/cstcloud-sync/`</u> | <u>**非全量**，仅白名单 5 文件</u> | <u>仅 `data.json`、`main.js`、`manifest.json`、`.gitignore`、`styles.css` 放行</u> |
+| <u>`.obsidian/plugins/cstcloud-sync/LICENSE`</u> | <u>排除</u> | <u>例：`LICENSE` 不在白名单 5 文件内，**不会**被同步</u> |
+| <u>`.obsidian/workspace`、`.obsidian/workspace.json`</u> | <u>排除</u> | <u>配置目录专属排除（见 §5.4.3）</u> |
+| <u>`.obsidian/workspace-mobile.json`</u> | <u>**当前未排除（缺陷）**</u> | <u>现有排除列表匹配不到 → 见 §6 Phase 8 Step 82</u> |
+
+<u>**白名单依据**：`src/obsFolderLister.ts` 的 `isPluginDirItself`（:9-16）判定路径是否属于本插件目录，`isLikelyPluginSubFiles`（:18-32）给出上述 5 个白名单文件名。两者在 `listFilesInObsFolder`（:34 起，由 `src/fsLocal.ts:105` 调用，传入 `pluginID = this.manifest.id = "cstcloud-sync"`）中生效。</u>
+
+<u>**`syncConfigDir` 与 `syncBookmarks` 的优先级**（`src/sync.ts:210-238` 的三分支）：`syncConfigDir` 开启时 `syncBookmarks` 分支不生效；`syncConfigDir` 关闭而 `syncBookmarks` 开启时，只同步 `bookmarks.json`（`isBookmarksFile`，`src/sync.ts:132-141`），配置目录其余内容被排除。</u>
+
+#### 5.4.3 排除清单（14 项）
+
+| # | 排除项 | 来源 |
+|---|---|---|
+| <u>1</u> | <u>`.git`</u> | <u>`src/misc.ts:445-480` `isSpecialFolderNameToSkip` 内置列表</u> |
+| <u>2</u> | <u>`.github`</u> | <u>同上</u> |
+| <u>3</u> | <u>`.gitlab`</u> | <u>同上</u> |
+| <u>4</u> | <u>`.svn`</u> | <u>同上</u> |
+| <u>5</u> | <u>`node_modules`</u> | <u>同上</u> |
+| <u>6</u> | <u>`.DS_Store`</u> | <u>同上</u> |
+| <u>7</u> | <u>`__MACOSX `</u> | <u>同上（含尾部空格）</u> |
+| <u>8</u> | <u>`Icon\r`</u> | <u>同上（macOS 图标文件）</u> |
+| <u>9</u> | <u>`desktop.ini`</u> | <u>同上</u> |
+| <u>10</u> | <u>`Desktop.ini`</u> | <u>同上（大小写变体）</u> |
+| <u>11</u> | <u>`thumbs.db`</u> | <u>同上</u> |
+| <u>12</u> | <u>`Thumbs.db`</u> | <u>同上（大小写变体）</u> |
+| <u>13</u> | <u>`workspace`</u> | <u>`src/obsFolderLister.ts:97-98` 与 `:109-110` 的 `isSpecialFolderNameToSkip(iter2, ["workspace", "workspace.json"])`（配置目录专属排除）</u> |
+| <u>14</u> | <u>`workspace.json`</u> | <u>同上（桌面端布局文件）</u> |
+
+<u>**匹配规则**（`src/misc.ts:463-472`）：`x === it`、`x === it + "/"`、`x.endsWith("/" + it)`、`x.endsWith("/" + it + "/")` 四种之一命中即排除。该规则为**精确名匹配**，不含通配与前缀匹配 —— 这正是 `workspace-mobile.json` 逃逸的原因（见 Step 82）。</u>
+
+<u>**补充（非上述 14 项）**：`src/misc.ts:474-490` 另排除 Microsoft Office 临时文件（前缀 `~$`，后缀 `doc`/`docx`/`ppt`/`pptx`/`xls`/`xlsx`）；`src/sync.ts` 的 `isBookmarksFile` 逻辑在 `syncBookmarks` 开启时只同步 `bookmarks.json`（详见 §5.4.2 末段）。</u>
+
+#### 5.4.4 三个必知坑
+
+| # | 坑 | 后果 | 依据 |
+|---|---|---|---|
+| <u>坑 1</u> | <u>**其他插件的 `data.json` 会明文上传**</u> | <u>实测 `.obsidian/plugins/claudian-mobile-jy/data.json` 内含**明文 API Key**；开启后该等内容会直接进入 bucket。本插件目录的白名单机制**不保护其他插件目录**</u> | <u>`src/obsFolderLister.ts:18-32` 的白名单只约束本插件目录；其他插件目录全量放行（§5.4.2）</u> |
+| <u>坑 2</u> | <u>**无法微调排除范围**</u> | <u>用户**没有任何手段**排除 `.obsidian` 内的单个文件 —— 想要排除某个其他插件的 `data.json` 也做不到</u> | <u>`src/main.ts:593-597` 已把 `ignorePaths` / `onlyAllowPaths` 从 settings 中 `delete` 掉（对应 §3.4 NI-9）</u> |
+| <u>坑 3</u> | <u>**开启后需重启 Obsidian，且桌面端与移动端配置互相覆盖**</u> | <u>各插件配置可能出错、需重载；`workspace.json`（桌面端布局）与 `workspace-mobile.json`（移动端布局）互相覆盖 → 无意义同步 + 频繁冲突</u> | <u>`modal_syncconfig_attn` 告知文案；`src/sync.ts` 对 obs 目录的强制放行；`workspace-mobile.json` 当前未排除（Step 82）</u> |
+
+#### 5.4.5 使用前提
+
+1. <u>bucket 必须为**私有** + 开启**服务端加密**。本插件已无端到端加密能力（§2.3、§5.1.C 的 C1），`.obsidian` 内的明文内容会直接落到对象存储</u>
+2. <u>先在**测试 vault** 开启，验证无误后再用于主 vault</u>
+3. <u>开启前先**人工清点** `.obsidian` 内有无高敏凭据（重点是其他插件的 `data.json`，见坑 1）</u>
+4. <u>明确告知使用者：这是**实验性**功能，**插件作者与维护者均不对其后果负责**</u>
+
 ---
 
 ## 6. 实施步骤（Checklist）
@@ -633,6 +729,23 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 <u>**必须保留（易被误判为死键）**：`settings_protectmodifypercentage*`（10 个，P1-12 保留）、`syncrun_abort_protectmodifypercentage`（P1-12 联动）、`syncalgov3_checkbox_manual_backup` / `syncalgov3_checkbox_requiremultidevupdate`（v1.1 弹窗 6 键之一，AC9）、`settings_s3_prod` / `settings_s3_prod1` / `settings_s3_prod2` / `settings_s3_prod3`（<u>虽为 AWS 文档外链、在 cstcloud 定位下不适用，但当前仍在 `src/settings.ts:168-186` 渲染中，属"残留但仍使用"，本版不删，列为后续 D 类候选</u>）。</u>
 
+### <u>Phase 8：v1.4 补充（1 项）</u>
+
+<u>**排期**：Phase 7（C 瘦身类）之后、终验（§9 AC32 发版前置）之前。</u>
+
+| Step | 动作 | 文件位置 | 完成判据 |
+|---|---|---|---|
+| 82 | <u>**（v1.4-1）** 补齐 `workspace-mobile.json` 排除</u> | <u>`src/obsFolderLister.ts`（两处数组各加 1 个字符串，**共 2 行**）</u> | <u>`grep -n "workspace-mobile.json" src/obsFolderLister.ts` 命中 **2 处**；`npm run build2` 成功；`npm test` 全绿</u> |
+
+<u>**Step 82 背景（已实测）**：</u>
+
+- <u>Obsidian 1.14.5 的 `app.asar` 中确认存在两个真实文件：`workspace.json`（桌面端布局）与 `workspace-mobile.json`（移动端布局）</u>
+- <u>现有排除列表 `["workspace", "workspace.json"]`（`src/obsFolderLister.ts:97` 与 `:109`）**匹配不到** `workspace-mobile.json` —— 匹配条件为 `x === it`、`x === it + "/"`、`x.endsWith("/" + it)`、`x.endsWith("/" + it + "/")`，四种条件均不命中（精确名匹配，无通配、无前缀匹配）</u>
+
+<u>**Step 82 后果**：移动端布局文件会被同步；且移动端每次启动/退出 Obsidian 都会改写该文件 → 无意义同步 + 频繁冲突。该问题在 `syncConfigDir` 开启时暴露（§5.4.4 坑 3）。</u>
+
+<u>**Step 82 改动**：`src/obsFolderLister.ts` 两处 `isSpecialFolderNameToSkip(iter2, ["workspace", "workspace.json"])` 的数组各增加一个字符串 `"workspace-mobile.json"` → **2 行改动**，不改匹配逻辑、不改其他排除项。</u>
+
 
 ---
 
@@ -668,6 +781,16 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 - <u>B4（Step 72）建议早于 C1（Step 74-77）</u>：`src/sync.ts` 的加密解耦是全项目风险最高的一次改动，若先有 `sync.ts` / `copyLogic.ts` / `conflictLogic.ts` 的单测兜底，解耦的回归可被自动捕获；反之只能靠 E2E 人工兜底。<u>若工期紧张，B4 可后置，但 C1 之后必须补做。</u>
 - <u>B5（Step 73）必须最后做</u>：它是 C 类成果的终检。
 - <u>B2（Step 70）不受其他步骤阻塞，但受凭证阻塞</u>：可与 M5~M8 并行推进，凭证到位前保持「阻塞」状态。
+
+<u>**v1.4 排期（配置目录同步文档化 + Step 82）**</u>
+
+| <u>里程碑</u> | <u>内容</u> | <u>对应 Step</u> | <u>估时</u> |
+|---|---|---|---|
+| <u>M12：v1.4 补充</u> | <u>Step 82 补齐 `workspace-mobile.json` 排除（2 行改动）+ §5.4 配置目录同步文档化落地到 README / 插件设置说明（**代码零改动**）+ §9 AC33 验收</u> | <u>82</u> | <u>1h</u> |
+
+<u>**v1.4 总估时：1h**，排在 Phase 7（M8）之后、终验（§9 AC32）之前。§5.4 的文档化工作不含代码改动，不占用实施工时。</u>
+
+<u>**v1.4 依赖关系**：Step 82 依赖 Phase 7 已完成（`src/obsFolderLister.ts` 在 C 类中未被改动，但依赖 A/C 两类的 `npm test` 基线全绿作为前置）；Step 82 完成后须由 AC33 复核 §5.4 所述排除清单的最终生效状态。</u>
 
 <u>### 7.1 v0.0.2 目标交付物形态</u>
 
@@ -707,6 +830,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>R14</u> | <u>C2 删除 profiler 波及面超预期：`src/profiler.ts` 虽无 UI 入口，但仍被 `src/sync.ts`（62 处）、`src/fsLocal.ts`（12 处）、`src/localdb.ts`（4 处）、`src/main.ts`（7 处）调用，且 `src/main.ts:142` 仍依据 `settings.profiler.enable` 在运行时启用。删除时若漏改任一处即编译失败</u> | <u>中</u> | <u>§5.1.C 的依赖清理点已逐文件列出；完成判据为 `grep -rn "profiler\|Profiler" src/` 为 0 + `npm run build2` + `npm test` 通过。<u>注意 `src/localdb.ts` 的 `profilerresults` 表会成为孤儿表，已建库不受影响</u></u> |
 | <u>R15</u> | <u>C4 误删仍在使用的依赖：`dotenv` 被勘察列为残留，但 `esbuild.config.mjs:1` 与 `webpack.config.js:1` 仍在 import/require，删除后构建链直接断裂；`jsdom` 被 `tests/misc.test.ts` 使用</u> | <u>中</u> | <u>Step 80 完成判据中已逐项标注「删除 / 保留」及判定依据；C4 完成后必须跑通 `npm run build2` + `npm test`</u> |
 | <u>R16</u> | <u>C5 误删仍在渲染的 i18n 键：`settings_chooseservice` / `settings_synconsave` / `settings_synconsave_desc` 当前仍被 UI 引用，若先于 A8 删除，设置页将渲染出 undefined</u> | <u>低</u> | <u>§6 Step 81 已把这 3 键列为「条件删除（须先做 A8）」；执行顺序固定为 A8（Step 67）→ C5（Step 81）</u> |
+| <u>R17</u> | <u>**配置目录同步为全量不可调**：`src/main.ts:593-597` 已将 `ignorePaths` / `onlyAllowPaths` 从 settings 中 `delete`，用户无法排除 `.obsidian` 内任何单个文件（例如其他插件含明文凭据的 `data.json`）。一旦开启，`.obsidian` 内全部内容（排除项除外）均会进入 bucket</u> | <u>**高**</u> | <u>① 仅在测试 vault 开启 ② bucket 私有 + 服务端加密 ③ 开启前人工清点 `.obsidian` 内高敏凭据 ④ 若需精细化排除，须新开 D 类需求实现白名单机制 ⑤ 开启后需重启 Obsidian，并留意桌面/移动端配置互相覆盖</u> |
 
 ---
 
@@ -730,6 +854,8 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 <u>v1.1 的 AC11 保持原编号不变；v1.3 的新增条目自 AC12 起编号，避免改动历史条目编号。</u>
 
+<u>**v1.4 新增验收项：AC33**（配置目录同步（实验性））。v1.4 的新增条目自 AC33 起编号，AC1–AC32 全部保持不变；AC32 仅将 Step 覆盖范围由「59–81」修订为「59–82」，编号与语义不变。</u>
+
 | ID | AC | 验证方式 |
 |---|---|---|
 | <u>AC12</u> | <u>**（A1）** `tests/fsWebdis.test.ts` 不存在；`npx tsc --noEmit` 输出 0 error（`TS2307: Cannot find module '../src/fsWebdis'` 消除）；`npm run build2` 与 `npm test` 均可执行完毕</u> | <u>`ls tests/fsWebdis.test.ts` → No such file；`npx tsc --noEmit` → 无 error 行；`npm run build2` → exit 0 且 `main.js` 时间戳更新</u> |
@@ -752,4 +878,5 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC29</u> | <u>**（C4）** devDependencies 残留已清理：`webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` 已从 `package.json` 移除；<u>`dotenv` / `jsdom` / `@types/jsdom` 保留</u></u> | <u>`grep -n "webdav-server\|openapi-typescript\|npm-check-updates\|@types/chai\|esbuild-plugin-inline-worker\|worker-loader" package.json` → 0；`grep -n "\"dotenv\"\|\"jsdom\"" package.json` → 有命中；`npm run build2` + `npm test` → exit 0</u> |
 | <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 169 键</u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 169；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u></u> |
 | <u>AC31</u> | <u>**（发布）** v0.0.2 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；`versions.json` 含 `"0.0.2": "0.13.21"`</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 `"0.0.2": "0.13.21"`；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
-| <u>AC32</u> | <u>发版前置：A/B/C 全部 Step（59–81）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布</u> | <u>老板书面确认 + grep 三处版本号一致</u> |
+| <u>AC32</u> | <u>发版前置：A/B/C 全部 Step（<u>59–82</u>）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布</u> | <u>老板书面确认 + grep 三处版本号一致</u> |
+| <u>AC33</u> | <u>**（v1.4 · 配置目录同步（实验性））** ① `syncConfigDir` 开关可在 `设置 → 高级` 正常开启（走 `modal_syncconfig_attn` → `modal_syncconfig_secondconfirm` → `modal_syncconfig_notice` 三键二次确认链路）；② 开启后 `.obsidian` **整个配置目录**进入同步清单（顶层 `app.json` / `appearance.json` / `core-plugins.json` / `community-plugins.json` / `hotkeys.json` / `bookmarks.json` 与各插件目录均可见）；③ §5.4.3 的 14 项排除项**确实被排除**（尤其 `workspace` / `workspace.json` / `workspace-mobile.json` / `.git` / `node_modules`）；④ 本插件目录 `.obsidian/plugins/cstcloud-sync/` **只同步白名单 5 文件**（`data.json` / `main.js` / `manifest.json` / `.gitignore` / `styles.css`），`plugins/cstcloud-sync/LICENSE` **不被同步**；⑤ 其他插件目录为全量放行</u> | <u>在测试 vault 中开启开关并执行一次 dry-run（`start-sync-dry-run`），逐条比对同步清单：① 开关 UI 链路可走通 ② `.obsidian` 顶层文件均在清单内 ③ 14 项排除项均不在清单内 ④ 本插件目录仅 5 文件在清单内、`LICENSE` 不在 ⑤ 其他插件目录文件均在清单内。<u>另：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` 命中 2 处（Step 82 已实施）</u></u> |
