@@ -26,8 +26,6 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@types/chai": "^4.3.16",
-    "@types/chai-as-promised": "^7.1.8",
     "@types/jsdom": "^21.1.7",
     "@types/lodash": "^4.17.7",
     "@types/mime-types": "^2.1.4",
@@ -41,14 +39,11 @@
     "esbuild-plugin-inline-worker": "^0.1.1",
     "jsdom": "^24.1.1",
     "mocha": "^10.7.0",
-    "npm-check-updates": "^16.14.20",
     "obsidian": "^1.5.7",
-    "openapi-typescript": "^7.1.0",
     "ts-loader": "^9.5.1",
     "tslib": "^2.6.3",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",
-    "webdav-server": "^2.6.2",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
     "worker-loader": "^3.0.8"
