@@ -1,6 +1,5 @@
 import "dotenv/config";
 import esbuild from "esbuild";
-import inlineWorkerPlugin from "esbuild-plugin-inline-worker";
 import process from "process";
 
 const banner = `/*
@@ -53,7 +52,6 @@ esbuild
       "process.env.DEBUG": `undefined`,
       "globalThis.process.versions": `undefined`,
     },
-    plugins: [inlineWorkerPlugin()],
   })
   .then((context) => {
     if (process.argv.includes("--watch")) {

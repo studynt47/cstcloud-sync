@@ -1,8 +1,8 @@
 /**
- * Guard helpers that replace the former `src/fsEncrypt.ts` encryption layer.
+ * Guard helpers that replace the removed encryption layer.
  *
  * PRD v1.3 §5.1.C (C1) requires that removing the encryption backend keeps
- * three behaviours of the old `FakeFsEncrypt` (which was always constructed
+ * three behaviours of the old wrapper class (which was always constructed
  * with an empty password, so it was effectively a pass-through):
  *
  *   ① `walk()` results still carry `keyEnc = keyRaw` / `sizeEnc = sizeRaw`
@@ -36,7 +36,8 @@ export type PasswordCheckReasonType =
   | "encryption_method_not_matched";
 
 /**
- * Same shape as the former `PasswordCheckType` of `src/fsEncrypt.ts`.
+ * Same shape as the former `PasswordCheckType` interface of the removed
+ * encryption layer.
  * Only `empty_remote`, `remote_encrypted_local_no_password` and
  * `likely_no_password_both_sides` can be produced now (the encryption
  * backend is gone, so there is no password to check anymore).
@@ -50,8 +51,8 @@ export interface PasswordCheckType {
  * Copy the entity and fill the "encrypted" mirror fields.
  *
  * This is a verbatim copy of the former
- * `src/fsEncrypt.ts::copyEntityAndCopyKeyEncSizeEnc()`: with an empty
- * password the old encryption layer did nothing but fill these two fields.
+ * `copyEntityAndCopyKeyEncSizeEnc()` of the removed encryption layer: with
+ * an empty password the old layer did nothing but fill these two fields.
  *
  * `src/sync.ts` still compares `keyEnc` / `sizeEnc` when it decides whether
  * the remote side changed, so the fields must keep being filled.
@@ -64,8 +65,8 @@ export function copyEntityAndCopyKeyEncSizeEnc(entity: Entity): Entity {
 }
 
 /**
- * A quick guess, no actual decryption here (same as the old helper of
- * `src/fsEncrypt.ts`).
+ * A quick guess, no actual decryption here (same as the old helper of the
+ * removed encryption layer).
  */
 export function isLikelyOpenSSLEncryptedName(name: string): boolean {
   return (
@@ -99,7 +100,7 @@ export function isRemoteEncrypted(entities: Entity[]): boolean {
 }
 
 /**
- * The guard that replaces `FakeFsEncrypt.isPasswordOk()`.
+ * The guard that replaces the removed `isPasswordOk()` check.
  *
  * When the remote side contains openssl ciphertext and the local side has
  * no password (which is always the case now that the encryption backend is

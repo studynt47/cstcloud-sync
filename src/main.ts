@@ -23,7 +23,6 @@ import type {
 import { COMMAND_URI } from "./baseTypes";
 import { API_VER_ENSURE_REQURL_OK } from "./baseTypesObs";
 import { messyConfigToNormal, normalConfigToMessy } from "./configPersist";
-import { FakeFsEncrypt } from "./fsEncrypt";
 import { getClient } from "./fsGetter";
 import { FakeFsLocal } from "./fsLocal";
 import { DEFAULT_S3_CONFIG } from "./fsS3";
@@ -160,7 +159,6 @@ export default class RemotelySavePlugin extends Plugin {
       this.app.vault.getName(),
       async () => await this.saveSettings()
     );
-    const fsEncrypt = new FakeFsEncrypt(fsRemote, "", "rclone-base64");
 
     const t = (x: TransItemType, vars?: any) => {
       return this.i18n.t(x, vars);
@@ -408,7 +406,6 @@ export default class RemotelySavePlugin extends Plugin {
       callbackSyncProcess
     );
 
-    fsEncrypt.closeResources();
     (profiler as Profiler | undefined)?.clear();
 
     this.syncEvent?.trigger("SYNC_DONE");

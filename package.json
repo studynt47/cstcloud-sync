@@ -36,7 +36,6 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "esbuild": "^0.23.0",
-    "esbuild-plugin-inline-worker": "^0.1.1",
     "jsdom": "^24.1.1",
     "mocha": "^10.7.0",
     "obsidian": "^1.5.7",
@@ -45,15 +44,13 @@
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",
     "webpack": "^5.93.0",
-    "webpack-cli": "^5.1.4",
-    "worker-loader": "^3.0.8"
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.620.0",
     "@aws-sdk/lib-storage": "^3.620.0",
     "@aws-sdk/signature-v4-crt": "^3.620.0",
     "@aws-sdk/types": "^3.609.0",
-    "@fyears/rclone-crypt": "^0.0.7",
     "@fyears/tsqueue": "^1.0.1",
     "@sanity/diff-match-patch": "^3.1.1",
     "@smithy/fetch-http-handler": "^3.2.4",
