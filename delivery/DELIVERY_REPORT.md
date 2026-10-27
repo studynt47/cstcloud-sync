@@ -7,7 +7,9 @@
 > - 基线与本轮 commit：`5268dbe`（Step 59-61 基线）→ `f376a9f`（Step 62-68 A3-A9）→ `89e9b07`（Step 72 B4 单测）。
 > - 全文不记录 AccessKey / SecretKey 明文。
 
-## 1. 44 步 Checklist 完成情况
+## 1. Step Checklist 完成情况
+
+> 说明：本节沿用 v1.0 实施时的分阶段清单（Step 1-44）。PRD v1.3 §6 的权威清单为 **59 条**（含 Step 1.5 及 v1.3 新增的 Step 45-73），逐条状态见 PRD §6「Step Checklist（完整 47 步 → 实为 59 条）」及本报告 §5；本节不重复维护。
 
 ### Phase 1 (Step 1-5)：文件删除
 - ✅ Step 1：删除 `src/fsOnedrive.ts`
