@@ -1325,6 +1325,52 @@ describe("Sync: syncer conflict and deletion branches", () => {
     );
   });
 
+  it("should keep the remote side when the remote one is bigger (keep_larger)", async () => {
+    // The counterpart of the test above: the remote file is the bigger one,
+    // so the remote side must win. Without this, the `local.sizeEnc >=
+    // remote.sizeEnc` comparison in the `keep_larger` branch could be
+    // replaced by an unconditional "keep local" without any test failing.
+    const db = makeFakeDb();
+    const local = new InMemoryFs("local");
+    const remote = new InMemoryFs("remote");
+    await local.writeFile("new.md", strToBuffer("small"), T0, T0);
+    await remote.writeFile("new.md", strToBuffer("the remote one is bigger"), T0 + 3000, T0);
+
+    const errors = await run(local, remote, db, {
+      conflictAction: "keep_larger",
+    });
+
+    assert.equal(errors.length, 0, `unexpected error: ${errors[0]?.message}`);
+    assert.equal(
+      bufferToStr(await local.readFile("new.md")),
+      "the remote one is bigger"
+    );
+  });
+
+  it("should not push the local-only new files in pull-only mode", async () => {
+    // In pull-only mode a file that only exists locally must NOT be
+    // uploaded to the remote (it is a "do nothing" decision). Without this
+    // assertion, the pull-only guard could silently turn into a push.
+    const db = makeFakeDb();
+    const local = new InMemoryFs("local");
+    const remote = new InMemoryFs("remote");
+    await local.writeFile("local-only.md", strToBuffer("local only"), T0, T0);
+    await remote.writeFile("remote-new.md", strToBuffer("remote"), T0, T0);
+
+    const errors = await run(local, remote, db, {
+      syncDirection: "incremental_pull_only",
+    });
+
+    assert.equal(errors.length, 0, `unexpected error: ${errors[0]?.message}`);
+    // the local-only file must stay local
+    assert.ok(
+      !remote.files.has("local-only.md"),
+      "pull-only mode must not upload the local-only files"
+    );
+    // and the remote-only file must still be pulled
+    assert.ok(local.files.has("remote-new.md"));
+  });
+
   it("should not download the new remote files in push-only mode", async () => {
     const db = makeFakeDb();
     const local = new InMemoryFs("local");
