@@ -1,12 +1,12 @@
-# PRD <u>v1.7</u>
+# PRD <u>v1.8</u>
 
-> 项目 cstcloud-sync 计划书 <u>v1.7</u>
+> 项目 cstcloud-sync 计划书 <u>v1.8</u>
 > 基于：remotely-save v0.5.25（Apache-2.0）+ 任务书 /home/WPS/NEW/remotely_save.md + 技术分析 tech_v1.md
 
-**当前版本**：<u>v1.7</u>
+**当前版本**：<u>v1.8</u>
 **生成时间**：2026-10-16
 **修订时间**：2026-10-28
-**状态**：<u>待评审（v1.7 发版收口版；发布版本号 0.0.3 已由老板 2026-10-28 书面指定，三处待同步；开发基线 0.0.2 已收口）</u>
+**状态**：<u>待评审（v1.8 发布仓库回填版；发布版本号 0.0.3，发布仓库 studynt47/cstcloud-sync（public）已确定，代码侧实施完成）</u>
 
 ---
 
@@ -24,6 +24,7 @@
 | <u>v1.5</u> | <u>2026-10-27</u> | <u>勘误版：§5.1.C ① 与 R13 的 keyEnc/sizeEnc 引用数 16→15（实测口径）、§6 例外项 Step 1.5 标记为已完成、§9 AC17 例外项 4→3</u> |
 | <u>v1.6</u> | <u>2026-10-27</u> | <u>收口版：§6 例外表 Step 22 标记为已完成（例外项 3→2：Step 11/37）、i18n 键数判据 169→167（commit 31c7a30 清理 2 个孤儿键）、§9 AC17 例外项 3→2、AC19 标注已满足</u> |
 | <u>v1.7</u> | <u>2026-10-28</u> | <u>① 发版号回填：§4.3 version 0.0.2 → 0.0.3（manifest.json / package.json / PRD §4.3 三处一致）② §7.1 交付物形态与 §9 AC31 判据的 versions.json 条目随发版号更新为 "0.0.3": "0.13.21" ③ §9 AC32 由「➖ 后续发版项」改为「✅ 已满足」④ §8 R9（发版号未递增）标记为已解除 ⑤ §9 AC14 增补说明：0.0.2 为开发基线、0.0.3 为发布版本号，历史判据不动</u> |
+| <u>v1.8</u> | <u>2026-10-28</u> | <u>① 发布仓库地址回填：§4.3 authorUrl 由 https://github.com/cstcloud/cstcloud-sync 改为 https://github.com/studynt47/cstcloud-sync（原仓库实测 404 不存在，Obsidian 商店审核要求 authorUrl 可访问）② §6 Step 64 与 §9 AC16 增补 v1.8 变更注，历史判据文字不改 ③ 新增公开发布口径说明段：仓库为 public，归属个人账号 studynt47 ④ 本版未新增功能条目，AC1–AC33 编号不变</u> |
 
 > <u>v1.2 升级需求待定：本次仅完成基线收口与版本推进，未新增功能项。需求明确后按版本迭代 SOP 继续叠加，新增内容同样用下划线标注。</u>
 
@@ -42,6 +43,12 @@
 > <u>**v1.4 补充说明**：本版仅新增内容与 §9 AC32 的一处范围修订（59–81 → 59–82），未改动 §1–§9 的既有章节结构、编号与 AC 编号（AC1–AC32 保持不变）。新增条目一律用下划线标注。</u>
 
 > <u>**v1.7 补充说明**：本版仅回填老板已决策的发版事实（0.0.3），**未新增任何功能条目、未改动 §1–§9 的既有章节结构、编号与 AC 编号**（AC1–AC33 保持不变）。0.0.2 为开发基线口径、0.0.3 为发布版本号，两者并存的原因已在 §4.3 与 AC14 注释中说明。M10（发布）执行由全栈工程师 fse 承担，PM 负责副本同步。</u>
+
+> <u>**v1.8 公开发布口径**：
+> - 发布仓库：`https://github.com/studynt47/cstcloud-sync`（**public**，GitHub 个人账号 `studynt47`）。归属该账号而非 `CstCloud`，原因是 `CstCloud` 为另一独立账号且无授权凭证，原写入的 `cstcloud/cstcloud-sync` 仓库实测 404。
+> - 公开范围：仅产品本体（`manifest.json` / `main.js` / `versions.json` / `README`×2 / `LICENSE` / `GUIDE_config-dir-sync.md` / `src/` / `tests/` / `assets/` / `docs/` / 构建配置）。**内部规划文档（PRD、本交付报告、`tech_v1.md`、`decomp_*`、`prd_review_*`、`_pm_survey_*`、`AGENTS.md`）与分发包 zip 不进入公开仓库**，仅保留在本机与交付副本目录。
+> - 凭证处理：GitHub PAT 仅存放于 `/home/WPS/config/GitHub`，**不入库、不写入任何仓库文件**；建议老板在 GitHub 侧轮换该 PAT（本轮已用于推送）。
+> - License：Apache-2.0，保留上游 fyears 署名与致谢（`LICENSE` / `README` 已含）。</u>
 
 ---
 
@@ -306,7 +313,7 @@
 | `version` | `0.5.25` | <u>`0.0.3`</u> <u>（发布版本号，老板 2026-10-28 书面指定；此前 0.0.2 为开发基线口径，已收口）</u> |
 | `description` | `Yet another unofficial plugin...` | <u>`基于 cstcloud.cn 对象存储的 Obsidian 双向同步插件`</u> |
 | `author` | `fyears` | <u>`cstcloud`</u> <u>（v1.3 A5 默认方案，author 字符串待老板最终确认）</u> |
-| <u>`authorUrl`</u> | <u>`https://github.com/fyears`</u> | <u>`https://github.com/cstcloud/cstcloud-sync`（v1.3 A5）</u> |
+| <u>`authorUrl`</u> | <u>`https://github.com/fyears`</u> | <u>`https://github.com/studynt47/cstcloud-sync`（v1.8 修正：v1.3 A5 原定的 cstcloud/cstcloud-sync 仓库不存在，实测 404；Obsidian 商店审核要求 authorUrl 为可访问的公开仓库地址）</u> |
 | `fundingUrl` | `https://remotelysave.com` | **删除** |
 
 <u>v1.3 A5 补充：manifest 的 `author` 改为 `cstcloud` **不构成对上游作者的除名**。Apache-2.0 §4(c) 要求保留声明，原作者 fyears 的署名与致谢统一落在 `README.md` / `README.zh-cn.md`（A4）与根 `LICENSE`（A9），manifest 只承载分发身份。</u>
@@ -691,7 +698,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | 61 | <u>**（A2-b）**</u> 产出干净基线 commit | 全仓（<u>须包含 PRD.md 的 v1.2 内容与本 v1.3 变更</u>） | `git log --oneline -1` 为基线 commit；`git status --porcelain` 输出为空；`git show --stat` 的内容差异与预期一致 |
 | 62 | <u>**（A3）**</u> <u>统一开发基线产品版本号到 0.0.2</u> | `package.json`（`version`）、`manifest.json`（`version`）、本 PRD §4.3 | `grep '"version"' package.json manifest.json` 均为 `0.0.2`；§4.3 表 version 单元格为 `0.0.2`；<u>不出现 0.0.3</u>；<u>本步骤仅锁定开发基线口径；发布版本号在 Step 81 之后由老板统一指定（见 §9 AC32），本版不预设具体发布号</u> |
 | 63 | <u>**（A4）**</u> README 品牌化改写 | `README.md`、`README.zh-cn.md` | 标题为 `cstcloud-sync`；<u>必须保留 Apache-2.0 归属说明与对 fyears（上游原作者）的致谢段落</u>；无上游 star 徽章 / 赞助链接 / 商店链接 / "Remotely Save" 标题 |
-| 64 | <u>**（A5）**</u> manifest 身份统一 | `manifest.json` | `author` = `cstcloud`（<u>字符串待老板最终确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save" |
+| 64 | <u>**（A5）**</u> manifest 身份统一 | `manifest.json` | `author` = `cstcloud`（<u>字符串待老板最终确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save" | <u>【v1.8 修正】authorUrl 最终取值为 https://github.com/studynt47/cstcloud-sync（原 cstcloud/cstcloud-sync 仓库实测 404 不存在），其余判据不变</u> |
 | 65 | <u>**（A6）**</u> 勾选 §6 历史 58 步 checklist | 本 PRD §6 | 59 个条目逐一勾选；未完成项同行注明原因（见上方例外项表） |
 | 66 | <u>**（A7）**</u> 设置页 H1 品牌残留修复 | `src/settings.ts:126`（`containerEl.createEl("h1", { text: "Remotely Save" })`） | 设置页顶部标题显示 `cstcloud-sync`，不再显示 `Remotely Save` |
 | 67 | <u>**（A8）**</u> 设置页空壳元素清理 | `src/settings.ts:133-134`（`settings_chooseservice` 孤儿标题）、`src/settings.ts:366-368`（`settings_synconsave` 空 Setting） | 设置页不再出现"选择服务"标题与"保存时自动同步"空标签；对应 i18n 键按 C5 一并清理 |
@@ -869,7 +876,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC13</u> | <u>**（A2）** git 基线干净：`git status --porcelain` 输出为空；`git diff --numstat` 无 mode-only 条目；基线 commit 已产出</u> | <u>`git config core.fileMode` → `false`（或文件权限位已归位为 644）；`git status --porcelain` → 空；`git log --oneline -1` → 基线 commit；`git show --stat HEAD` → 内容差异与预期一致</u> |
 | <u>AC14</u> | <u>**（A3）** 产品版本号三处统一为 `0.0.2`：`package.json` / `manifest.json` / PRD §4.3；<u>全仓不出现 `0.0.3`</u></u> | <u>`grep '"version"' package.json manifest.json` → 两处均为 `0.0.2`；`grep -rn "0\.0\.3" package.json manifest.json PRD.md` → 无输出（PRD 中仅版本号口径相关条目——修订记录 v1.3 行 / §6 Step 62 / §7 M11 / §8 R9 / §9 AC14 与 AC32——的文字提及"0.0.3"允许存在）</u> <u>注：0.0.2 为开发基线；发版版本号已由老板指定为 0.0.3（manifest.json / package.json / PRD §4.3），"0.0.3" 字样将出现在版本字段中，属预期，非违反本条判据</u> |
 | <u>AC15</u> | <u>**（A4）** `README.md` / `README.zh-cn.md` 标题为 `cstcloud-sync`；<u>保留 Apache-2.0 归属说明与对 fyears（上游原作者）的致谢段落</u>；无上游 star 徽章 / 赞助链接 / 商店链接残留</u> | <u>`grep -n "^# " README.md README.zh-cn.md` → 均为 `# cstcloud-sync`；`grep -n "Apache-2.0\|Apache License\|fyears" README.md README.zh-cn.md` → 有命中；`grep -n "img.shields.io\|remotelysave.com\|fyears/remotely-save" README.md README.zh-cn.md` → 无命中</u> |
-| <u>AC16</u> | <u>**（A5）** `manifest.json` 身份为 cstcloud 口径：`author` = `cstcloud`（<u>待老板确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save"</u> | <u>读 `manifest.json` 三字段逐一比对；`grep -n "fork" manifest.json` → 无命中</u> |
+| <u>AC16</u> | <u>**（A5）** `manifest.json` 身份为 cstcloud 口径：`author` = `cstcloud`（<u>待老板确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save"</u> | <u>读 `manifest.json` 三字段逐一比对；`grep -n "fork" manifest.json` → 无命中</u> <u>【v1.8 修正】authorUrl 最终为 https://github.com/studynt47/cstcloud-sync；`author` = `cstcloud` 不变，description 不含 "fork" 不变</u> |
 | <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，<u>2 个例外项（Step 11 / 37）保留 `[ ]` 并注明原因</u>（<u>Step 1.5 已于 Step 59 补做完成；Step 22 亦已完成——`src/settings.ts` 中 `syncOnSave` 零命中，Setting 已随 Step 67（A8）删除</u>）。<u>计数口径：57 条 `[x]` + 2 条 `[ ]` = 59 条</u></u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
 | <u>AC18</u> | <u>**（A7）** 设置页顶部标题为 `cstcloud-sync`，不再显示 `Remotely Save`</u> | <u>`grep -n '"Remotely Save"' src/settings.ts` → 无命中；Obsidian 设置页肉眼核对 H1</u> |
 | <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中。<u>已满足（2026-10-27 实测）：commit `31c7a30` 清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable` 后，三语言各 167 键、键集合完全一致，`grep -rn "settings_synconsave" src/langs/` → 0 命中，`grep -c "settings_synconsave" main.js` → 0</u></u> |
