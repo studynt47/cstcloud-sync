@@ -122,7 +122,7 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
       return this.plugin.i18n.t(x, vars);
     };
 
-    containerEl.createEl("h1", { text: "cstcloud-sync" });
+    containerEl.createEl("h1", { text: t("settings_plugin_title") });
 
     //////////////////////////////////////////////////
     // below for s3
