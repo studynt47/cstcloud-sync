@@ -1,0 +1,34 @@
+# Intellij
+*.iml
+.idea
+
+# npm
+node_modules
+package-lock.json
+pnpm-lock.yaml
+
+# build
+main.js
+*.js.map
+
+# obsidian
+data.json
+
+# debug
+logs.txt
+
+# hidden files
+.*
+
+# local upstream mirror (rollback reference only, not part of this fork's source tree; see PRD v1.3 Step 74)
+_archive/
+
+# delivery archives (build artifacts, regenerable via npm run build2)
+*.zip
+
+# OpenClaw agent runtime personal files (identity / preferences / heartbeat) - intentionally not versioned
+SOUL.md
+USER.md
+IDENTITY.md
+TOOLS.md
+HEARTBEAT.md
