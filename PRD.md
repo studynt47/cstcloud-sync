@@ -776,7 +776,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>M7：质量验证</u> | <u>B1 加载测试 + B3 双向同步 E2E + B4 单测补齐 + B5 产物自检</u> | <u>69、71-73</u> | <u>12h</u> |
 | <u>M8：瘦身</u> | <u>C1 加密后端移除 + C2 profiler 移除 + C3 dropbox 死分支 + C4 依赖清理 + C5 i18n 复核</u> | <u>74-81</u> | <u>14h</u> |
 | <u>M9：阻塞项</u> | <u>B2 S3 真实连通性测试（依赖老板提供 cstcloud.cn AccessKey / SecretKey / Bucket）</u> | <u>70</u> | <u>2h</u> |
-| <u>M10：发布</u> | <u>产出 v0.0.2 插件包（§7.1 交付物形态）+ 副本同步至 `/home/WPS/ls/cstcloud-sync/`</u> | <u>—</u> | <u>1h</u> |
+| <u>M10：发布</u> | <u>产出 v0.0.3 插件包（§7.1 交付物形态）+ 副本同步至 `/home/WPS/ls/cstcloud-sync/`</u> | <u>—</u> | <u>1h</u> |
 | <u>M11：发版版本号统一</u> | <u>老板指定发布版本号（≥ 0.0.3）并同步 manifest.json / package.json / PRD §4.3</u> | <u>—</u> | <u>0.5h</u> |
 
 <u>**v1.3 总估时：35h（约 4.5 人日）**，不含 B2 阻塞等待时间与 D/E 类（待定/暂缓）。</u>
@@ -799,7 +799,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 <u>**v1.4 依赖关系**：Step 82 依赖 Phase 7 已完成（`src/obsFolderLister.ts` 在 C 类中未被改动，但依赖 A/C 两类的 `npm test` 基线全绿作为前置）；Step 82 完成后须由 AC33 复核 §5.4 所述排除清单的最终生效状态。</u>
 
-<u>### 7.1 v0.0.2 目标交付物形态</u>
+<u>### 7.1 v0.0.3 目标交付物形态</u>
 
 <u>Obsidian 插件分发包（zip）应包含下列文件，目录层级为插件 id `cstcloud-sync/`：</u>
 
@@ -884,6 +884,6 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC28</u> | <u>**（C3）** `src/sync.ts` 中 4 处 `serviceType === "dropbox"` 死分支已清理，仅保留 `serviceType === "s3"`</u> | <u>`grep -n "dropbox" src/sync.ts` → 仅命中 L1381 的历史沿革注释，<u>无 `serviceType === "dropbox"` 条件</u>；`npm run build2` → exit 0</u> |
 | <u>AC29</u> | <u>**（C4）** devDependencies 残留已清理：`webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` 已从 `package.json` 移除；<u>`dotenv` / `jsdom` / `@types/jsdom` 保留</u></u> | <u>`grep -n "webdav-server\|openapi-typescript\|npm-check-updates\|@types/chai\|esbuild-plugin-inline-worker\|worker-loader" package.json` → 0；`grep -n "\"dotenv\"\|\"jsdom\"" package.json` → 有命中；`npm run build2` + `npm test` → exit 0</u> |
 | <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 <u>167 键</u></u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 <u>167</u>；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u>。<u>计数沿革：Step 81（C5）复检时各 169 键 → AC19 收口（commit `31c7a30`）再删 2 个孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）→ 现各 167 键，键集合仍完全一致</u></u> |
-| <u>AC31</u> | <u>**（发布）** v0.0.2 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；<u>`versions.json` 含 `"0.0.3": "0.13.21"`</u></u> <u>（v1.7 发版口径：发布版本号为 0.0.3，0.0.2 为开发基线；本轮将由 M10（发布）执行产出 `cstcloud-sync0.0.3.zip`，目录层级 `cstcloud-sync/`，含 main.js / manifest.json / LICENSE / README.md / README.zh-cn.md / versions.json 共 6 个文件）</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 <u>`"0.0.3": "0.13.21"`</u>；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
+| <u>AC31</u> | <u>**（发布）** v0.0.3 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；<u>`versions.json` 含 `"0.0.3": "0.13.21"`</u></u> <u>（v1.7 发版口径：发布版本号为 0.0.3，0.0.2 为开发基线；本轮将由 M10（发布）执行产出 `cstcloud-sync0.0.3.zip`，目录层级 `cstcloud-sync/`，含 main.js / manifest.json / LICENSE / README.md / README.zh-cn.md / versions.json 共 6 个文件）</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 <u>`"0.0.3": "0.13.21"`</u>；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
 | <u>AC32</u> | <u>**✅ 已满足**（v1.7）：老板 2026-10-28 书面指定发布版本号 **0.0.3**；`manifest.json` / `package.json` / PRD §4.3 三处一致；分发包 `cstcloud-sync0.0.3.zip`。</u> <u>（原判据保留：发版前置——A/B/C 全部 Step（<u>59–82</u>）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布）</u> | <u>老板书面确认 + grep 三处版本号一致</u> |
 | <u>AC33</u> | <u>**（v1.4 · 配置目录同步（实验性））** ① `syncConfigDir` 开关可在 `设置 → 高级` 正常开启（走 `modal_syncconfig_attn` → `modal_syncconfig_secondconfirm` → `modal_syncconfig_notice` 三键二次确认链路）；② 开启后 `.obsidian` **整个配置目录**进入同步清单（顶层 `app.json` / `appearance.json` / `core-plugins.json` / `community-plugins.json` / `hotkeys.json` / `bookmarks.json` 与各插件目录均可见）；③ §5.4.3 的 14 项排除项**确实被排除**（尤其 `workspace` / `workspace.json` / `workspace-mobile.json` / `.git` / `node_modules`）；④ 本插件目录 `.obsidian/plugins/cstcloud-sync/` **只同步白名单 5 文件**（`data.json` / `main.js` / `manifest.json` / `.gitignore` / `styles.css`），`plugins/cstcloud-sync/LICENSE` **不被同步**；⑤ 其他插件目录为全量放行</u> | <u>在测试 vault 中开启开关并执行一次 dry-run（`start-sync-dry-run`），逐条比对同步清单：① 开关 UI 链路可走通 ② `.obsidian` 顶层文件均在清单内 ③ 14 项排除项均不在清单内 ④ 本插件目录仅 5 文件在清单内、`LICENSE` 不在 ⑤ 其他插件目录文件均在清单内。<u>另：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` 命中 2 处（Step 82 已实施）</u></u> |
