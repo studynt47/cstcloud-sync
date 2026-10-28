@@ -1,7 +1,7 @@
 {
   "id": "cstcloud-sync",
   "name": "cstcloud-sync",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "minAppVersion": "0.13.21",
   "description": "基于 cstcloud.cn 对象存储的 Obsidian 双向同步插件",
   "author": "cstcloud",
