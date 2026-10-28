@@ -457,8 +457,10 @@ export default class RemotelySavePlugin extends Plugin {
     // must AFTER preparing DB
     this.enableAutoClearSyncPlanHist();
 
-    this.syncRibbon = this.addRibbonIcon(iconNameSyncWait, `同步`, async () =>
-      this.syncRun("manual")
+    this.syncRibbon = this.addRibbonIcon(
+      iconNameSyncWait,
+      t("ribbon_sync_tooltip"),
+      async () => this.syncRun("manual")
     );
 
     this.enableMobileStatusBarIfSet();
