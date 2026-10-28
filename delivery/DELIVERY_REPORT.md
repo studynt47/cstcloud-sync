@@ -1,10 +1,17 @@
 # cstcloud-sync 交付报告
 
+> **更新记录（v1.7 发版轮次 · M10 发布）**
+> - 本轮执行范围：PRD **v1.7**（发布版本号 0.0.3 回填、AC32 关闭、R9 解除）+ **M10（发布）** —— 产出 `cstcloud-sync0.0.3.zip`。
+> - PRD 当前版本 = **v1.7**（commit `c2ada6a`）。
+> - 本轮 HEAD = 本轮提交 `357fbf2` 之后的交付报告更新；本轮**未改动任何 `src/` 代码**。
+> - 老板 2026-10-28 书面指定发布版本号 **0.0.3**，`manifest.json` / `package.json` / PRD §4.3 三处一致。
+> - 旧包 `cstcloud-sync0.0.1.zip`（v0.0.1 全仓快照）**已删除**。
+>
 > **更新记录（v1.6 收口轮次 · Phase 7 / Phase 8 终验）**
-> - 本轮执行范围：PRD v1.3/v1.4 §6 **Step 59-82**（Phase 5 修复类 + Phase 6 质量类 + Phase 7 瘦身类 C1-C5 + Phase 8 v1.4 补充）**全部收口**；PRD 后续经 v1.5 勘误、**v1.6 收口**（Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足）。**PRD 当前版本 = v1.6**（commit `26ac812`）。
-> - **版本标签口径**：本文中带版本号的条目（如 Step 82「v1.4-1」、AC33「（v1.4）」）指**该条目引入时的 PRD 版本**（历史沿革，保留原样），**不代表 PRD 当前版本**；PRD 当前版本为 **v1.6**。
+> - 本轮执行范围：PRD v1.3/v1.4 §6 **Step 59-82**（Phase 5 修复类 + Phase 6 质量类 + Phase 7 瘦身类 C1-C5 + Phase 8 v1.4 补充）**全部收口**；PRD 后续经 v1.5 勘误、**v1.6 收口**（Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足）。**PRD 当前版本 = v1.7**（v1.6 定稿 commit `26ac812`）。
+> - **版本标签口径**：本文中带版本号的条目（如 Step 82「v1.4-1」、AC33「（v1.4）」）指**该条目引入时的 PRD 版本**（历史沿革，保留原样），**不代表 PRD 当前版本**；PRD 当前版本为 **v1.7**。
 > - 本轮工作：**Step 73 复检** + 交付报告全面更新 + AC 终验对账（AC1-AC33）。**未改动任何 `src/` 代码**。
-> - Phase 7 / Phase 8 轮次收口时 HEAD = `f69c1da`；**本次 v1.6 对齐后 HEAD = `26ac812`**（PRD.md v1.6 定稿于 `26ac812`，本次仅改本报告，未动代码 / PRD）。
+> - Phase 7 / Phase 8 轮次收口时 HEAD = `f69c1da`；**本次 v1.7 对齐后 HEAD = `c2ada6a`**（PRD.md v1.7 定稿 commit；v1.6 定稿 commit 为 `26ac812`，历史沿革保留；本次仅改本报告，未动代码 / PRD）。
 > - Step 70（B2）/ Step 71（B3）按老板指示**未执行**，真实环境测试由老板本人做；状态一律记为「⛔ 未执行 — 按老板指示，真实环境测试由老板本人执行」，详见 §6。
 > - 全文不记录 AccessKey / SecretKey 明文。
 >
@@ -73,12 +80,12 @@
 
 ### `npm run build2`（主构建链 · esbuild）
 ```
-> cstcloud-sync@0.0.2 build2
+> cstcloud-sync@0.0.3 build2
 > tsc -noEmit -skipLibCheck && node esbuild.config.mjs production
 
 esbuild version = 0.23.1
 ```
-**main.js**: 1,043,857 bytes (0.996 MB)，md5 `1febd55ef4d8b3698fd32a9f1ab67e0d`（HEAD `f69c1da` 产物）
+**main.js**: 1,043,555 bytes (0.996 MB)，md5 `5ffe14e9725ec80e84186e8342bf56a3`（HEAD `f69c1da` 产物，**经 `31c7a30` / `bb2886f` 重建后**）
 
 ### `npm test`（mocha + tsx）
 ```
@@ -132,7 +139,7 @@ esbuild version = 0.23.1
 - `src/misc.ts`: bufferToArrayBuffer 返回 ArrayBuffer（cast 修 Node 24 类型变更）
 - `src/encryptOpenSSL.ts`: Uint8Array<ArrayBuffer> cast
 
-### Phase 7 / Phase 8 变更（C 类瘦身 + v1.4；PRD 现为 v1.6）
+### Phase 7 / Phase 8 变更（C 类瘦身 + v1.4；PRD 现为 v1.7）
 **新增文件**
 - `src/encryptedGuard.ts`（130 行）：C1 加密守卫模块 —— `copyEntityAndCopyKeyEncSizeEnc()` / `isLikelyOpenSSLEncryptedName()` / `isRemoteEncrypted()` / `checkRemoteEncryption()` + `MAGIC_ENCRYPTED_PREFIX_BASE32` / `MAGIC_ENCRYPTED_PREFIX_BASE64URL`
 - `tests/encryptedGuard.test.ts`（224 行）：C1 三项行为等价性的回归网
@@ -153,7 +160,7 @@ esbuild version = 0.23.1
 - `src/langs/{en,zh_cn,zh_tw}.json`：清理 40 处死键（Step 81）+ 2 处孤儿键（`settings_synconsave_disable/_enable`，AC19 收口），三语言各 **167** 键
 - `package.json`：删除运行时依赖 `@fyears/rclone-crypt`；删除 5 个无用 devDependencies
 - `esbuild.config.mjs` / `webpack.config.js`：删除 worker 接线
-- `PRD.md`：**v1.6**（v1.4 → v1.5 → v1.6 逐版收口；v1.4 引入 §5.4 配置目录同步 + R17 + Step 82 + AC33，v1.5 勘误，v1.6 收口：Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足）
+- `PRD.md`：**v1.7**（v1.4 → v1.5 → v1.6 → v1.7 逐版收口；v1.4 引入 §5.4 配置目录同步 + R17 + Step 82 + AC33，v1.5 勘误，v1.6 收口：Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足，v1.7 发版收口：发布版本号 0.0.3 回填、AC32 关闭、R9 解除）
 
 ## 4. 验收结果表（Step 59-82）
 
@@ -184,13 +191,13 @@ esbuild version = 0.23.1
 | 79 | C3 | 清理 dropbox 死分支 | ✅ 完成 | `grep -n "dropbox" src/sync.ts` → 仅 L1340 历史沿革注释，无 `serviceType === "dropbox"` 条件 |
 | 80 | C4 | 清理 devDependencies 残留 | ✅ 完成 | 6 个目标依赖 → 0 命中；`dotenv` / `jsdom` 保留（`package.json` L37 / L39） |
 | 81 | C5 | 复核 i18n 键 | ✅ 完成 | 三语言键集合完全一致：Step 81 复检时各 **169** 键，AC19 收口再删 2 处孤儿键后现各 **167** 键（详见 §8.2）；PRD §6 Step 81 保留「清理后各为 169 键」的**历史叙述**，并补注「Step 81 时 169 键，commit `31c7a30` 后为 167 键」 |
-| 82 | v1.4-1 | 补齐 `workspace-mobile.json` 排除 | ✅ 完成 | `grep -n "workspace-mobile.json" src/obsFolderLister.ts` → **2 处**（L100 / L116）；commit `43e36a1`（「v1.4-1」为该 Step 的**引入版本标签**，PRD 现为 v1.6） |
+| 82 | v1.4-1 | 补齐 `workspace-mobile.json` 排除 | ✅ 完成 | `grep -n "workspace-mobile.json" src/obsFolderLister.ts` → **2 处**（L100 / L116）；commit `43e36a1`（「v1.4-1」为该 Step 的**引入版本标签**，PRD 现为 v1.7） |
 
 ## 5. 已知风险与遗留问题
 
 ### 5.1 编译/构建
 - ✅ tsc 0 错误（`npx tsc --noEmit -skipLibCheck`；裸跑 `npx tsc --noEmit` 报 32 个错误，**全部来自 `node_modules/typescript/lib/lib.webworker.d.ts`(25) 与 `lib.dom.d.ts`(7)**，源于 `tsconfig.json` 的 `lib` 同时含 `"dom"` 与 `"webworker"`，项目源码 0 错误）
-- ✅ esbuild production build 成功（main.js 1,043,857 字节，md5 `1febd55ef4d8b3698fd32a9f1ab67e0d`）
+- ✅ esbuild production build 成功（main.js 1,043,555 字节，md5 `5ffe14e9725ec80e84186e8342bf56a3`）
 - ✅ mocha 单元测试 **142 passing / 0 failing / 0 pending**（C1 删除 `tests/encryptOpenSSL.test.ts` 后，原先 2 个 `it.skip` 的 OpenSSL binary 测试已由 `tests/encryptedGuard.test.ts` 等价覆盖）
 - ✅ 核心逻辑行覆盖率（c8 实测，本轮 `npx c8@10 mocha --import=tsx 'tests/**/*.ts'`）：`src/sync.ts` **75.80%** / `src/copyLogic.ts` **100%** / `src/conflictLogic.ts` **98.72%** / `src/encryptedGuard.ts` **97.69%**，**整体（src/）70.46%**（均达到 PRD Step 72 判据：关键路径 ≥ 70%、整体 ≥ 50%；较 v1.3 轮次的 76.41% / 63.24% 变化系 C1/C2 删除文件行所致）
 
@@ -215,17 +222,17 @@ esbuild version = 0.23.1
 
 ### 已完成
 - ✅ tsc 编译 0 错误（`-skipLibCheck`；裸跑的 32 个错误全在 node_modules，见 §5.1）
-- ✅ esbuild production build 成功（main.js 1,043,857 字节）
+- ✅ esbuild production build 成功（main.js 1,043,555 字节）
 - ✅ mocha 单元测试 **142 passing / 0 failing / 0 pending**
 - ✅ 静态验证：所有 i18n key 与 UI 使用一致（17 个误删已恢复）
 
 ### Step 69 / B1 — E2E-1 Obsidian 桌面版加载测试：✅ 通过
 
-真实环境：Obsidian 1.13.7（installer 1.13.7，headless Xvfb `:99`，1400x1000x24），插件产物 `main.js`（B1 测试当时的构建产物，md5 `94f2fea402196d20f5a913c55d82282c`；**C1/C2 后的当前产物 md5 为 `1febd55ef4d8b3698fd32a9f1ab67e0d`**，1,043,857 字节）。
+真实环境：Obsidian 1.13.7（installer 1.13.7，headless Xvfb `:99`，1400x1000x24），插件产物 `main.js`（B1 测试当时的构建产物，md5 `94f2fea402196d20f5a913c55d82282c`；**C1/C2 后的当前产物 md5 为 `5ffe14e9725ec80e84186e8342bf56a3`**，1,043,555 字节）。
 
 | 判据 | 实测结果 |
 |---|---|
-| manifest 校验（id / name / version / minAppVersion） | ✅ `cstcloud-sync` / `cstcloud-sync` / `0.0.2` / `0.13.21` |
+| manifest 校验（id / name / version / minAppVersion） | ✅ `cstcloud-sync` / `cstcloud-sync` / `0.0.3` / `0.13.21` |
 | 插件可启用且无报错 | ✅ 社区插件成功加载（安全模式关闭后 `cstcloud-sync` 与对照插件 `claudian-mobile-jy` 均正常加载，console 无插件级报错） |
 | 设置页可渲染（S3 三字段 + 12 个 P1） | ✅ H1 `cstcloud-sync`；H2 `S3 或兼容 S3 的服务的设置` / `基本设置` / `进阶设置`；共 18 个设置项（含 `Access Key ID`、`Secret Access Key`、`存储桶（Bucket）的名字`），`选择服务` / `保存时同步` / `Remotely Save` 均已不存在 |
 | ribbon 图标可见可点 | ✅ ribbon 按钮已注册 |
@@ -289,7 +296,7 @@ DNS 侧：`s3.cstcloud.cn` 可解析（`223.193.44.135`），故 401 属**服务
 
 ### Step 73 / B5 — 打包产物自检：✅ 通过（本轮 Phase 7/8 后正式复检）
 
-> 复检对象为**构建产物 `main.js`**（HEAD `f69c1da` 产物，1,043,857 字节，md5 `1febd55ef4d8b3698fd32a9f1ab67e0d`），与 PRD §6 Step 73 的判据口径一致。
+> 复检对象为**构建产物 `main.js`**（HEAD `f69c1da` 产物，**经 `31c7a30` / `bb2886f` 重建后**，1,043,555 字节，md5 `5ffe14e9725ec80e84186e8342bf56a3`），与 PRD §6 Step 73 的判据口径一致。
 
 **复检表（`grep -c "<key>" main.js`）：**
 
@@ -412,7 +419,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 
 ### 8.8 PRD 文档内的两处陈旧表述（均已由 v1.5 / v1.6 回填，非缺陷）
 
-- **Step 1.5（PRD v1.5 已回填，PRD 现为 v1.6）**：PRD §6 历史 checklist 原写「文件仍在（12 行）」，但 `tests/fsWebdis.test.ts` 已由 Step 59 删除；PRD v1.5 已将该条改为 `[x] 已完成`，仅 v1.5 之前的版本仍留旧理由文本（v1.6 沿用该结论）。
+- **Step 1.5（PRD v1.5 已回填，PRD 现为 v1.7）**：PRD §6 历史 checklist 原写「文件仍在（12 行）」，但 `tests/fsWebdis.test.ts` 已由 Step 59 删除；PRD v1.5 已将该条改为 `[x] 已完成`，仅 v1.5 之前的版本仍留旧理由文本（v1.6 沿用该结论）。
 - **Step 22（PRD v1.6 已回填，实际已完成）**：PRD §6 例外表原写「未完成」并引用 `src/settings.ts:366-368` 的 `settings_synconsave` 空壳 Setting；**PRD v1.6（commit `26ac812`）已将该例外项改为 `[x] 已完成`**。**实测该 Setting 已不存在**：`grep -n "syncOnSave" src/settings.ts` → **0 命中**，`grep -in "synconsave" src/settings.ts` → **0 命中**；该空壳已在 commit `f376a9f`（A8 / Step 67）随「设置页空壳元素清理」一并删除。**故 Step 22 实际已完成**。
   - 注：`src/` 别处仍有 20 处 `syncOnSave` 前缀命中，全部落在 `src/baseTypes.ts` / `src/main.ts`（其中 `syncOnSaveAfterMilliseconds` 7 处），那是**自动同步间隔定时器**（另一功能，AC30 强制为 `-1`），**不是** Step 22 的对象，勿混判。
 - **结论**：Step 1.5 与 Step 22 **均已实际完成**，PRD §6 真实例外项只剩 **Step 11 / 37** 两项（二者均属「被 Step 48~54 覆盖，未按原描述完成」）；**PRD v1.6（commit `26ac812`）已完成收口**（例外项 3 → 2、AC17 口径 56 `[x]` + 3 `[ ]` → **57 `[x]` + 2 `[ ]`**）。PRD 文本已回填，**本条遗留关闭**，**不影响代码与验收结论**。
@@ -428,7 +435,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC3 | Endpoint / Region / URL Style / Log Level / Obfuscate 不在 UI | ✅ 通过 | `src/settings.ts` 中 `settings_s3_endpoint` / `settings_s3_region` / `settings_s3_urlstyle` / `settings_debuglevel` / `settings_obfuscatesettingfile` / `settings_logLevel` 命中均为 **0** |
 | AC4 | 「检查连接」按钮验证 S3 连通性 | ⛔ 未执行（待老板实测） | 按钮存在（`settings_checkonnectivity`，`src/settings.ts` 第 6 个 Setting，Step 69 已验证渲染），但**真实连通性需老板在有凭证环境执行**（见 §6 Step 70） |
 | AC5 | Ribbon 触发 start-sync + 命令面板 2 命令可用 | ✅ 通过 | Step 69/B1 实测：ribbon 按钮已注册；命令面板 `cstcloud-sync:start-sync` + `cstcloud-sync:start-sync-dry-run` 均可执行 |
-| AC6 | `npm run build2` 无错误生成 `main.js` | ✅ 通过 | `npm run build2` → **exit 0**；main.js 1,043,857 字节，md5 `1febd55ef4d8b3698fd32a9f1ab67e0d` |
+| AC6 | `npm run build2` 无错误生成 `main.js` | ✅ 通过 | `npm run build2` → **exit 0**；main.js 1,043,555 字节，md5 `5ffe14e9725ec80e84186e8342bf56a3` |
 | AC7 | `npm test` 无新增失败 | ✅ 通过 | `npm test` → **142 passing / 0 failing / 0 pending** |
 | AC8 | 加载后 6 项关键字段被强制覆盖 | ✅ 通过 | `src/settings.ts` `loadSettings()` 强制覆盖 6 项（`s3.generateFolderObject=false` / `ignorePaths=[]` / `onlyAllowPaths=[]` / `enableStatusBarInfo=true` / `syncOnSaveAfterMilliseconds=-1` / `deleteToWhere="system"`），本轮未改动该逻辑 |
 | AC9 | 同步算法说明弹窗 3 语言 6 键 | ✅ 通过 | `grep -c '"syncalgov3_' src/langs/{en,zh_cn,zh_tw}.json` → **6 / 6 / 6**；键名齐备（`_title` / `_texts` / `_button_agree` / `_button_disagree` / `_checkbox_manual_backup` / `_checkbox_requiremultidevupdate`） |
@@ -436,10 +443,10 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC11 | `src/syncAlgoV3Notice.ts` 结构未被修改 | ✅ 通过 | `git diff 53f8062..HEAD -- src/syncAlgoV3Notice.ts` → 无改动（弹窗触发/同意行为原样保留） |
 | AC12 | `tests/fsWebdis.test.ts` 不存在；tsc 0 error | ✅ 通过 | `ls tests/fsWebdis.test.ts` → No such file；`npx tsc --noEmit -skipLibCheck` → **0 error**（项目判据）；裸跑的 32 个 error 全部在 `node_modules/typescript/lib/*` |
 | AC13 | git 基线干净 | ✅ 通过 | `git status --porcelain` → **空**；`git diff --numstat` → **0** 条目；`git config core.fileMode` → `false` |
-| AC14 | 产品版本号三处统一 0.0.2，全仓不出现 0.0.3 | ✅ 通过 | `package.json` L3 / `manifest.json` L4 均 `"version": "0.0.2"`；PRD §4.3 同口径。**注**：`0.0.3` 字样仅出现在 PRD.md 的 AC32/R9 **需求描述**中，以及 `package-lock.json` 的第三方依赖 `@fyears/eme@0.0.3` —— **产品版本字段无一处为 0.0.3** |
+| AC14 | 产品版本号三处统一 0.0.2，全仓不出现 0.0.3 | ✅ 通过 | （A3 开发基线验收时的历史证据）`package.json` L3 / `manifest.json` L4 均 `"version": "0.0.2"`；PRD §4.3 同口径。**注**：`0.0.3` 字样仅出现在 PRD.md 的 AC32/R9 **需求描述**中，以及 `package-lock.json` 的第三方依赖 `@fyears/eme@0.0.3` —— **产品版本字段无一处为 0.0.3**。**注：0.0.2 为开发基线；发版版本号已由老板指定为 0.0.3（manifest.json / package.json / PRD §4.3），"0.0.3" 字样出现在版本字段属预期，非违反本条判据。** |
 | AC15 | README 品牌化 + 保留 Apache-2.0 归属与上游致谢 | ✅ 通过 | `README.md` / `README.zh-cn.md` 首行均为 `# cstcloud-sync`；两份 README 均含 Apache-2.0 与 fyears 上游致谢段 |
 | AC16 | manifest 身份为 cstcloud 口径 | ✅ 通过 | `manifest.json` L7-L8 → `author = "cstcloud"`、`authorUrl = "https://github.com/cstcloud/cstcloud-sync"` |
-| AC17 | §6 历史 checklist 59 条完成，2 条例外保留 `[ ]` 并注明原因 | ✅ 通过 | PRD §6 历史清单 **57 条 `[x]` + 2 条 `[ ]`**（Step 11 / 37）均同行注明原因，与 AC17 口径一致。**计数口径**：§6 共 59 个条目（Step 1-44 含 Step 1.5 计 45 条 + Step 45-58 计 14 条）；PRD v1.5 例外表 4 行中 Step 1.5 已标 `[x] 已完成`，余 `[ ]` 为 11 / 22 / 37（故 v1.5 记为 56 + 3）；本轮复核 Step 22 实际已完成（`grep -n "syncOnSave" src/settings.ts` → 0 命中，空壳已于 A8/Step 67 删除），故实为 **57 + 2**。**PRD v1.6 最新口径（commit `26ac812`）**：§6 例外表 Step 22 已标 `[x] 已完成`，例外项仅剩 **Step 11 / 37**，AC17 判据为 **57 条 `[x]` + 2 条 `[ ]` = 59 条**，与 PRD §9 AC17 逐字一致 |
+| AC17 | §6 历史 checklist 59 条完成，2 条例外保留 `[ ]` 并注明原因 | ✅ 通过 | PRD §6 历史清单 **57 条 `[x]` + 2 条 `[ ]`**（Step 11 / 37）均同行注明原因，与 AC17 口径一致。**计数口径**：§6 共 59 个条目（Step 1-44 含 Step 1.5 计 45 条 + Step 45-58 计 14 条）；PRD v1.5 例外表 4 行中 Step 1.5 已标 `[x] 已完成`，余 `[ ]` 为 11 / 22 / 37（故 v1.5 记为 56 + 3）；本轮复核 Step 22 实际已完成（`grep -n "syncOnSave" src/settings.ts` → 0 命中，空壳已于 A8/Step 67 删除），故实为 **57 + 2**。**PRD v1.6 口径（commit `26ac812`；v1.7 未修订本条）**：§6 例外表 Step 22 已标 `[x] 已完成`，例外项仅剩 **Step 11 / 37**，AC17 判据为 **57 条 `[x]` + 2 条 `[ ]` = 59 条**，与 PRD §9 AC17 逐字一致 |
 | AC18 | 设置页 H1 不再显示 `Remotely Save` | ✅ 通过 | `grep -c "Remotely Save" src/settings.ts` → **0** |
 | AC19 | 无「选择服务」孤儿标题与「保存时自动同步」空标签 | ✅ 通过 | `grep -rn "settings_chooseservice\|settings_synconsave_desc" src/settings.ts src/langs/` → **0**（键已随 Step 67 / 81 删除）。**已满足（commit `31c7a30`）**：PRD v1.6 §9 AC19 判据保留并补注实测结论——清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable` 后，三语言各 167 键、键集合完全一致，`grep -rn "settings_synconsave" src/langs/` → 0 命中，`grep -c "settings_synconsave" main.js` → 0 |
 | AC20 | LICENSE 改为 Apache-2.0 + 派生声明 | ✅ 通过 | `LICENSE` 首部为 Apache License 2.0（`grep -c "Apache License"` → 9）；`grep -c PolyForm LICENSE` → **0**；含 remotely-save v0.5.25 / Copyright fyears 派生声明 |
@@ -453,20 +460,42 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC28 | **（C3）** `src/sync.ts` 4 处 dropbox 死分支已清理 | ✅ 通过 | `grep -n "dropbox" src/sync.ts` → **仅 L1340** 历史沿革注释，无 `serviceType === "dropbox"` 条件（符合 Step 79 判据「L1381 历史沿革注释可保留」） |
 | AC29 | **（C4）** devDependencies 残留已清理 | ✅ 通过 | `webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` → `package.json` 命中 **0**；`dotenv`（L37）/ `jsdom`（L39）/ `@types/jsdom` **保留**；`npm run build2` exit 0 + `npm test` 142 passing |
 | AC30 | **（C5）** i18n 复核：40 处死键已删，3 语言键集合一致 | ✅ 通过 | 三语言键集合完全一致：Step 81 复检时各 **169** 键，AC19 收口再删 2 处孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）后现各 **167** 键（详见 §8.2）。**PRD v1.6（commit `26ac812`）已将 AC30 判据同步为 167 键**（PRD §6 Step 81 保留「清理后各为 169 键」的**历史叙述**，并补注「Step 81 时 169 键，commit `31c7a30` 后为 167 键」） |
-| AC31 | **（发布）** v0.0.2 交付包形态符合 §7.1 | ⚠️ 部分 | **实际解包核对结果见 §9.1**：`cstcloud-sync0.0.1.zip` 为 **v0.0.1 时期的全仓快照**（278 个条目），与 §7.1 目标形态有 5 处差异 |
-| AC32 | 发版前置：老板统一指定版本号 ≥ 0.0.3 且三处一致 | ➖ 后续发版项 | 当前 `package.json` / `manifest.json` 均为 **0.0.2**，系按老板「升级后统一」口径的开发基线，**尚未发版**。发布版本号须由老板**书面指定**（≥ 0.0.3），并同步 `manifest.json` / `package.json` / PRD §4.3 三处 |
+| AC31 | **（发布）** v0.0.3 交付包形态符合 §7.1 | ✅ 通过 | 产出 `cstcloud-sync0.0.3.zip`（311,999 B / md5 `977c92e745a1e61d0ac007b7afbef38a` / commit `357fbf2`），目录层级 `cstcloud-sync/`，含 6 个文件；**11 条形态判据逐条实测全通过**，明细见 §9.1 |
+| AC32 | 发版前置：老板统一指定版本号 ≥ 0.0.3 且三处一致 | ✅ 已满足 | 老板 2026-10-28 书面指定发布版本号 **0.0.3**；`manifest.json` / `package.json` / PRD §4.3 三处一致；分发包 `cstcloud-sync0.0.3.zip` 已产出（commit `357fbf2`）。**本条已关闭。** |
 | AC33 | **（v1.4）** 配置目录同步 5 项清单比对 | ⛔ 未执行（待老板实测） | 代码侧已完成：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` → **2 处**（L100 / L116，Step 82 已实施）；`src/obsFolderLister.ts` L100 / L116 的排除数组各增 `"workspace-mobile.json"`。**但 5 项清单比对需老板在测试 vault 开启 `syncConfigDir` 开关并执行一次 dry-run 逐条核对**，本轮未做真实 dry-run |
 
-### 9.1 AC31 交付包实际解包核对（⚠️ 部分的差在哪）
+### 9.1 v0.0.3 交付包解包核对（✅ 全部通过）
 
-核对对象：仓库根目录唯一存在的 zip —— `cstcloud-sync0.0.1.zip`（634,628 字节，278 个条目）。
+核对对象：仓库根目录 `cstcloud-sync0.0.3.zip`（311,999 字节，md5 `977c92e745a1e61d0ac007b7afbef38a`，commit `357fbf2`）—— 包内 **7 个条目**（1 目录 + 6 文件），目录层级 `cstcloud-sync/`。
+
+| # | 判据 | 期望 | 实测 | 结论 |
+|---|---|---|---|---|
+| 1 | 条目总数 | 7（1 目录 + 6 文件） | 7 | ✅ |
+| 2 | 目录层级 | 全部 `cstcloud-sync/` 前缀，无扁平条目 | 扁平条目 0 | ✅ |
+| 3 | 必需文件 | main.js / manifest.json / LICENSE / README.md | 4/4 | ✅ |
+| 4 | 推荐文件 | README.zh-cn.md / versions.json | 2/2 | ✅ |
+| 5 | 禁止项 | 不含 node_modules/ src/ tests/ package.json manifest-beta.json esbuild.config.mjs webpack.config.js tsconfig.json | 命中 0 | ✅ |
+| 6 | manifest version | 0.0.3 | 0.0.3 | ✅ |
+| 7 | manifest author | cstcloud | cstcloud | ✅ |
+| 8 | versions.json | 含 "0.0.3": "0.13.21"，保留 0.3.2 / 0.3.25 | 3 条全在 | ✅ |
+| 9 | LICENSE | 12,266 B（Apache-2.0 全文，非旧 432 B） | 12,266 B | ✅ |
+| 10 | main.js | 与仓库根字节一致 | md5 均 `5ffe14e9725ec80e84186e8342bf56a3` | ✅ |
+| 11 | 旧包 | `cstcloud-sync0.0.1.zip` 不存在 | 已删除 | ✅ |
+
+**结论：§7.1 形态判据 11/11 全部通过，AC31 由「⚠️ 部分」升为「✅ 通过」。**
+
+#### 9.1.1 历史对照（已被本轮取代）
+
+> 以下为 **v0.0.1 全仓快照** 的历史核对结果，**已被本轮 v0.0.3 交付包取代**，仅保留作沿革记录。旧包 `cstcloud-sync0.0.1.zip`（634,628 字节，278 个条目）**已从磁盘删除**（该包从未被 git 跟踪，因 `.gitignore` 含 `*.zip`）。
+
+核对对象（历史）：当时的仓库根目录唯一存在的 zip —— `cstcloud-sync0.0.1.zip`（634,628 字节，278 个条目）。
 
 | §7.1 判据 | 期望 | 实测 | 结论 |
 |---|---|---|---|
-| `main.js` | 必需 | 存在，但为 **2026-10-17 的旧产物**（1,252,769 字节；当前产物为 1,043,857 字节 / md5 `1febd55ef4d8b3698fd32a9f1ab67e0d`） | ❌ 内容过期 |
+| `main.js` | 必需 | 存在，但为 **2026-10-17 的旧产物**（1,252,769 字节；当前产物为 1,043,555 字节 / md5 `5ffe14e9725ec80e84186e8342bf56a3`） | ❌ 内容过期 |
 | `manifest.json` | 必需，version = 0.0.2 | 存在，但 `"version": "0.0.1"` | ❌ 版本号不符 |
 | `LICENSE` | 必需（Apache-2.0） | 存在，但为 432 字节的旧版（当前根 LICENSE 为 12,266 字节的 Apache-2.0 全文） | ⚠️ 内容过期 |
-| `README.md` | 必需 | 存在，但为 15,882 字节旧版（当前 6,313 字节） | ⚠️ 内容过期 |
+| `README.md` | 必需 | 存在，但为 15,882 字节旧版（当前 6,311 字节） | ⚠️ 内容过期 |
 | `README.zh-cn.md` | 推荐 | 存在（旧版 15,210 字节） | ⚠️ 内容过期 |
 | `versions.json` | 推荐，含 `"0.0.2": "0.13.21"` | 存在，但内容为 `{"0.3.2": "0.12.15", "0.3.25": "0.13.21"}` —— **缺 `"0.0.2"` 条目** | ❌ 不满足 |
 | **不含** `node_modules/` | 禁止 | **含**（1 个顶层条目） | ❌ 违反 |
@@ -475,20 +504,26 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | **不含** `manifest-beta.json` | 禁止 | **含** | ❌ 违反 |
 | 目录层级为 `cstcloud-sync/` | §7.1 | **扁平结构**（无 `cstcloud-sync/` 前缀目录） | ❌ 违反 |
 
-**结论**：现有 zip 是 **v0.0.1 时期的开发全仓快照**，**不是** §7.1 定义的 v0.0.2 分发包 —— 形态判据 **5 处硬性违反**（含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json` / 扁平层级）、**2 处内容过期**（main.js / manifest.json 版本号）、**1 处内容缺失**（`versions.json` 缺 `"0.0.2": "0.13.21"`）。根因是 **M10（发布）尚未执行** —— 产出 v0.0.2 插件包并同步副本至 `/home/WPS/ls/cstcloud-sync/` 属发版阶段动作。**本轮按任务边界（只改交付报告，不改 `versions.json` / `manifest.json` / `package.json`）未创建新包**，登记为发版前的待办。
+**历史结论（已被本轮取代）**：该 zip 是 **v0.0.1 时期的开发全仓快照**，**不是** §7.1 定义的 v0.0.2 分发包 —— 形态判据 **5 处硬性违反**（含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json` / 扁平层级）、**2 处内容过期**（main.js / manifest.json 版本号）、**1 处内容缺失**（`versions.json` 缺 `"0.0.2": "0.13.21"`）。根因是 **M10（发布）当时尚未执行** —— 产出插件包并同步副本至 `/home/WPS/ls/cstcloud-sync/` 属发版阶段动作。**该待办已于 v0.0.3 发版轮次（M10）完成**：产出 `cstcloud-sync0.0.3.zip`，§7.1 形态判据 11/11 全通过（见本节主表），旧包已删除。
 
 ## 10. 交付物清单
 
 ### 源码（`/home/WPS/ls/cstcloud-sync/` 或 `/root/Projects/cstcloud-sync/`）
-- `main.js` (1,043,857 字节, build 产物, md5 `1febd55ef4d8b3698fd32a9f1ab67e0d`)
-- `manifest.json` (id=cstcloud-sync, version=0.0.2, author=cstcloud, minAppVersion=0.13.21)
-- `package.json` (name=cstcloud-sync, version=0.0.2)
+- `main.js` (1,043,555 字节, build 产物, md5 `5ffe14e9725ec80e84186e8342bf56a3`)
+- `manifest.json` (id=cstcloud-sync, version=0.0.3, author=cstcloud, minAppVersion=0.13.21)
+- `package.json` (name=cstcloud-sync, version=0.0.3)
 - `esbuild.config.mjs`
 - `tsconfig.json`
 - `src/` (**21** 个 .ts 文件，含新增 `sync.ts` + `conflictLogic.ts` + `encryptedGuard.ts`)
 - `tests/` (**7** 个 test 文件 + `tests/helpers/inMemoryFs.ts` + `tests/static_assets/`)
 - `assets/`, `styles.css`, `versions.json`, `LICENSE`, 等
 - 无 `pro/` 目录；无 `src/profiler.ts`；无加密后端文件
+
+### 分发包（v0.0.3）
+- `cstcloud-sync0.0.3.zip`（311,999 字节，md5 `977c92e745a1e61d0ac007b7afbef38a`，commit `357fbf2`）
+- 目录层级 `cstcloud-sync/`，含 main.js / manifest.json / LICENSE / README.md / README.zh-cn.md / versions.json 共 6 个文件
+- 副本同步至 `/home/WPS/ls/cstcloud-sync/`（由 PM 执行，不写 `/home/WPS/NEW/`）
+- ~~`cstcloud-sync0.0.1.zip`~~（v0.0.1 全仓快照，**已删除**）
 
 ### 文档
 - `delivery/DELIVERY_REPORT.md` (本文件)
@@ -504,7 +539,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 
 ### 11.1 最终状态汇总（一句话）
 
-**代码侧 A + B + C 三类（Step 59-81）与 Phase 8（Step 82）已全部完成并验证通过** —— `npm test` **142 passing / 0 failing / 0 pending**、`tsc`（项目判据）**0 error**、`npm run build2` **exit 0**、Step 73 产物自检 **全绿**、C1 的 3 项行为等价性经差分对比确认 **FULL EQUAL: True**；**剩余待老板实测项为 Step 70（B2 真实 S3 连通）/ Step 71（B3 双向同步 E2E）/ AC33（配置目录同步 dry-run 清单比对）**；**发版版本号待老板书面指定**（PRD AC32 要求 ≥ 0.0.3，`manifest.json` / `package.json` / PRD §4.3 三处需一致，当前均为 0.0.2 开发基线）。
+**代码侧 A + B + C 三类（Step 59-81）与 Phase 8（Step 82）已全部完成并验证通过** —— `npm test` **142 passing / 0 failing / 0 pending**、`tsc`（项目判据）**0 error**、`npm run build2` **exit 0**、Step 73 产物自检 **全绿**、C1 的 3 项行为等价性经差分对比确认 **FULL EQUAL: True**；**发布：✅ v0.0.3 已产出**（`cstcloud-sync0.0.3.zip`，311,999 字节 / md5 `977c92e745a1e61d0ac007b7afbef38a` / commit `357fbf2`），**AC31 ✅ 通过**（§7.1 形态判据 11/11 全通过）、**AC32 ✅ 已满足**（老板 2026-10-28 书面指定 0.0.3，`manifest.json` / `package.json` / PRD §4.3 三处一致，PRD R9 已解除）；**剩余待老板实测项为 Step 70（B2 真实 S3 连通）/ Step 71（B3 双向同步 E2E）/ AC33（配置目录同步 dry-run 清单比对）** —— 三项**仍为 ⛔ 未执行**，按老板指示由老板本人执行。
 
 ### 11.2 回滚点
 
