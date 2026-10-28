@@ -2,8 +2,8 @@
 
 > **更新记录（v1.7 发版轮次 · M10 发布）**
 > - 本轮执行范围：PRD **v1.7**（发布版本号 0.0.3 回填、AC32 关闭、R9 解除）+ **M10（发布）** —— 产出 `cstcloud-sync0.0.3.zip`。
-> - PRD 当前版本 = **v1.7**（commit `c2ada6a`）。
-> - 本轮 HEAD = 本轮提交 `357fbf2` 之后的交付报告更新；本轮**未改动任何 `src/` 代码**。
+> - PRD 当前版本 = **v1.7**（commit `c2ada6a` / `33d1979`）。
+> - 本轮 HEAD = 本轮提交 `357fbf2` 之后的交付报告更新（其间并入 PRD v1.7 补正 commit `33d1979`）；本轮**未改动任何 `src/` 代码**。
 > - 老板 2026-10-28 书面指定发布版本号 **0.0.3**，`manifest.json` / `package.json` / PRD §4.3 三处一致。
 > - 旧包 `cstcloud-sync0.0.1.zip`（v0.0.1 全仓快照）**已删除**。
 >
@@ -11,7 +11,7 @@
 > - 本轮执行范围：PRD v1.3/v1.4 §6 **Step 59-82**（Phase 5 修复类 + Phase 6 质量类 + Phase 7 瘦身类 C1-C5 + Phase 8 v1.4 补充）**全部收口**；PRD 后续经 v1.5 勘误、**v1.6 收口**（Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足）。**PRD 当前版本 = v1.7**（v1.6 定稿 commit `26ac812`）。
 > - **版本标签口径**：本文中带版本号的条目（如 Step 82「v1.4-1」、AC33「（v1.4）」）指**该条目引入时的 PRD 版本**（历史沿革，保留原样），**不代表 PRD 当前版本**；PRD 当前版本为 **v1.7**。
 > - 本轮工作：**Step 73 复检** + 交付报告全面更新 + AC 终验对账（AC1-AC33）。**未改动任何 `src/` 代码**。
-> - Phase 7 / Phase 8 轮次收口时 HEAD = `f69c1da`；**本次 v1.7 对齐后 HEAD = `c2ada6a`**（PRD.md v1.7 定稿 commit；v1.6 定稿 commit 为 `26ac812`，历史沿革保留；本次仅改本报告，未动代码 / PRD）。
+> - Phase 7 / Phase 8 轮次收口时 HEAD = `f69c1da`；**本次 v1.7 对齐后 HEAD = `33d1979`**（PRD.md v1.7 定稿 commit `c2ada6a` + v1.7 补正 commit `33d1979`；v1.6 定稿 commit 为 `26ac812`，历史沿革保留；本次仅改本报告，未动代码 / PRD）。
 > - Step 70（B2）/ Step 71（B3）按老板指示**未执行**，真实环境测试由老板本人做；状态一律记为「⛔ 未执行 — 按老板指示，真实环境测试由老板本人执行」，详见 §6。
 > - 全文不记录 AccessKey / SecretKey 明文。
 >
@@ -160,7 +160,7 @@ esbuild version = 0.23.1
 - `src/langs/{en,zh_cn,zh_tw}.json`：清理 40 处死键（Step 81）+ 2 处孤儿键（`settings_synconsave_disable/_enable`，AC19 收口），三语言各 **167** 键
 - `package.json`：删除运行时依赖 `@fyears/rclone-crypt`；删除 5 个无用 devDependencies
 - `esbuild.config.mjs` / `webpack.config.js`：删除 worker 接线
-- `PRD.md`：**v1.7**（v1.4 → v1.5 → v1.6 → v1.7 逐版收口；v1.4 引入 §5.4 配置目录同步 + R17 + Step 82 + AC33，v1.5 勘误，v1.6 收口：Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足，v1.7 发版收口：发布版本号 0.0.3 回填、AC32 关闭、R9 解除）
+- `PRD.md`：**v1.7**（v1.4 → v1.5 → v1.6 → v1.7 逐版收口；v1.4 引入 §5.4 配置目录同步 + R17 + Step 82 + AC33，v1.5 勘误，v1.6 收口：Step 22 已完成、例外项 3→2、i18n 判据 169→167、AC19 已满足，v1.7 发版收口：发布版本号 0.0.3 回填、AC32 关闭、R9 解除；v1.7 补正 `33d1979`：§7 M10 / §7.1 标题 / AC31 发版包版本号口径 0.0.2→0.0.3）
 
 ## 4. 验收结果表（Step 59-82）
 
