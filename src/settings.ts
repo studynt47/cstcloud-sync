@@ -386,272 +386,266 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
               new Notice(t("settings_enablestatusbar_reloadrequired_notice"));
             });
         });
+    }
 
-      //////////////////////////////////////////////////
-      // below for advanced settings
-      //////////////////////////////////////////////////
-      const advDiv = containerEl.createEl("div");
-      advDiv.createEl("h2", {
-        text: t("settings_adv"),
-      });
+    //////////////////////////////////////////////////
+    // below for advanced settings
+    //////////////////////////////////////////////////
+    const advDiv = containerEl.createEl("div");
+    advDiv.createEl("h2", {
+      text: t("settings_adv"),
+    });
 
-      new Setting(advDiv)
-        .setName(t("settings_concurrency"))
-        .setDesc(t("settings_concurrency_desc"))
-        .addDropdown((dropdown) => {
-          dropdown.addOption("1", "1");
-          dropdown.addOption("2", "2");
-          dropdown.addOption("3", "3");
-          dropdown.addOption("5", "5 (default)");
-          dropdown.addOption("10", "10");
-          dropdown.addOption("15", "15");
-          dropdown.addOption("20", "20");
+    new Setting(advDiv)
+      .setName(t("settings_concurrency"))
+      .setDesc(t("settings_concurrency_desc"))
+      .addDropdown((dropdown) => {
+        dropdown.addOption("1", "1");
+        dropdown.addOption("2", "2");
+        dropdown.addOption("3", "3");
+        dropdown.addOption("5", "5 (default)");
+        dropdown.addOption("10", "10");
+        dropdown.addOption("15", "15");
+        dropdown.addOption("20", "20");
 
-          dropdown
-            .setValue(`${this.plugin.settings.concurrency}`)
-            .onChange(async (val) => {
-              const realVal = Number.parseInt(val);
-              this.plugin.settings.concurrency = realVal;
-              await this.plugin.saveSettings();
-            });
-        });
-
-      new Setting(advDiv)
-        .setName(t("settings_syncunderscore"))
-        .setDesc(t("settings_syncunderscore_desc"))
-        .addDropdown((dropdown) => {
-          dropdown.addOption("disable", t("disable"));
-          dropdown.addOption("enable", t("enable"));
-          dropdown
-            .setValue(
-              `${this.plugin.settings.syncUnderscoreItems ? "enable" : "disable"}`
-            )
-            .onChange(async (val) => {
-              this.plugin.settings.syncUnderscoreItems = val === "enable";
-              await this.plugin.saveSettings();
-            });
-        });
-
-      new Setting(advDiv)
-        .setName(t("settings_configdir"))
-        .setDesc(
-          t("settings_configdir_desc", {
-            configDir: this.app.vault.configDir,
-          })
-        )
-        .addDropdown((dropdown) => {
-          dropdown.addOption("disable", t("disable"));
-          dropdown.addOption("enable", t("enable"));
-
-          const bridge = {
-            secondConfirm: false,
-          };
-          dropdown
-            .setValue(
-              `${this.plugin.settings.syncConfigDir ? "enable" : "disable"}`
-            )
-            .onChange(async (val) => {
-              if (val === "enable" && !bridge.secondConfirm) {
-                dropdown.setValue("disable");
-                new SyncConfigDirModal(this.app, this.plugin, () => {
-                  bridge.secondConfirm = true;
-                  dropdown.setValue("enable");
-                }).open();
-              } else {
-                bridge.secondConfirm = false;
-                this.plugin.settings.syncConfigDir = false;
-                await this.plugin.saveSettings();
-              }
-            });
-        });
-
-      new Setting(advDiv)
-        .setName(t("settings_bookmarks"))
-        .setDesc(
-          t("settings_bookmarks_desc", {
-            configDir: this.app.vault.configDir,
-          })
-        )
-        .addDropdown((dropdown) => {
-          dropdown.addOption("disable", t("disable"));
-          dropdown.addOption("enable", t("enable"));
-
-          dropdown
-            .setValue(
-              `${this.plugin.settings.syncBookmarks ? "enable" : "disable"}`
-            )
-            .onChange(async (val) => {
-              this.plugin.settings.syncBookmarks = val === "enable";
-              await this.plugin.saveSettings();
-            });
-        });
-
-      new Setting(advDiv)
-        .setName(t("settings_deletetowhere"))
-        .setDesc(t("settings_deletetowhere_desc"))
-        .addDropdown((dropdown) => {
-          dropdown.addOption(
-            "system",
-            t("settings_deletetowhere_system_trash")
-          );
-          dropdown.addOption(
-            "obsidian",
-            t("settings_deletetowhere_obsidian_trash")
-          );
-          dropdown
-            .setValue(this.plugin.settings.deleteToWhere ?? "system")
-            .onChange(async (val) => {
-              this.plugin.settings.deleteToWhere = val as "system" | "obsidian";
-              await this.plugin.saveSettings();
-            });
-        });
-
-      const conflictActionSettingOrigDesc = t("settings_conflictaction_desc");
-      // cstcloud-sync: smart_conflict option removed (PRO feature).
-      // Fall back to keep_newer if old data has smart_conflict.
-      if (
-        (this.plugin.settings.conflictAction ?? "keep_newer") ===
-        "smart_conflict"
-      ) {
-        this.plugin.settings.conflictAction = "keep_newer";
-      }
-      const conflictActionSetting = new Setting(advDiv)
-        .setName(t("settings_conflictaction"))
-        .setDesc(stringToFragment(conflictActionSettingOrigDesc));
-      conflictActionSetting.addDropdown((dropdown) => {
         dropdown
-          .addOption("keep_newer", t("settings_conflictaction_keep_newer"))
-          .addOption("keep_larger", t("settings_conflictaction_keep_larger"))
-          .setValue(this.plugin.settings.conflictAction ?? "keep_newer")
+          .setValue(`${this.plugin.settings.concurrency}`)
           .onChange(async (val) => {
-            // cstcloud-sync: silently coerce smart_conflict -> keep_newer
-            const v = (val === "smart_conflict" ? "keep_newer" : val) as
-              | "keep_newer"
-              | "keep_larger";
-            this.plugin.settings.conflictAction = v as ConflictActionType;
+            const realVal = Number.parseInt(val);
+            this.plugin.settings.concurrency = realVal;
             await this.plugin.saveSettings();
-
-            conflictActionSetting.setDesc(
-              stringToFragment(t("settings_conflictaction_desc"))
-            );
           });
       });
 
-      const percentage1 = new Setting(advDiv)
-        .setName(t("settings_protectmodifypercentage"))
-        .setDesc(t("settings_protectmodifypercentage_desc"));
-
-      const percentage2 = new Setting(advDiv)
-        .setName(t("settings_protectmodifypercentage_customfield"))
-        .setDesc(t("settings_protectmodifypercentage_customfield_desc"));
-      if ((this.plugin.settings.protectModifyPercentage ?? 50) % 10 === 0) {
-        percentage2.settingEl.addClass("settings-percentage-custom-hide");
-      }
-      let percentage2Text: TextComponent | undefined = undefined;
-      percentage2.addText((text) => {
-        text.inputEl.type = "number";
-        percentage2Text = text;
-        text
-          .setPlaceholder("0 ~ 100")
-          .setValue(`${this.plugin.settings.protectModifyPercentage ?? 50}`)
+    new Setting(advDiv)
+      .setName(t("settings_syncunderscore"))
+      .setDesc(t("settings_syncunderscore_desc"))
+      .addDropdown((dropdown) => {
+        dropdown.addOption("disable", t("disable"));
+        dropdown.addOption("enable", t("enable"));
+        dropdown
+          .setValue(
+            `${this.plugin.settings.syncUnderscoreItems ? "enable" : "disable"}`
+          )
           .onChange(async (val) => {
-            let k = Number.parseFloat(val.trim());
-            if (Number.isNaN(k)) {
-              // do nothing!
+            this.plugin.settings.syncUnderscoreItems = val === "enable";
+            await this.plugin.saveSettings();
+          });
+      });
+
+    new Setting(advDiv)
+      .setName(t("settings_configdir"))
+      .setDesc(
+        t("settings_configdir_desc", {
+          configDir: this.app.vault.configDir,
+        })
+      )
+      .addDropdown((dropdown) => {
+        dropdown.addOption("disable", t("disable"));
+        dropdown.addOption("enable", t("enable"));
+
+        const bridge = {
+          secondConfirm: false,
+        };
+        dropdown
+          .setValue(
+            `${this.plugin.settings.syncConfigDir ? "enable" : "disable"}`
+          )
+          .onChange(async (val) => {
+            if (val === "enable" && !bridge.secondConfirm) {
+              dropdown.setValue("disable");
+              new SyncConfigDirModal(this.app, this.plugin, () => {
+                bridge.secondConfirm = true;
+                dropdown.setValue("enable");
+              }).open();
             } else {
-              if (k < 0) {
-                k = 0;
-              } else if (k > 100) {
-                k = 100;
-              }
-              this.plugin.settings.protectModifyPercentage = k;
+              bridge.secondConfirm = false;
+              this.plugin.settings.syncConfigDir = false;
               await this.plugin.saveSettings();
             }
           });
       });
 
-      percentage1.addDropdown((dropdown) => {
-        for (const i of Array.from({ length: 11 }, (x, i) => i * 10)) {
-          let desc = `${i}`;
-          if (i === 0) {
-            desc = t("settings_protectmodifypercentage_000_desc");
-          } else if (i === 50) {
-            desc = t("settings_protectmodifypercentage_050_desc");
-          } else if (i === 100) {
-            desc = t("settings_protectmodifypercentage_100_desc");
-          }
-          dropdown.addOption(`${i}`, desc);
-        }
-        dropdown.addOption(
-          "custom",
-          t("settings_protectmodifypercentage_custom_desc")
-        );
+    new Setting(advDiv)
+      .setName(t("settings_bookmarks"))
+      .setDesc(
+        t("settings_bookmarks_desc", {
+          configDir: this.app.vault.configDir,
+        })
+      )
+      .addDropdown((dropdown) => {
+        dropdown.addOption("disable", t("disable"));
+        dropdown.addOption("enable", t("enable"));
 
-        const p = this.plugin.settings.protectModifyPercentage ?? 50;
-        let initVal = "custom";
-        if (p % 10 === 0) {
-          initVal = `${p}`;
-        } else {
-          // show custom
-          percentage2.settingEl.removeClass("settings-percentage-custom");
-        }
-        dropdown.setValue(initVal).onChange(async (val) => {
-          const k = Number.parseInt(val);
-          if (val === "custom" || Number.isNaN(k)) {
-            // do nothing until user changes something in custom field
-            percentage2.settingEl.removeClass(
-              "settings-percentage-custom-hide"
-            );
+        dropdown
+          .setValue(
+            `${this.plugin.settings.syncBookmarks ? "enable" : "disable"}`
+          )
+          .onChange(async (val) => {
+            this.plugin.settings.syncBookmarks = val === "enable";
+            await this.plugin.saveSettings();
+          });
+      });
+
+    new Setting(advDiv)
+      .setName(t("settings_deletetowhere"))
+      .setDesc(t("settings_deletetowhere_desc"))
+      .addDropdown((dropdown) => {
+        dropdown.addOption("system", t("settings_deletetowhere_system_trash"));
+        dropdown.addOption(
+          "obsidian",
+          t("settings_deletetowhere_obsidian_trash")
+        );
+        dropdown
+          .setValue(this.plugin.settings.deleteToWhere ?? "system")
+          .onChange(async (val) => {
+            this.plugin.settings.deleteToWhere = val as "system" | "obsidian";
+            await this.plugin.saveSettings();
+          });
+      });
+
+    const conflictActionSettingOrigDesc = t("settings_conflictaction_desc");
+    // cstcloud-sync: smart_conflict option removed (PRO feature).
+    // Fall back to keep_newer if old data has smart_conflict.
+    if (
+      (this.plugin.settings.conflictAction ?? "keep_newer") === "smart_conflict"
+    ) {
+      this.plugin.settings.conflictAction = "keep_newer";
+    }
+    const conflictActionSetting = new Setting(advDiv)
+      .setName(t("settings_conflictaction"))
+      .setDesc(stringToFragment(conflictActionSettingOrigDesc));
+    conflictActionSetting.addDropdown((dropdown) => {
+      dropdown
+        .addOption("keep_newer", t("settings_conflictaction_keep_newer"))
+        .addOption("keep_larger", t("settings_conflictaction_keep_larger"))
+        .setValue(this.plugin.settings.conflictAction ?? "keep_newer")
+        .onChange(async (val) => {
+          // cstcloud-sync: silently coerce smart_conflict -> keep_newer
+          const v = (val === "smart_conflict" ? "keep_newer" : val) as
+            | "keep_newer"
+            | "keep_larger";
+          this.plugin.settings.conflictAction = v as ConflictActionType;
+          await this.plugin.saveSettings();
+
+          conflictActionSetting.setDesc(
+            stringToFragment(t("settings_conflictaction_desc"))
+          );
+        });
+    });
+
+    const percentage1 = new Setting(advDiv)
+      .setName(t("settings_protectmodifypercentage"))
+      .setDesc(t("settings_protectmodifypercentage_desc"));
+
+    const percentage2 = new Setting(advDiv)
+      .setName(t("settings_protectmodifypercentage_customfield"))
+      .setDesc(t("settings_protectmodifypercentage_customfield_desc"));
+    if ((this.plugin.settings.protectModifyPercentage ?? 50) % 10 === 0) {
+      percentage2.settingEl.addClass("settings-percentage-custom-hide");
+    }
+    let percentage2Text: TextComponent | undefined = undefined;
+    percentage2.addText((text) => {
+      text.inputEl.type = "number";
+      percentage2Text = text;
+      text
+        .setPlaceholder("0 ~ 100")
+        .setValue(`${this.plugin.settings.protectModifyPercentage ?? 50}`)
+        .onChange(async (val) => {
+          let k = Number.parseFloat(val.trim());
+          if (Number.isNaN(k)) {
+            // do nothing!
           } else {
+            if (k < 0) {
+              k = 0;
+            } else if (k > 100) {
+              k = 100;
+            }
             this.plugin.settings.protectModifyPercentage = k;
-            percentage2.settingEl.addClass("settings-percentage-custom-hide");
-            percentage2Text?.setValue(`${k}`);
             await this.plugin.saveSettings();
           }
         });
+    });
+
+    percentage1.addDropdown((dropdown) => {
+      for (const i of Array.from({ length: 11 }, (x, i) => i * 10)) {
+        let desc = `${i}`;
+        if (i === 0) {
+          desc = t("settings_protectmodifypercentage_000_desc");
+        } else if (i === 50) {
+          desc = t("settings_protectmodifypercentage_050_desc");
+        } else if (i === 100) {
+          desc = t("settings_protectmodifypercentage_100_desc");
+        }
+        dropdown.addOption(`${i}`, desc);
+      }
+      dropdown.addOption(
+        "custom",
+        t("settings_protectmodifypercentage_custom_desc")
+      );
+
+      const p = this.plugin.settings.protectModifyPercentage ?? 50;
+      let initVal = "custom";
+      if (p % 10 === 0) {
+        initVal = `${p}`;
+      } else {
+        // show custom
+        percentage2.settingEl.removeClass("settings-percentage-custom");
+      }
+      dropdown.setValue(initVal).onChange(async (val) => {
+        const k = Number.parseInt(val);
+        if (val === "custom" || Number.isNaN(k)) {
+          // do nothing until user changes something in custom field
+          percentage2.settingEl.removeClass("settings-percentage-custom-hide");
+        } else {
+          this.plugin.settings.protectModifyPercentage = k;
+          percentage2.settingEl.addClass("settings-percentage-custom-hide");
+          percentage2Text?.setValue(`${k}`);
+          await this.plugin.saveSettings();
+        }
+      });
+    });
+
+    new Setting(advDiv)
+      .setName(t("setting_syncdirection"))
+      .setDesc(stringToFragment(t("setting_syncdirection_desc")))
+      .addDropdown((dropdown) => {
+        dropdown.addOption(
+          "bidirectional",
+          t("setting_syncdirection_bidirectional_desc")
+        );
+        dropdown.addOption(
+          "incremental_push_only",
+          t("setting_syncdirection_incremental_push_only_desc")
+        );
+        dropdown.addOption(
+          "incremental_pull_only",
+          t("setting_syncdirection_incremental_pull_only_desc")
+        );
+        dropdown.addOption(
+          "incremental_push_and_delete_only",
+          t("setting_syncdirection_incremental_push_and_delete_only_desc")
+        );
+        dropdown.addOption(
+          "incremental_pull_and_delete_only",
+          t("setting_syncdirection_incremental_pull_and_delete_only_desc")
+        );
+
+        dropdown
+          .setValue(this.plugin.settings.syncDirection ?? "bidirectional")
+          .onChange(async (val) => {
+            this.plugin.settings.syncDirection = val as SyncDirectionType;
+            await this.plugin.saveSettings();
+          });
       });
 
-      new Setting(advDiv)
-        .setName(t("setting_syncdirection"))
-        .setDesc(stringToFragment(t("setting_syncdirection_desc")))
-        .addDropdown((dropdown) => {
-          dropdown.addOption(
-            "bidirectional",
-            t("setting_syncdirection_bidirectional_desc")
-          );
-          dropdown.addOption(
-            "incremental_push_only",
-            t("setting_syncdirection_incremental_push_only_desc")
-          );
-          dropdown.addOption(
-            "incremental_pull_only",
-            t("setting_syncdirection_incremental_pull_only_desc")
-          );
-          dropdown.addOption(
-            "incremental_push_and_delete_only",
-            t("setting_syncdirection_incremental_push_and_delete_only_desc")
-          );
-          dropdown.addOption(
-            "incremental_pull_and_delete_only",
-            t("setting_syncdirection_incremental_pull_and_delete_only_desc")
-          );
+    // cstcloud-sync: mobile status bar toggle removed (was PRO).
 
-          dropdown
-            .setValue(this.plugin.settings.syncDirection ?? "bidirectional")
-            .onChange(async (val) => {
-              this.plugin.settings.syncDirection = val as SyncDirectionType;
-              await this.plugin.saveSettings();
-            });
-        });
+    //////////////////////////////////////////////////
+    // below for pro
+    //////////////////////////////////////////////////
 
-      // cstcloud-sync: mobile status bar toggle removed (was PRO).
-
-      //////////////////////////////////////////////////
-      // below for pro
-      //////////////////////////////////////////////////
-
-      //////////////////////////////////////////////////
-    }
+    //////////////////////////////////////////////////
   }
   // end display()
 
