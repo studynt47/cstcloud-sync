@@ -1,8 +1,16 @@
 # cstcloud-sync 交付报告
 
+> **更新记录（v1.8 发布仓库回填轮次）**
+> - 本轮执行范围：发布仓库地址回填 —— `manifest.json` 的 `authorUrl` 由 `https://github.com/cstcloud/cstcloud-sync` 改为 `https://github.com/studynt47/cstcloud-sync`（原仓库实测 HTTP 404 不存在；Obsidian 商店审核要求 `authorUrl` 为可访问的公开仓库地址），并据此**重新打包**。
+> - 发布仓库：`https://github.com/studynt47/cstcloud-sync`（**public**，GitHub 个人账号 `studynt47`）。归属该账号而非 `CstCloud`，原因是 `CstCloud` 为另一独立账号且无授权凭证。
+> - PRD 当前版本 = **v1.8**（commit `9f8a3dd`）。
+> - 本轮 commit：`596a237`（manifest authorUrl）/ `df210ec`（分发包不入库）/ `9f8a3dd`（PRD v1.8）。**未改动任何 `src/` 代码**。
+> - 新分发包 `cstcloud-sync0.0.3.zip`：**312,006 字节**，md5 `35ac128f6a3d378f46fdcd7b1e5149b0`；**已取消 git 跟踪**（遵循 `.gitignore` delivery archives 政策，磁盘与交付副本目录保留）。
+> - 内部规划文档（PRD / 本报告 / `tech_v1.md` / `decomp_*` / `prd_review_*` / `_pm_survey_*` / `AGENTS.md`）**不进入公开仓库**，仅保留本机与交付副本目录。
+>
 > **更新记录（v1.7 发版轮次 · M10 发布）**
 > - 本轮执行范围：PRD **v1.7**（发布版本号 0.0.3 回填、AC32 关闭、R9 解除）+ **M10（发布）** —— 产出 `cstcloud-sync0.0.3.zip`。
-> - PRD 当前版本 = **v1.7**（commit `c2ada6a` / `33d1979`）。
+> - PRD 当前版本 = **v1.8**（commit `c2ada6a` / `33d1979` / `9f8a3dd`；v1.7 定稿 `c2ada6a`、v1.7 补正 `33d1979`、v1.8 回填 `9f8a3dd`，历史沿革保留）。
 > - 本轮 HEAD = 本轮提交 `357fbf2` 之后的交付报告更新（其间并入 PRD v1.7 补正 commit `33d1979`）；本轮**未改动任何 `src/` 代码**。
 > - 老板 2026-10-28 书面指定发布版本号 **0.0.3**，`manifest.json` / `package.json` / PRD §4.3 三处一致。
 > - 旧包 `cstcloud-sync0.0.1.zip`（v0.0.1 全仓快照）**已删除**。
@@ -173,7 +181,7 @@ esbuild version = 0.23.1
 | 61 | A2-b | 产出干净基线 commit | ✅ 完成 | `git diff --numstat` → 0 条目；`git status --porcelain` → 空 |
 | 62 | A3 | 产品版本号统一到 0.0.2 | ✅ 完成 | `package.json` / `manifest.json` 均 `"version": "0.0.2"` |
 | 63 | A4 | README 品牌化改写 | ✅ 完成 | `README.md` / `README.zh-cn.md` 首行均为 `# cstcloud-sync` |
-| 64 | A5 | manifest 身份统一 | ✅ 完成 | `manifest.json` → `author=cstcloud`、`authorUrl=https://github.com/cstcloud/cstcloud-sync` |
+| 64 | A5 | manifest 身份统一 | ✅ 完成 | `manifest.json` → `author=cstcloud`、`authorUrl=https://github.com/studynt47/cstcloud-sync`。<u>【v1.8 修正】原定 cstcloud/cstcloud-sync 仓库实测 404 不存在，已改为 studynt47/cstcloud-sync</u> |
 | 65 | A6 | 勾选 §6 历史 checklist | ✅ 完成 | PRD §6 历史清单 59 条中 **57 条 `[x]`**、**2 条 `[ ]`**（Step 11 / 37）均同行注明原因（AC17；Step 1.5 / 22 经复核亦已完成，见 §8.8） |
 | 66 | A7 | 设置页 H1 品牌残留修复 | ✅ 完成 | `grep -c "Remotely Save" src/settings.ts` → 0 |
 | 67 | A8 | 设置页空壳元素清理 | ✅ 完成 | `grep -rn "settings_chooseservice\|settings_synconsave_desc" src/settings.ts src/langs/` → 0 |
@@ -445,7 +453,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC13 | git 基线干净 | ✅ 通过 | `git status --porcelain` → **空**；`git diff --numstat` → **0** 条目；`git config core.fileMode` → `false` |
 | AC14 | 产品版本号三处统一 0.0.2，全仓不出现 0.0.3 | ✅ 通过 | （A3 开发基线验收时的历史证据）`package.json` L3 / `manifest.json` L4 均 `"version": "0.0.2"`；PRD §4.3 同口径。**注**：`0.0.3` 字样仅出现在 PRD.md 的 AC32/R9 **需求描述**中，以及 `package-lock.json` 的第三方依赖 `@fyears/eme@0.0.3` —— **产品版本字段无一处为 0.0.3**。**注：0.0.2 为开发基线；发版版本号已由老板指定为 0.0.3（manifest.json / package.json / PRD §4.3），"0.0.3" 字样出现在版本字段属预期，非违反本条判据。** |
 | AC15 | README 品牌化 + 保留 Apache-2.0 归属与上游致谢 | ✅ 通过 | `README.md` / `README.zh-cn.md` 首行均为 `# cstcloud-sync`；两份 README 均含 Apache-2.0 与 fyears 上游致谢段 |
-| AC16 | manifest 身份为 cstcloud 口径 | ✅ 通过 | `manifest.json` L7-L8 → `author = "cstcloud"`、`authorUrl = "https://github.com/cstcloud/cstcloud-sync"` |
+| AC16 | manifest 身份为 cstcloud 口径 | ✅ 通过 | `manifest.json` L7-L8 → `author = "cstcloud"`、`authorUrl = "https://github.com/studynt47/cstcloud-sync"`。<u>【v1.8 修正】仓库归属改为 studynt47（public），author / description 不变</u> |
 | AC17 | §6 历史 checklist 59 条完成，2 条例外保留 `[ ]` 并注明原因 | ✅ 通过 | PRD §6 历史清单 **57 条 `[x]` + 2 条 `[ ]`**（Step 11 / 37）均同行注明原因，与 AC17 口径一致。**计数口径**：§6 共 59 个条目（Step 1-44 含 Step 1.5 计 45 条 + Step 45-58 计 14 条）；PRD v1.5 例外表 4 行中 Step 1.5 已标 `[x] 已完成`，余 `[ ]` 为 11 / 22 / 37（故 v1.5 记为 56 + 3）；本轮复核 Step 22 实际已完成（`grep -n "syncOnSave" src/settings.ts` → 0 命中，空壳已于 A8/Step 67 删除），故实为 **57 + 2**。**PRD v1.6 口径（commit `26ac812`；v1.7 未修订本条）**：§6 例外表 Step 22 已标 `[x] 已完成`，例外项仅剩 **Step 11 / 37**，AC17 判据为 **57 条 `[x]` + 2 条 `[ ]` = 59 条**，与 PRD §9 AC17 逐字一致 |
 | AC18 | 设置页 H1 不再显示 `Remotely Save` | ✅ 通过 | `grep -c "Remotely Save" src/settings.ts` → **0** |
 | AC19 | 无「选择服务」孤儿标题与「保存时自动同步」空标签 | ✅ 通过 | `grep -rn "settings_chooseservice\|settings_synconsave_desc" src/settings.ts src/langs/` → **0**（键已随 Step 67 / 81 删除）。**已满足（commit `31c7a30`）**：PRD v1.6 §9 AC19 判据保留并补注实测结论——清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable` 后，三语言各 167 键、键集合完全一致，`grep -rn "settings_synconsave" src/langs/` → 0 命中，`grep -c "settings_synconsave" main.js` → 0 |
@@ -460,13 +468,13 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 | AC28 | **（C3）** `src/sync.ts` 4 处 dropbox 死分支已清理 | ✅ 通过 | `grep -n "dropbox" src/sync.ts` → **仅 L1340** 历史沿革注释，无 `serviceType === "dropbox"` 条件（符合 Step 79 判据「L1381 历史沿革注释可保留」） |
 | AC29 | **（C4）** devDependencies 残留已清理 | ✅ 通过 | `webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` → `package.json` 命中 **0**；`dotenv`（L37）/ `jsdom`（L39）/ `@types/jsdom` **保留**；`npm run build2` exit 0 + `npm test` 142 passing |
 | AC30 | **（C5）** i18n 复核：40 处死键已删，3 语言键集合一致 | ✅ 通过 | 三语言键集合完全一致：Step 81 复检时各 **169** 键，AC19 收口再删 2 处孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）后现各 **167** 键（详见 §8.2）。**PRD v1.6（commit `26ac812`）已将 AC30 判据同步为 167 键**（PRD §6 Step 81 保留「清理后各为 169 键」的**历史叙述**，并补注「Step 81 时 169 键，commit `31c7a30` 后为 167 键」） |
-| AC31 | **（发布）** v0.0.3 交付包形态符合 §7.1 | ✅ 通过 | 产出 `cstcloud-sync0.0.3.zip`（311,999 B / md5 `977c92e745a1e61d0ac007b7afbef38a` / commit `357fbf2`），目录层级 `cstcloud-sync/`，含 6 个文件；**11 条形态判据逐条实测全通过**，明细见 §9.1 |
+| AC31 | **（发布）** v0.0.3 交付包形态符合 §7.1 | ✅ 通过 | 产出 `cstcloud-sync0.0.3.zip`（312,006 B / md5 `35ac128f6a3d378f46fdcd7b1e5149b0` / commit `357fbf2`），目录层级 `cstcloud-sync/`，含 6 个文件；**11 条形态判据逐条实测全通过**，明细见 §9.1。<u>【v1.8】因 manifest authorUrl 修正，发布包已重建（312,006 字节 / md5 35ac128f6a3d378f46fdcd7b1e5149b0）；§7.1 形态判据 11/11 仍全部通过（层级 cstcloud-sync/、6 文件、main.js 未变）</u> |
 | AC32 | 发版前置：老板统一指定版本号 ≥ 0.0.3 且三处一致 | ✅ 已满足 | 老板 2026-10-28 书面指定发布版本号 **0.0.3**；`manifest.json` / `package.json` / PRD §4.3 三处一致；分发包 `cstcloud-sync0.0.3.zip` 已产出（commit `357fbf2`）。**本条已关闭。** |
 | AC33 | **（v1.4）** 配置目录同步 5 项清单比对 | ⛔ 未执行（待老板实测） | 代码侧已完成：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` → **2 处**（L100 / L116，Step 82 已实施）；`src/obsFolderLister.ts` L100 / L116 的排除数组各增 `"workspace-mobile.json"`。**但 5 项清单比对需老板在测试 vault 开启 `syncConfigDir` 开关并执行一次 dry-run 逐条核对**，本轮未做真实 dry-run |
 
 ### 9.1 v0.0.3 交付包解包核对（✅ 全部通过）
 
-核对对象：仓库根目录 `cstcloud-sync0.0.3.zip`（311,999 字节，md5 `977c92e745a1e61d0ac007b7afbef38a`，commit `357fbf2`）—— 包内 **7 个条目**（1 目录 + 6 文件），目录层级 `cstcloud-sync/`。
+核对对象：仓库根目录 `cstcloud-sync0.0.3.zip`（312,006 字节，md5 `35ac128f6a3d378f46fdcd7b1e5149b0`，commit `357fbf2`）—— 包内 **7 个条目**（1 目录 + 6 文件），目录层级 `cstcloud-sync/`。
 
 | # | 判据 | 期望 | 实测 | 结论 |
 |---|---|---|---|---|
@@ -510,7 +518,7 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 
 ### 源码（`/home/WPS/ls/cstcloud-sync/` 或 `/root/Projects/cstcloud-sync/`）
 - `main.js` (1,043,555 字节, build 产物, md5 `5ffe14e9725ec80e84186e8342bf56a3`)
-- `manifest.json` (id=cstcloud-sync, version=0.0.3, author=cstcloud, minAppVersion=0.13.21)
+- `manifest.json` (id=cstcloud-sync, version=0.0.3, author=cstcloud, authorUrl=https://github.com/studynt47/cstcloud-sync, minAppVersion=0.13.21)
 - `package.json` (name=cstcloud-sync, version=0.0.3)
 - `esbuild.config.mjs`
 - `tsconfig.json`
@@ -520,10 +528,17 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 - 无 `pro/` 目录；无 `src/profiler.ts`；无加密后端文件
 
 ### 分发包（v0.0.3）
-- `cstcloud-sync0.0.3.zip`（311,999 字节，md5 `977c92e745a1e61d0ac007b7afbef38a`，commit `357fbf2`）
+- `cstcloud-sync0.0.3.zip`（312,006 字节，md5 `35ac128f6a3d378f46fdcd7b1e5149b0`，commit `357fbf2`）
 - 目录层级 `cstcloud-sync/`，含 main.js / manifest.json / LICENSE / README.md / README.zh-cn.md / versions.json 共 6 个文件
 - 副本同步至 `/home/WPS/ls/cstcloud-sync/`（由 PM 执行，不写 `/home/WPS/NEW/`）
+- **不入库**：分发包已从 git 跟踪中移除（commit `df210ec`），遵循 `.gitignore` 的 delivery archives 政策；文件仅存于本机与 `/home/WPS/ls/cstcloud-sync/`
 - ~~`cstcloud-sync0.0.1.zip`~~（v0.0.1 全仓快照，**已删除**）
+
+### 公开仓库内容（2026-10-28 推送口径）
+- **仓库**：`https://github.com/studynt47/cstcloud-sync`（**public**，GitHub 个人账号 `studynt47`）
+- **公开文件范围**：`manifest.json` / `main.js` / `versions.json` / `README.md` / `README.zh-cn.md` / `LICENSE` / `GUIDE_config-dir-sync.md` / `package.json` / `package-lock.json` / `biome.json` / `esbuild.config.mjs` / `esbuild.injecthelper.mjs` / `tsconfig.json` / `src/` / `tests/` / `assets/` / `docs/` / `CLA.md` / `CONTRIBUTING.md` / `.github/` / `.env.example.txt`
+- **不公开**：内部规划文档 **14 份**（`PRD.md` / `delivery/DELIVERY_REPORT.md` / `tech_v1.md` / `decomp_claudecode_v1.md` / `decomp_openclaw_v1.md` / `prd_review_v1.md` ~ `prd_review_v8.md` / `_pm_survey_2026-10-27.md`）+ `AGENTS.md` + `manifest-beta.json` + `webpack.config.js` + 分发包 zip
+- **凭证**：GitHub PAT 仅存于 `/home/WPS/config/GitHub`，**不入库、不写入任何仓库文件**
 
 ### 文档
 - `delivery/DELIVERY_REPORT.md` (本文件)
@@ -539,7 +554,9 @@ diff /tmp/base_refs.txt /tmp/now_refs.txt   # 无输出 = 逐行一致
 
 ### 11.1 最终状态汇总（一句话）
 
-**代码侧 A + B + C 三类（Step 59-81）与 Phase 8（Step 82）已全部完成并验证通过** —— `npm test` **142 passing / 0 failing / 0 pending**、`tsc`（项目判据）**0 error**、`npm run build2` **exit 0**、Step 73 产物自检 **全绿**、C1 的 3 项行为等价性经差分对比确认 **FULL EQUAL: True**；**发布：✅ v0.0.3 已产出**（`cstcloud-sync0.0.3.zip`，311,999 字节 / md5 `977c92e745a1e61d0ac007b7afbef38a` / commit `357fbf2`），**AC31 ✅ 通过**（§7.1 形态判据 11/11 全通过）、**AC32 ✅ 已满足**（老板 2026-10-28 书面指定 0.0.3，`manifest.json` / `package.json` / PRD §4.3 三处一致，PRD R9 已解除）；**剩余待老板实测项为 Step 70（B2 真实 S3 连通）/ Step 71（B3 双向同步 E2E）/ AC33（配置目录同步 dry-run 清单比对）** —— 三项**仍为 ⛔ 未执行**，按老板指示由老板本人执行。
+**代码侧 A + B + C 三类（Step 59-81）与 Phase 8（Step 82）已全部完成并验证通过** —— `npm test` **142 passing / 0 failing / 0 pending**、`tsc`（项目判据）**0 error**、`npm run build2` **exit 0**、Step 73 产物自检 **全绿**、C1 的 3 项行为等价性经差分对比确认 **FULL EQUAL: True**；**发布：✅ v0.0.3 已产出**（`cstcloud-sync0.0.3.zip`，312,006 字节 / md5 `35ac128f6a3d378f46fdcd7b1e5149b0` / commit `357fbf2`），**AC31 ✅ 通过**（§7.1 形态判据 11/11 全通过）、**AC32 ✅ 已满足**（老板 2026-10-28 书面指定 0.0.3，`manifest.json` / `package.json` / PRD §4.3 三处一致，PRD R9 已解除）；**剩余待老板实测项为 Step 70（B2 真实 S3 连通）/ Step 71（B3 双向同步 E2E）/ AC33（配置目录同步 dry-run 清单比对）** —— 三项**仍为 ⛔ 未执行**，按老板指示由老板本人执行。
+
+- **发布仓库**：`https://github.com/studynt47/cstcloud-sync`（public）；发布包 `cstcloud-sync0.0.3.zip` 312,006 字节 / md5 `35ac128f6a3d378f46fdcd7b1e5149b0`，形态判据 11/11 通过
 
 ### 11.2 回滚点
 
