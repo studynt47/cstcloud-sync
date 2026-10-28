@@ -1,6 +1,6 @@
 {
   "name": "cstcloud-sync",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "cstcloud-sync: Obsidian 笔记双向同步插件（基于 S3 / cstcloud.cn 对象存储）",
   "scripts": {
     "dev2": "node esbuild.config.mjs --watch",
