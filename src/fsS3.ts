@@ -159,23 +159,6 @@ class ObsHttpHandler extends FetchHttpHandler {
 // other stuffs
 ////////////////////////////////////////////////////////////////////////////////
 
-export const simpleTransRemotePrefix = (x: string) => {
-  if (x === undefined) {
-    return "";
-  }
-  let y = path.posix.normalize(x.trim());
-  if (y === undefined || y === "" || y === "/" || y === ".") {
-    return "";
-  }
-  if (y.startsWith("/")) {
-    y = y.slice(1);
-  }
-  if (!y.endsWith("/")) {
-    y = `${y}/`;
-  }
-  return y;
-};
-
 // cstcloud-sync: hardcoded for cstcloud.cn (Step 32)
 //   s3Endpoint = "s3.cstcloud.cn"   (P2-2)
 //   s3Region   = "us-east-1"         (P2-3)

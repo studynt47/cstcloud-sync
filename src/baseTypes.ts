@@ -92,15 +92,6 @@ export interface RemotelySavePluginSettings {
 
 export const COMMAND_URI = "remotely-save";
 // cstcloud-sync: no OAuth callbacks; only QR-code URI handler is registered.
-export const COMMAND_CALLBACK = "remotely-save-cb"; // legacy constant kept for type compat
-
-export interface UriParams {
-  func?: string;
-  vault?: string;
-  ver?: string;
-  data?: string;
-}
-
 export type EmptyFolderCleanType = "skip" | "clean_both";
 
 export type ConflictActionType =
@@ -160,11 +151,6 @@ export interface Entity {
   synthesizedFile?: boolean;
 }
 
-export interface UploadedType {
-  entity: Entity;
-  mtimeCli?: number;
-}
-
 /**
  * A replacement of FileOrFolderMixedState
  */
@@ -212,10 +198,6 @@ export interface FileOrFolderMixedState {
 }
 
 export const DEFAULT_DEBUG_FOLDER = "_debug_remotely_save/";
-export const DEFAULT_SYNC_PLANS_HISTORY_FILE_PREFIX =
-  "sync_plans_hist_exported_on_";
-export const DEFAULT_LOG_HISTORY_FILE_PREFIX = "log_hist_exported_on_";
-
 export type SyncTriggerSourceType =
   | "manual"
   | "dry"
@@ -223,5 +205,3 @@ export type SyncTriggerSourceType =
   | "auto_once_init"
   | "auto_sync_on_save";
 
-export const REMOTELY_SAVE_VERSION_2022 = "0.3.25";
-export const REMOTELY_SAVE_VERSION_2024PREPARE = "0.3.32";

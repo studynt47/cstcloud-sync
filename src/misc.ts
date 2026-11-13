@@ -113,41 +113,11 @@ export const arrayBufferToHex = (b: ArrayBuffer) => {
   return arrayBufferToBuffer(b).toString("hex");
 };
 
-export const base64ToArrayBuffer = (b64text: string) => {
-  return bufferToArrayBuffer(Buffer.from(b64text, "base64"));
-};
-
-export const copyArrayBuffer = (src: ArrayBuffer) => {
-  const dst = new ArrayBuffer(src.byteLength);
-  new Uint8Array(dst).set(new Uint8Array(src));
-  return dst;
-};
-
 /**
  * https://stackoverflow.com/questions/43131242
  * @param hex
  * @returns
  */
-export const hexStringToTypedArray = (hex: string) => {
-  const f = hex.match(/[\da-f]{2}/gi);
-  if (f === null) {
-    throw Error(`input ${hex} is not hex, no way to transform`);
-  }
-  return new Uint8Array(f.map((h) => Number.parseInt(h, 16)));
-};
-
-export const base64ToBase32 = (a: string) => {
-  return base32.stringify(Buffer.from(a, "base64"));
-};
-
-export const base64ToBase64url = (a: string, pad = false) => {
-  let b = a.replace(/\+/g, "-").replace(/\//g, "_");
-  if (!pad) {
-    b = b.replace(/=/g, "");
-  }
-  return b;
-};
-
 /**
  * iOS Safari could decrypt string with invalid password!
  * So we need an extra way to test the decrypted result.
@@ -174,29 +144,12 @@ export const isVaildText = (a: string) => {
  * @param a
  * @returns
  */
-export const hasEmojiInText = (a: string) => {
-  const regex = emojiRegex();
-  return regex.test(a);
-};
-
 /**
  * Convert the headers to a normal object.
  * @param h
  * @param toLower
  * @returns
  */
-export const headersToRecord = (h: Headers, toLower = true) => {
-  const res: Record<string, string> = {};
-  h.forEach((v, k) => {
-    if (toLower) {
-      res[k.toLowerCase()] = v;
-    } else {
-      res[k] = v;
-    }
-  });
-  return res;
-};
-
 /**
  * If input is already a folder, returns it as is;
  * And if input is a file, returns its direname.
@@ -235,10 +188,6 @@ export const getParentFolder = (a: string) => {
  * @param delimiter
  * @returns
  */
-export const setToString = (a: Set<string>, delimiter = ",") => {
-  return [...a].join(delimiter);
-};
-
 export const extractSvgSub = (x: string, subEl = "rect") => {
   const parser = new window.DOMParser();
   const dom = parser.parseFromString(x, "image/svg+xml");
@@ -253,25 +202,11 @@ export const extractSvgSub = (x: string, subEl = "rect") => {
  * @param max
  * @returns
  */
-export const getRandomIntInclusive = (min: number, max: number) => {
-  const randomBuffer = new Uint32Array(1);
-  window.crypto.getRandomValues(randomBuffer);
-  const randomNumber = randomBuffer[0] / (0xffffffff + 1);
-  const min2 = Math.ceil(min);
-  const max2 = Math.floor(max);
-  return Math.floor(randomNumber * (max2 - min2 + 1)) + min2;
-};
-
 /**
  * Random buffer
  * @param byteLength
  * @returns
  */
-export const getRandomArrayBuffer = (byteLength: number) => {
-  const k = window.crypto.getRandomValues(new Uint8Array(byteLength));
-  return bufferToArrayBuffer(k);
-};
-
 /**
  * https://stackoverflow.com/questions/958908
  * @param x
@@ -314,10 +249,6 @@ export const getSplitRanges = (bytesTotal: number, bytesEachPart: number) => {
  * @param obj anything
  * @returns string of the name of the object
  */
-export const getTypeName = (obj: any) => {
-  return Object.prototype.toString.call(obj).slice(8, -1);
-};
-
 /**
  * Startting from 1
  * @param x
@@ -379,44 +310,6 @@ const getCircularReplacer = () => {
  * @param x
  * @returns
  */
-export const toText = (x: any) => {
-  if (x === undefined || x === null) {
-    return `${x}`;
-  }
-  if (typeof x === "string") {
-    return x;
-  }
-  if (
-    x instanceof String ||
-    x instanceof Date ||
-    typeof x === "number" ||
-    typeof x === "bigint" ||
-    typeof x === "boolean"
-  ) {
-    return `${x}`;
-  }
-
-  if (
-    x instanceof Error ||
-    (x?.stack &&
-      x?.message &&
-      typeof x.stack === "string" &&
-      typeof x.message === "string")
-  ) {
-    return `ERROR! MESSAGE: ${x.message}, STACK: ${x.stack}`;
-  }
-
-  try {
-    const y = JSON.stringify(x, getCircularReplacer(), 2);
-    if (y !== undefined) {
-      return y;
-    }
-    throw new Error("not jsonable");
-  } catch {
-    return `${x}`;
-  }
-};
-
 /**
  * On Android the stat has bugs for folders. So we need a fixed version.
  * @param vault
@@ -494,28 +387,6 @@ export const isSpecialFolderNameToSkip = (
  * @param y versionY
  * @returns 1(x>y), 0(x==y), -1(x<y)
  */
-export const compareVersion = (x: string | null, y: string | null) => {
-  if (x === undefined || x === null) {
-    return -1;
-  }
-  if (y === undefined || y === null) {
-    return 1;
-  }
-  if (x === y) {
-    return 0;
-  }
-  const [x1, x2, x3] = x.split(".").map((k) => Number(k));
-  const [y1, y2, y3] = y.split(".").map((k) => Number(k));
-  if (
-    x1 > y1 ||
-    (x1 === y1 && x2 > y2) ||
-    (x1 === y1 && x2 === y2 && x3 > y3)
-  ) {
-    return 1;
-  }
-  return -1;
-};
-
 /**
  * https://stackoverflow.com/questions/19929641/how-to-append-an-html-string-to-a-documentfragment
  * To introduce some advanced html fragments.
@@ -733,17 +604,6 @@ export const splitFileSizeToChunkRanges = (
     });
   }
   return res;
-};
-
-export const getSha1 = async (x: ArrayBuffer, stringify: "base64" | "hex") => {
-  const y = await window.crypto.subtle.digest("SHA-1", x);
-
-  if (stringify === "base64") {
-    return arrayBufferToBase64(y);
-  } else if (stringify === "hex") {
-    return arrayBufferToHex(y);
-  }
-  throw Error(`not supported stringify option = ${stringify}`);
 };
 
 /**

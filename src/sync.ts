@@ -397,12 +397,6 @@ const ensembleMixedEnties = async (
 
     // 20240907: users (not on windows) doesn't like it. revert back now.
     // TODO: platform specific but not introducing obsidian dependency into sync.ts
-    // const checkValidNameResult = checkValidName(key);
-    // if (!checkValidNameResult.result) {
-    //   throw Error(
-    //     `your remote folder/file name is invalid: ${checkValidNameResult.reason}`
-    //   );
-    // }
 
     finalMappings[key] = {
       key: key,
@@ -476,12 +470,6 @@ const ensembleMixedEnties = async (
 
     // 20240907: users (not on windows) doesn't like it. revert back now.
     // TODO: platform specific but not introducing obsidian dependency into sync.ts
-    // const checkValidNameResult = checkValidName(key);
-    // if (!checkValidNameResult.result) {
-    //   throw Error(
-    //     `your local folder/file name is invalid: ${checkValidNameResult.reason}`
-    //   );
-    // }
 
     // TODO: abstraction leaking?
     const localCopied = copyEntityAndCopyKeyEncSizeEnc(
@@ -1830,18 +1818,6 @@ export const doActualSync = async (
     }
   }
 };
-
-export type SyncStatusType =
-  | "idle"
-  | "preparing"
-  | "getting_remote_files_list"
-  | "getting_local_meta"
-  | "getting_local_prev_sync"
-  | "checking_password"
-  | "generating_plan"
-  | "syncing"
-  | "cleaning"
-  | "finish";
 
 /**
  * Every input variable should be mockable, so that testable.

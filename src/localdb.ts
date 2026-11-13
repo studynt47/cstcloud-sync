@@ -136,11 +136,8 @@ const migrateDBsFrom20220326To20240220 = async (
     );
   }
 
-  // // clear not used data
-  // // as of 20240220, we don't call them,
-  // // for the opportunity for users to downgrade
-  // await clearFileHistoryOfEverythingByVault(db, vaultRandomID);
-  // await clearAllSyncMetaMappingByVault(db, vaultRandomID);
+  // 20240220: intentionally keeps the old history / sync-mapping rows,
+  // so that users are still able to downgrade.
 
   await db.versionTbl.setItem(`${vaultRandomID}\tversion`, newVer);
   console.debug(`finish upgrading internal db from ${oldVer} to ${newVer}`);
@@ -289,10 +286,6 @@ export const prepareDBs = async (
 };
 
 export const destroyDBs = async () => {
-  // await localforage.dropInstance({
-  //   name: DEFAULT_DB_NAME,
-  // });
-  // console.info("db deleted");
   const req = indexedDB.deleteDatabase(DEFAULT_DB_NAME);
   req.onsuccess = (event) => {
     console.info("db deleted");
@@ -314,11 +307,6 @@ export const clearFileHistoryOfEverythingByVault = async (
     x.startsWith(`${vaultRandomID}\t`)
   );
   await db.fileHistoryTbl.removeItems(keys);
-  // for (const key of keys) {
-  //   if (key.startsWith(`${vaultRandomID}\t`)) {
-  //     await db.fileHistoryTbl.removeItem(key);
-  //   }
-  // }
 };
 
 /**
@@ -349,11 +337,6 @@ export const clearAllSyncMetaMappingByVault = async (
     x.startsWith(`${vaultRandomID}\t`)
   );
   await db.syncMappingTbl.removeItems(keys);
-  // for (const key of keys) {
-  //   if (key.startsWith(`${vaultRandomID}\t`)) {
-  //     await db.syncMappingTbl.removeItem(key);
-  //   }
-  // }
 };
 
 export const insertSyncPlanRecordByVault = async (
@@ -371,29 +354,6 @@ export const insertSyncPlanRecordByVault = async (
     syncPlan: JSON.stringify(syncPlan /* directly stringify */, null, 2),
   } as SyncPlanRecord;
   await db.syncPlansTbl.setItem(`${vaultRandomID}\t${now}`, record);
-};
-
-export const clearAllSyncPlanRecords = async (db: InternalDBs) => {
-  await db.syncPlansTbl.clear();
-};
-
-export const readAllSyncPlanRecordTextsByVault = async (
-  db: InternalDBs,
-  vaultRandomID: string
-) => {
-  const records = [] as SyncPlanRecord[];
-  await db.syncPlansTbl.iterate((value, key, iterationNumber) => {
-    if (key.startsWith(`${vaultRandomID}\t`)) {
-      records.push(value as SyncPlanRecord);
-    }
-  });
-  records.sort((a, b) => -(a.ts - b.ts)); // descending
-
-  if (records === undefined) {
-    return [] as string[];
-  } else {
-    return records.map((x) => x.syncPlan);
-  }
 };
 
 /**
@@ -431,11 +391,6 @@ export const clearExpiredSyncPlanRecords = async (db: InternalDBs) => {
     });
   }
 
-  // const ps = [] as Promise<void>[];
-  // keysToRemove.forEach((element) => {
-  //   ps.push(db.syncPlansTbl.removeItem(element));
-  // });
-  // await Promise.all(ps);
   await db.syncPlansTbl.removeItems(Array.from(keysToRemove));
 };
 
@@ -479,16 +434,6 @@ export const clearPrevSyncRecordByVaultAndProfile = async (
   await db.prevSyncRecordsTbl.removeItem(
     `${vaultRandomID}\t${profileID}\t${key}`
   );
-};
-
-export const clearAllPrevSyncRecordByVault = async (
-  db: InternalDBs,
-  vaultRandomID: string
-) => {
-  const keys = (await db.prevSyncRecordsTbl.keys()).filter((x) =>
-    x.startsWith(`${vaultRandomID}\t`)
-  );
-  await db.prevSyncRecordsTbl.removeItems(keys);
 };
 
 export const clearAllLoggerOutputRecords = async (db: InternalDBs) => {
@@ -597,12 +542,3 @@ export const clearFileContentHistoryByVaultAndProfile = async (
   );
 };
 
-export const clearAllFileContentHistoryByVault = async (
-  db: InternalDBs,
-  vaultRandomID: string
-) => {
-  const keys = (await db.fileContentHistoryTbl.keys()).filter((x) =>
-    x.startsWith(`${vaultRandomID}\t`)
-  );
-  await db.fileContentHistoryTbl.removeItems(keys);
-};

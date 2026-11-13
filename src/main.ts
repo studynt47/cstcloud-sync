@@ -518,9 +518,6 @@ export default class RemotelySavePlugin extends Plugin {
 
     this.addSettingTab(new RemotelySaveSettingTab(this.app, this));
 
-    // this.registerDomEvent(document, "click", (evt: MouseEvent) => {
-    //   console.info("click", evt);
-    // });
 
     this.enableCheckingFileStat();
 

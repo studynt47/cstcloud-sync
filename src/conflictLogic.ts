@@ -2,12 +2,6 @@
 export const MERGABLE_SIZE = 1000 * 1000; // 1 MB
 
 import { isEqual } from "lodash";
-// import {
-//   makePatches,
-//   applyPatches,
-//   stringifyPatches,
-//   parsePatch,
-// } from "@sanity/diff-match-patch";
 // @ts-expect-error - node-diff3 has a non-standard package layout
 import * as Diff3 from "node-diff3";
 const { LCS, diff3Merge, diffComm, diffPatch, mergeDiff3, mergeDigIn, patch } =
@@ -85,13 +79,7 @@ export function twoWayMerge(a: string, b: string): string {
     return b;
   }
 
-  // const c = getLCSText(a, b);
-  // const patches = makePatches(c, a);
-  // const [d] = applyPatches(patches, b);
   const c = getLCSText(a, b); //.trim();
-  // console.debug(`(start) LCS Text:`);
-  // console.debug(c);
-  // console.debug(`(end) LCS Text.`);
   const d = mergeDigInModified(a, c, b).result.join("\n");
   return d;
 }

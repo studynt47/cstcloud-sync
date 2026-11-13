@@ -1,14 +1,15 @@
-# Translations for Remotely Save
+# Language Packs
 
 ## How To Add A Language?
 
 1. Copy `en.json` to a new json file named `<lang>.json`, and translate all the items inside. The language should match what is available in Obsidian app.
 2. Modify the `index.ts` file to include the new language file.
 
-~~## Why Seperated Repo?~~
+## Notes for this fork
 
-~~For better pull requests management.~~
-
-## No more `lang` submodule from 20240106
-
-It's actually harder to manage pull requests of submodule for me. The submodule is merged back to the main repo on 20240106. Any further improved translations (and/or pull requestes) should be dealt with in the main repo.
+- `en.json` is the **type source**: `TransItemType` in `../i18n.ts` is derived from
+  `keyof (typeof LANGS)["en"]`. Adding a key therefore requires updating `en.json`
+  **and** every other language file, otherwise the new key silently falls back to
+  English at runtime.
+- Only the S3-capable feature set is translated. Keys for services this plugin
+  does not support have already been removed.
