@@ -12,7 +12,7 @@ import type { LangTypeAndAuto } from "./i18n";
 export const DEFAULT_CONTENT_TYPE = "application/octet-stream";
 
 /**
- * cstcloud-sync only supports S3 (cstcloud.cn).
+ * Only S3 (cstcloud.cn) is supported.
  * Other service types kept only as type-stub for old data.json compatibility
  * (loadSettings forces serviceType to "s3").
  */

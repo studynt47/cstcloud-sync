@@ -115,6 +115,29 @@ const getStatusBarShortMsgFromSyncSource = (
   }
 };
 
+const getSyncSourceLabel = (
+  t: (x: TransItemType, vars?: any) => string,
+  s: SyncTriggerSourceType | undefined
+) => {
+  if (s === undefined) {
+    return "";
+  }
+  switch (s) {
+    case "manual":
+      return t("synctriggersource_manual");
+    case "dry":
+      return t("synctriggersource_dry");
+    case "auto":
+      return t("synctriggersource_auto");
+    case "auto_once_init":
+      return t("synctriggersource_auto_once_init");
+    default:
+      // unknown trigger source: fall back to empty string instead of throwing,
+      // otherwise a new enum member would break the whole ribbon tooltip.
+      return "";
+  }
+};
+
 export default class RemotelySavePlugin extends Plugin {
   settings!: RemotelySavePluginSettings;
   db!: InternalDBs;
@@ -295,8 +318,8 @@ export default class RemotelySavePlugin extends Plugin {
           this.syncRibbon.setAttribute(
             "aria-label",
             t("syncrun_syncingribbon", {
-              pluginName: this.manifest.name,
-              triggerSource: s,
+              pluginName: t("plugin_display_name"),
+              triggerSource: getSyncSourceLabel(t, s),
             })
           );
         }
@@ -304,7 +327,7 @@ export default class RemotelySavePlugin extends Plugin {
         // last step
         if (this.syncRibbon !== undefined) {
           setIcon(this.syncRibbon, iconNameSyncWait);
-          const originLabel = `${this.manifest.name}`;
+          const originLabel = t("plugin_display_name");
           this.syncRibbon.setAttribute("aria-label", originLabel);
         }
       }
@@ -355,9 +378,9 @@ export default class RemotelySavePlugin extends Plugin {
       getNotice(
         triggerSource,
         t("syncrun_alreadyrunning", {
-          pluginName: this.manifest.name,
-          syncStatus: "running",
-          newTriggerSource: triggerSource,
+          pluginName: t("plugin_display_name"),
+          syncStatus: t("syncstatus_running"),
+          newTriggerSource: getSyncSourceLabel(t, triggerSource),
         })
       );
 
