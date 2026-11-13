@@ -58,6 +58,7 @@ export interface RemotelySavePluginSettings {
   currLogLevel?: string;
   autoRunEveryMilliseconds?: number;
   initRunAfterMilliseconds?: number;
+  /** @deprecated 保存后同步链路已删除，此字段仅作旧配置兼容闸门 */
   syncOnSaveAfterMilliseconds?: number;
 
   concurrency?: number;
@@ -202,6 +203,5 @@ export type SyncTriggerSourceType =
   | "manual"
   | "dry"
   | "auto"
-  | "auto_once_init"
-  | "auto_sync_on_save";
+  | "auto_once_init";
 

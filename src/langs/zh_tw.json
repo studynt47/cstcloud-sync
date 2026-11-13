@@ -32,7 +32,6 @@
   "statusbar_sync_source_dry": "空跑：",
   "statusbar_sync_source_auto": "自動：",
   "statusbar_sync_source_auto_once_init": "啟動時同步：",
-  "statusbar_sync_source_auto_sync_on_save": "儲存時同步：",
   "statusbar_sync_status_prefix_success": "同步成功：",
   "statusbar_sync_status_prefix_failed": "同步失敗：",
   "statusbar_time_years": "{{time}} 年前",

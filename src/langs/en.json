@@ -32,7 +32,6 @@
   "statusbar_sync_source_dry": "Dry: ",
   "statusbar_sync_source_auto": "Auto: ",
   "statusbar_sync_source_auto_once_init": "Auto (init): ",
-  "statusbar_sync_source_auto_sync_on_save": "Auto (save): ",
   "statusbar_sync_status_prefix_success": "Successfully synced ",
   "statusbar_sync_status_prefix_failed": "Failed to sync ",
   "statusbar_time_years": "{{time}} years ago",

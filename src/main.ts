@@ -1,10 +1,8 @@
 // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 import AggregateError from "aggregate-error";
 import cloneDeep from "lodash/cloneDeep";
-import throttle from "lodash/throttle";
 import { FileText, RefreshCcw, RotateCcw, createElement } from "lucide";
 import {
-  Events,
   FileSystemAdapter,
   type Modal,
   Notice,
@@ -110,8 +108,6 @@ const getStatusBarShortMsgFromSyncSource = (
       return t("statusbar_sync_source_auto");
     case "auto_once_init":
       return t("statusbar_sync_source_auto_once_init");
-    case "auto_sync_on_save":
-      return t("statusbar_sync_source_auto_sync_on_save");
     default:
       // unknown trigger source: fall back to no prefix instead of throwing,
       // otherwise a new enum member would break the whole status bar refresh.
@@ -123,15 +119,12 @@ export default class RemotelySavePlugin extends Plugin {
   settings!: RemotelySavePluginSettings;
   db!: InternalDBs;
   isSyncing!: boolean;
-  hasPendingSyncOnSave!: boolean;
   statusBarElement!: HTMLSpanElement;
   currSyncMsg?: string;
   syncRibbon?: HTMLElement;
   autoRunIntervalID?: number;
-  syncOnSaveIntervalID?: number;
   i18n!: I18n;
   vaultRandomID!: string;
-  syncEvent?: Events;
   appContainerObserver?: MutationObserver;
 
   async syncRun(triggerSource: SyncTriggerSourceType = "manual") {
@@ -395,8 +388,6 @@ export default class RemotelySavePlugin extends Plugin {
       statusBarFunc,
       callbackSyncProcess
     );
-
-    this.syncEvent?.trigger("SYNC_DONE");
   }
 
   async onload() {
@@ -410,9 +401,6 @@ export default class RemotelySavePlugin extends Plugin {
 
     this.currSyncMsg = "";
     this.isSyncing = false;
-    this.hasPendingSyncOnSave = false;
-
-    this.syncEvent = new Events();
 
     await this.loadSettings();
 
@@ -529,7 +517,6 @@ export default class RemotelySavePlugin extends Plugin {
     } else {
       this.enableAutoSyncIfSet();
       this.enableInitSyncIfSet();
-      this.toggleSyncOnSaveIfSet();
     }
 
     // compare versions and read new versions
@@ -705,95 +692,6 @@ export default class RemotelySavePlugin extends Plugin {
           this.syncRun("auto_once_init");
         }, this.settings.initRunAfterMilliseconds);
       });
-    }
-  }
-
-  async _checkCurrFileModified(caller: "SYNC" | "FILE_CHANGES") {
-    console.debug(`inside checkCurrFileModified`);
-    const currentFile = this.app.workspace.getActiveFile();
-
-    if (currentFile) {
-      console.debug(`we have currentFile=${currentFile.path}`);
-      // get the last modified time of the current file
-      // if it has modified after lastSuccessSync
-      // then schedule a run for syncOnSaveAfterMilliseconds after it was modified
-      const lastModified = currentFile.stat.mtime;
-      const lastSuccessSyncMillis = await getLastSuccessSyncTimeByVault(
-        this.db,
-        this.vaultRandomID
-      );
-
-      console.debug(
-        `lastModified=${lastModified}, lastSuccessSyncMillis=${lastSuccessSyncMillis}`
-      );
-
-      if (
-        caller === "SYNC" ||
-        (caller === "FILE_CHANGES" &&
-          lastModified > (lastSuccessSyncMillis ?? 1))
-      ) {
-        console.debug(
-          `so lastModified > lastSuccessSyncMillis or it's called while syncing before`
-        );
-        console.debug(
-          `caller=${caller}, isSyncing=${this.isSyncing}, hasPendingSyncOnSave=${this.hasPendingSyncOnSave}`
-        );
-        if (this.isSyncing) {
-          this.hasPendingSyncOnSave = true;
-          // wait for next event
-          return;
-        } else {
-          if (this.hasPendingSyncOnSave || caller === "FILE_CHANGES") {
-            this.hasPendingSyncOnSave = false;
-            await this.syncRun("auto_sync_on_save");
-          }
-          return;
-        }
-      }
-    } else {
-      console.debug(`no currentFile here`);
-    }
-  }
-
-  _syncOnSaveEvent1 = () => {
-    this._checkCurrFileModified("SYNC");
-  };
-
-  _syncOnSaveEvent2 = throttle(
-    async () => {
-      await this._checkCurrFileModified("FILE_CHANGES");
-    },
-    1000 * 3,
-    {
-      leading: false,
-      trailing: true,
-    }
-  );
-
-  toggleSyncOnSaveIfSet() {
-    if (
-      this.settings.syncOnSaveAfterMilliseconds !== undefined &&
-      this.settings.syncOnSaveAfterMilliseconds !== null &&
-      this.settings.syncOnSaveAfterMilliseconds > 0
-    ) {
-      this.app.workspace.onLayoutReady(() => {
-        // listen to sync done
-        this.registerEvent(
-          this.syncEvent?.on("SYNC_DONE", this._syncOnSaveEvent1)!
-        );
-
-        // listen to current file save changes
-        this.registerEvent(this.app.vault.on("modify", this._syncOnSaveEvent2));
-        this.registerEvent(this.app.vault.on("create", this._syncOnSaveEvent2));
-        this.registerEvent(this.app.vault.on("delete", this._syncOnSaveEvent2));
-        this.registerEvent(this.app.vault.on("rename", this._syncOnSaveEvent2));
-      });
-    } else {
-      this.syncEvent?.off("SYNC_DONE", this._syncOnSaveEvent1);
-      this.app.vault.off("modify", this._syncOnSaveEvent2);
-      this.app.vault.off("create", this._syncOnSaveEvent2);
-      this.app.vault.off("delete", this._syncOnSaveEvent2);
-      this.app.vault.off("rename", this._syncOnSaveEvent2);
     }
   }
 
