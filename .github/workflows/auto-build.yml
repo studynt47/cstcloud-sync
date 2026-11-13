@@ -1,0 +1,51 @@
+# cstcloud-sync CI —— fork 适配版
+#
+# 上游原版 workflow 存在四处与本 fork 不符，已重写：
+#   1. `npm run build` 走 webpack，而 webpack.config.js 未入库（构建必失败）→ 改用 `npm run build2`（esbuild）
+#   2. 上传产物含不存在的 styles.css → 改为发布包真实六件套
+#   3. pull_request 指向 master，本仓主分支为 main → 改为 main
+#   4. 注入了 12 个本项目完全不支持的云盘 OAuth 密钥 → 全部移除
+#
+# 发布（Release）不走 CI：发布链由维护方人工执行并校验产物 MD5。
+
+name: BuildCI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install
+      - run: npm test
+      - run: npm run build2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cstcloud-sync-dist
+          path: |
+            main.js
+            manifest.json
+            versions.json
+            README.md
+            README.zh-cn.md
+            LICENSE

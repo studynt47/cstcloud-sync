@@ -18,7 +18,10 @@ data.json
 logs.txt
 
 # hidden files
+# NOTE: 上游原有的 `.*` 规则会把 .github/ 整目录排除，导致 CI workflow 与 issue
+# 模板无法入库（fork 时该目录从未被追踪）。此处显式放行 .github/。
 .*
+!.github/
 
 # local upstream mirror (rollback reference only, not part of this fork's source tree; see PRD v1.3 Step 74)
 _archive/
