@@ -3,7 +3,6 @@ import {
   type App,
   Modal,
   Notice,
-  Platform,
   PluginSettingTab,
   Setting,
   type TextComponent,
@@ -372,22 +371,6 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
           });
       });
 
-    // custom status bar items is not supported on mobile
-    if (!Platform.isMobileApp) {
-      new Setting(basicDiv)
-        .setName(t("settings_enablestatusbar_info"))
-        .setDesc(t("settings_enablestatusbar_info_desc"))
-        .addToggle((toggle) => {
-          toggle
-            .setValue(this.plugin.settings.enableStatusBarInfo ?? true)
-            .onChange(async (val) => {
-              this.plugin.settings.enableStatusBarInfo = val;
-              await this.plugin.saveSettings();
-              new Notice(t("settings_enablestatusbar_reloadrequired_notice"));
-            });
-        });
-    }
-
     //////////////////////////////////////////////////
     // below for advanced settings
     //////////////////////////////////////////////////
@@ -483,23 +466,6 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
           )
           .onChange(async (val) => {
             this.plugin.settings.syncBookmarks = val === "enable";
-            await this.plugin.saveSettings();
-          });
-      });
-
-    new Setting(advDiv)
-      .setName(t("settings_deletetowhere"))
-      .setDesc(t("settings_deletetowhere_desc"))
-      .addDropdown((dropdown) => {
-        dropdown.addOption("system", t("settings_deletetowhere_system_trash"));
-        dropdown.addOption(
-          "obsidian",
-          t("settings_deletetowhere_obsidian_trash")
-        );
-        dropdown
-          .setValue(this.plugin.settings.deleteToWhere ?? "system")
-          .onChange(async (val) => {
-            this.plugin.settings.deleteToWhere = val as "system" | "obsidian";
             await this.plugin.saveSettings();
           });
       });

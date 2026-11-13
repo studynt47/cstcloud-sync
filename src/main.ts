@@ -653,17 +653,6 @@ export default class RemotelySavePlugin extends Plugin {
     return vaultRandomID;
   }
 
-  async trash(x: string) {
-    if (this.settings.deleteToWhere === "obsidian") {
-      await this.app.vault.adapter.trashLocal(x);
-    } else {
-      // "system"
-      if (!(await this.app.vault.adapter.trashSystem(x))) {
-        await this.app.vault.adapter.trashLocal(x);
-      }
-    }
-  }
-
   getVaultBasePath() {
     if (this.app.vault.adapter instanceof FileSystemAdapter) {
       // in desktop
