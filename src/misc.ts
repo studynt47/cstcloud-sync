@@ -76,7 +76,7 @@ export const mkdirpInVault = async (thePath: string, vault: Vault) => {
     const r = await vault.adapter.exists(folder);
     // console.info(r);
     if (!r) {
-      console.info(`mkdir ${folder}`);
+      console.debug(`mkdir ${folder}`);
       await vault.adapter.mkdir(folder);
     }
   }

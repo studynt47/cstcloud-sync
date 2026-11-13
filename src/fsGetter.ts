@@ -16,6 +16,6 @@ export function getClient(
     case "s3":
       return new FakeFsS3(settings.s3);
     default:
-      throw Error(`cstcloud-sync only supports S3`);
+      throw Error(`unsupported service type: ${settings.serviceType}`);
   }
 }

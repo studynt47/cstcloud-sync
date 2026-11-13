@@ -1143,8 +1143,17 @@ const getSyncPlanInplace = async (
   keptFolder.delete("/");
   keptFolder.delete("");
   if (keptFolder.size > 0) {
-    console.error(sortedKeys);
-    console.error(mixedEntityMappings);
+    // cstcloud-sync: only log the count and the first N entries,
+    // dumping the whole mapping table can flood the console on mobile.
+    const MAX_PRINTED = 10;
+    console.error(
+      `sortedKeys (${sortedKeys.length} in total):`,
+      sortedKeys.slice(0, MAX_PRINTED)
+    );
+    console.error(
+      `mixedEntityMappings (${Object.keys(mixedEntityMappings).length} in total):`,
+      Object.entries(mixedEntityMappings).slice(0, MAX_PRINTED)
+    );
     throw Error(`unexpectedly keptFolder no decisions: ${[...keptFolder]}`);
   }
 

@@ -379,7 +379,7 @@ export class RemotelySaveSettingTab extends PluginSettingTab {
         .setDesc(t("settings_enablestatusbar_info_desc"))
         .addToggle((toggle) => {
           toggle
-            .setValue(this.plugin.settings.enableStatusBarInfo ?? false)
+            .setValue(this.plugin.settings.enableStatusBarInfo ?? true)
             .onChange(async (val) => {
               this.plugin.settings.enableStatusBarInfo = val;
               await this.plugin.saveSettings();

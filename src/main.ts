@@ -113,7 +113,9 @@ const getStatusBarShortMsgFromSyncSource = (
     case "auto_sync_on_save":
       return t("statusbar_sync_source_auto_sync_on_save");
     default:
-      throw Error(`no translate for ${s}`);
+      // unknown trigger source: fall back to no prefix instead of throwing,
+      // otherwise a new enum member would break the whole status bar refresh.
+      return "";
   }
 };
 
@@ -123,14 +125,12 @@ export default class RemotelySavePlugin extends Plugin {
   isSyncing!: boolean;
   hasPendingSyncOnSave!: boolean;
   statusBarElement!: HTMLSpanElement;
-  currLogLevel!: string;
   currSyncMsg?: string;
   syncRibbon?: HTMLElement;
   autoRunIntervalID?: number;
   syncOnSaveIntervalID?: number;
   i18n!: I18n;
   vaultRandomID!: string;
-  debugServerTemp?: string;
   syncEvent?: Events;
   appContainerObserver?: MutationObserver;
 
@@ -278,7 +278,9 @@ export default class RemotelySavePlugin extends Plugin {
           break;
 
         default:
-          throw Error(`unknown step=${step} for showing notice`);
+          // unknown step: log it and skip the notice instead of throwing,
+          // otherwise a new step would abort the whole sync run.
+          console.error(`unknown step=${step} for showing notice`);
       }
     };
 
@@ -944,7 +946,8 @@ export default class RemotelySavePlugin extends Plugin {
       lastSyncLabelMsg =
         prefix + t("statusbar_lastsync_label", { date: dateText });
     } else {
-      // TODO: no idea what happened.
+      // Neither a successful nor a failed sync has ever been recorded for
+      // this vault, so keep the "never synced" texts initialized above.
     }
 
     this.statusBarElement.setText(lastSyncMsg);
@@ -959,9 +962,12 @@ export default class RemotelySavePlugin extends Plugin {
    * @returns
    */
   async tryToAddIgnoreFile() {
+    // Obsidian's plugin folder is named after the plugin id, so use
+    // manifest.id as the fallback instead of manifest.dir (which would
+    // otherwise expand to ".../plugins/undefined").
     const pluginConfigDir =
       this.manifest.dir ||
-      `${this.app.vault.configDir}/plugins/${this.manifest.dir}`;
+      `${this.app.vault.configDir}/plugins/${this.manifest.id}`;
     const pluginConfigDirExists =
       await this.app.vault.adapter.exists(pluginConfigDir);
     if (!pluginConfigDirExists) {
