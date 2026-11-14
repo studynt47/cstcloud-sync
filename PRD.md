@@ -1,12 +1,12 @@
-# PRD <u>v1.9</u>
+# PRD <u>v2.0</u>
 
-> 项目 cstcloud-sync 计划书 <u>v1.9</u>
+> 项目 cstcloud-sync 计划书 <u>v2.0</u>
 > 基于：remotely-save v0.5.25（Apache-2.0）+ 任务书 /home/WPS/NEW/remotely_save.md + 技术分析 tech_v1.md
 
-**当前版本**：<u>v1.9</u>
+**当前版本**：<u>v2.0</u>
 **生成时间**：2026-10-16
-**修订时间**：2026-10-28
-**状态**：<u>已实施并已发布（v1.9 两轮回填版；发布版本号 0.0.5，发布仓库 studynt47/cstcloud-sync（public），代码侧两轮修复均已实施并上线）</u> <u>【v1.9 变更注：原表述为「待评审（v1.8 发布仓库回填版；发布版本号 0.0.3，发布仓库 studynt47/cstcloud-sync（public）已确定，代码侧实施完成）」。v1.9 起按已上线事实收口为 0.0.5；v1.8 及更早的「0.0.3」口径原样保留于下方修订记录与 §4.3 / §7.1 / §9 的 v1.9 变更注中，不静默删改】</u>
+**修订时间**：<u>2026-11-13</u>
+**状态**：<u>已实施并已发布（v1.9 两轮回填版；发布版本号 0.0.5，发布仓库 studynt47/cstcloud-sync（public），代码侧两轮修复均已实施并上线）</u> <u>【v1.9 变更注：原表述为「待评审（v1.8 发布仓库回填版；发布版本号 0.0.3，发布仓库 studynt47/cstcloud-sync（public）已确定，代码侧实施完成）」。v1.9 起按已上线事实收口为 0.0.5；v1.8 及更早的「0.0.3」口径原样保留于下方修订记录与 §4.3 / §7.1 / §9 的 v1.9 变更注中，不静默删改】</u> <u>【v2.0 变更注：本版对应产品版本 **0.0.6** 的改造收口；批次 A（`9e71b14`）/ B（`b55449e`）/ C（`0f4f96e`）/ D（`c97a7ca`）**源码已提交并复核通过**；**版本号推进（0.0.5 → 0.0.6）与 `main.js` 重建尚未执行**，因此本版中凡涉及版本号落值与产物 MD5 的判据一律标 ⛔ 待回填】</u>
 
 ---
 
@@ -26,6 +26,7 @@
 | <u>v1.7</u> | <u>2026-10-28</u> | <u>① 发版号回填：§4.3 version 0.0.2 → 0.0.3（manifest.json / package.json / PRD §4.3 三处一致）② §7.1 交付物形态与 §9 AC31 判据的 versions.json 条目随发版号更新为 "0.0.3": "0.13.21" ③ §9 AC32 由「➖ 后续发版项」改为「✅ 已满足」④ §8 R9（发版号未递增）标记为已解除 ⑤ §9 AC14 增补说明：0.0.2 为开发基线、0.0.3 为发布版本号，历史判据不动</u> |
 | <u>v1.8</u> | <u>2026-10-28</u> | <u>① 发布仓库地址回填：§4.3 authorUrl 由 https://github.com/cstcloud/cstcloud-sync 改为 https://github.com/studynt47/cstcloud-sync（原仓库实测 404 不存在，Obsidian 商店审核要求 authorUrl 可访问）② §6 Step 64 与 §9 AC16 增补 v1.8 变更注，历史判据文字不改 ③ 新增公开发布口径说明段：仓库为 public，归属个人账号 studynt47 ④ 本版未新增功能条目，AC1–AC33 编号不变</u> |
 | <u>v1.9</u> | <u>2026-10-28</u> | <u>① 记录已实施并已上线两轮：**v0.0.4**（移动端设置项缺失修复 —— 移植时 `if (!Platform.isMobileApp)` 块边界错位，把整个高级设置区圈进移动端禁用范围，收回为 376→389 行 14 行，9 项设置恢复可见；新增 §9 AC34）② **v0.0.5**（品牌口径统一「聚沄同步 / juiyun sync」+ 修 i18n 中 6 处 404 链接 —— ribbon tooltip 与设置页标题改走 i18n，新增 2 个 i18n key，三语言各 169 键；新增 §9 AC35）③ §4.3 `version` 0.0.3 → **0.0.5**（manifest.json / package.json / versions.json / PRD 四处一致）④ §7.1 交付物形态升为 v0.0.5、versions.json 判据改为须含 `"0.0.5": "0.13.21"`（现有 5 条）⑤ §7 M10 / M11 标记已完成 ⑥ i18n 键数判据 167 → **169**（§6 Step 81 / §9 AC19 / AC30 一并更新）⑦ §9 AC31 / AC32 更新为 v0.0.5 口径 ⑧ §8 新增 R18「移植类缺陷：条件块边界错位」与 R19「品牌/仓库地址变更需全仓 grep（含 i18n）」⑨ Step 70 / Step 71 / AC22 / AC23 / AC33 五项 ⛔ 仍待老板本人实测，保持未完成状态 ⑩ 本版未新增功能条目，AC1–AC33 编号不变，新编号自 AC34 起续编</u> |
+| <u>v2.0</u> | <u>2026-11-13</u> | <u>① B 类 12 项决策落定：B-2/B-3 按 D1 处置（删 UI、保留强制覆盖）；B-4 删除「保存后同步」整条死链；B-5 用户可见文案接入 i18n；B-6~B-12 行为不变清理 ② 发布版本号 0.0.5 → 0.0.6 ③ i18n 键数判据 169 → 167 ④ 新增 §9 AC36 / AC37、§8 R20 / R21、§6 Step 85 / 86 ⑤ 编号自 AC36 / R20 / Step 85 起续编</u> |
 
 > <u>v1.2 升级需求待定：本次仅完成基线收口与版本推进，未新增功能项。需求明确后按版本迭代 SOP 继续叠加，新增内容同样用下划线标注。</u>
 
@@ -69,6 +70,12 @@
 > - <u>当前分发包：`cstcloud-sync0.0.5.zip` **312,048 字节** / md5 `3460177d84f8cafbd56d7c4a7462f969`（目录层级 `cstcloud-sync/`，含 `main.js` / `manifest.json` / `versions.json` / `README.md` / `README.zh-cn.md` / `LICENSE` 共 6 个文件）</u>
 >
 > <u>**v1.9 仍待老板本人实测的三项 ⛔（保持未完成状态，不得标为通过）**：Step 70（B2 真实 S3 连通，需真实 cstcloud.cn 桶 + 密钥）/ Step 71（B3 双向同步 E2E，需桌面端 + 移动端双端真实对拉）/ AC33（`.obsidian` 清单 dry-run，需真实桶 + 开启「同步配置文件夹」；**v0.0.4 修复后移动端该开关已可见，实测条件已具备**）。</u>
+
+> <u>**v2.0 补充说明**：本版为 **B 类 12 项决策落定 + 发布版本号推进（0.0.5 → 0.0.6）** 的收口版；新增编号 **AC36 / AC37**（§9）、**R20 / R21**（§8）、**Step 85 / 86**（§6）。既有 **AC1–AC35 / R1–R19 / Step 1–84** 的编号与判据文字原样保留，新增与修改内容一律用下划线标注。</u>
+>
+> <u>**v2.0 批次与 commit 对应**：批次 A（零行为风险的文案、日志与死字段清理）`9e71b14` / 批次 B（删除「保存后同步」整条死链）`b55449e` / 批次 C（用户可见文案接入 i18n）`0f4f96e` / 批次 D（D1：移除状态栏开关与「删除到哪」下拉）`c97a7ca` —— **源码均已提交并复核通过**。</u>
+>
+> <u>**v2.0 ⛔ 待回填清单**（一律不得写成已通过）：① 版本号推进 0.0.5 → 0.0.6（`manifest.json` / `package.json` / `versions.json` / PRD §4.3 四处）② `main.js` 重建（**重建前** md5 `26105bde8e16815ead12167f12afa42c`）③ 重建后产物内品牌计数（`\u805A` 预计 **28** / `juiyun sync` 预计 **14** —— **预测值、尚未实测**）④ AC37 真机项 ⑤⑥⑦ ⑤ 既有 ⛔ 项 Step 70 / Step 71 / AC22 / AC23 / AC33 **保持未完成状态**。</u>
 
 ---
 
@@ -125,7 +132,7 @@
 - 导出同步计划
 - 性能分析 profiler UI
 - 调试日志级别修改
-- 保存时自动触发同步（syncOnSave）
+- 保存时自动触发同步（syncOnSave） <u>【v0.0.6 变更注】相关死代码已整条清除</u>
 - S3 准确修改时间（useAccurateMTime）
 - S3 远端前缀路径（remotePrefix）
 - S3 反向代理（reverseProxyNoSignUrl）
@@ -149,10 +156,10 @@
 | P0-8 | 冲突处理策略 | `settings.ts:2387-2424` | 含 smart_conflict |
 | P0-9 | 自动定时同步 loop | `main.ts:1757-1771` | `enableAutoSyncIfSet()` |
 | P0-10 | 启动后自动同步 | `main.ts:1773-1785` | `enableInitSyncIfSet()` |
-| P0-11 | 状态栏显示上次同步时间 | `main.ts:1180-1210`, `main.ts:1925-2031` | 30 秒轮询更新 |
+| P0-11 | 状态栏显示上次同步时间 | `main.ts:1180-1210`, `main.ts:1925-2031` | 30 秒轮询更新 <u>【v0.0.6 变更注】状态栏**恒显示**（`enableStatusBarInfo` 由 `loadSettings()` 强制为 `true`，用户不可关闭）</u> |
 | P0-12 | 数据持久化（data.json 读写） | `src/configPersist.ts` + `main.ts:1338-1512` | 含加密混淆存储 |
 | P0-13 | 强制 `serviceType="s3"` | `main.ts:129`, `baseTypes.ts:30-42` | 启动时强制覆盖旧配置 |
-| P0-14 | 强制 `syncOnSaveAfterMilliseconds=-1` | `main.ts:loadSettings()` | 兼容旧配置 |
+| P0-14 | 强制 `syncOnSaveAfterMilliseconds=-1` | `main.ts:loadSettings()` | 兼容旧配置 <u>【v0.0.6 变更注】保存后同步的**消费链已整条删除**（见 §8 R2），本项强制覆盖保留为**防旧配置复活的闸门**</u> |
 
 ### 3.2 P1 保留可配置（提供 UI 入口）
 
@@ -162,25 +169,25 @@
 | P1-2 | 自动运行间隔（autoRunEveryMilliseconds） | `settings_autorun` | `settings.ts:2088-2124` |
 | P1-3 | 启动后自动运行（initRunAfterMilliseconds） | `settings_runoncestartup` | `settings.ts:2126-2150` |
 | P1-4 | 跳过大文件（skipSizeLargerThan） | `settings_skiplargefiles` | `settings.ts:2175-2189` |
-| P1-5 | 状态栏显示开关（enableStatusBarInfo） | `settings_enablestatusbar_info` | `settings.ts:2193-2204` |
+| <u>P1-5</u> | <u>**已删除（v0.0.6 · D1）**</u> 状态栏显示开关（enableStatusBarInfo） | <u>—（Setting 与 3 个 i18n 键已删除）</u> | <u>状态栏恒显示，由 loadSettings() 强制 enableStatusBarInfo=true</u> <u>【v0.0.6 变更注：原行代码位置快照为 `settings.ts:2193-2204`、Setting ID 为 `settings_enablestatusbar_info`，本行整体改写为 v0.0.6 口径，历史内容原样保留于本注】</u> |
 | <u>P1-6</u> | <u>重设状态栏时间记录</u> | <u>`settings_resetstatusbar_time`</u> | <u>`settings.ts:2206-2227`（v1.3 复核：该 Setting ID 在 src/settings.ts 中已不存在，v1.0 大删时随调试区块一并移除 → 标记为已删除）</u> |
 | P1-7 | 并行度（concurrency） | `settings_concurrency` | `settings.ts:2279-2298` |
 | P1-8 | 同步下划线文件（syncUnderscoreItems） | `settings_syncunderscore` | `settings.ts:2300-2314` |
 | P1-9 | 同步配置文件夹（syncConfigDir） | `settings_configdir` | `settings.ts:2316-2347` |
 | P1-10 | 同步书签（syncBookmarks） | `settings_bookmarks` | `settings.ts:2349-2368` |
-| P1-11 | 删除到系统回收站/Obsidian .trash | `settings_deletetowhere` | `settings.ts:2370-2385` |
+| <u>P1-11</u> | <u>**已删除（v0.0.6 · D1）**</u> 删除到系统回收站/Obsidian .trash | <u>—（Setting 与 4 个 i18n 键已删除）</u> | <u>删除目标恒为系统回收站，由 loadSettings() 强制 deleteToWhere="system"</u> <u>【v0.0.6 变更注：原行代码位置快照为 `settings.ts:2370-2385`、Setting ID 为 `settings_deletetowhere`，本行整体改写为 v0.0.6 口径，历史内容原样保留于本注】</u> |
 | P1-12 | 保护修改百分比（protectModifyPercentage） | `settings_protectmodifypercentage` | `settings.ts:2428-2498` |
 | <u>P1-13</u> | <u>删除同步计划历史</u> | <u>`settings_delsyncplans`</u> | <u>`settings.ts:829-835`（<u>v1.1 删除</u>）</u> |
 | <u>P1-14</u> | <u>删除上次同步明细</u> | <u>`settings_delprevsync`</u> | <u>`settings.ts:840-849`（<u>v1.1 删除</u>）</u> |
 
 <u>v1.3 与 C 类的对应关系说明：</u>
 
-- <u>**C 类不删除本表任何 P1 项**。P1-1 ~ P1-5、P1-7 ~ P1-12 共 11 项在 v1.3 全部保留，其 Setting ID 与 UI 均不受 A/B/C 三类改动影响。</u>
+- <u>**C 类不删除本表任何 P1 项**。P1-1 ~ P1-5、P1-7 ~ P1-12 共 11 项在 v1.3 全部保留，其 Setting ID 与 UI 均不受 A/B/C 三类改动影响。</u> <u>【v0.0.6 变更注】D1 决策后，P1-5 与 P1-11 已删除，本表保留项由 11 项减为 **9 项**（P1-1~P1-4 / P1-7~P1-10 / P1-12）</u>
 - <u>P1-13 / P1-14 维持 v1.1 的"已删除"状态（对应 `debugMode.ts` 与调试区块，C 类无后续动作）。</u>
 - <u>P1-6 经 v1.3 实施前源码复核：Setting ID `settings_resetstatusbar_time` 在 `src/settings.ts` 中已不存在，判定为 v1.0 大删时误删而非本版删除，标注为"已删除"。</u>
 - <u>本表"代码位置"列为 v1.0/v1.1 时期的行号快照；C 类删除 `src/profiler.ts` 与加密后端后会引起 `src/settings.ts` 行号漂移，<u>实施后须回填真实行号</u>，行号本身不作为验收判据。</u>
 - <u>**v1.4 追加**：P1-9（同步配置文件夹 / `syncConfigDir`）在 v1.4 单独成节，见 **§5.4 `.obsidian` 配置目录同步（实验性）`**。v1.4 实测真实实现位置为 `src/settings.ts:436-457`（原快照行号已失效），默认关闭（`src/main.ts:58`）。该功能**代码零改动**，本节仅补文档与使用指引。</u>
-- <u>**v1.9 追加**：v0.0.2 移植时误把 P1-7 ~ P1-12 与 P0-7 / P0-8 共 **9 项**圈进 `if (!Platform.isMobileApp)` 块，导致移动端**不可见**；v0.0.4 修复后这 9 项**恢复可见**：同步配置文件夹（P1-9 / `settings_configdir`）/ 同步书签（P1-10）/ 并发数（P1-7）/ 同步下划线文件（P1-8）/ 删除到哪（P1-11）/ 冲突处理（P0-8）/ 保护修改百分比（P1-12）/ 保护修改百分比(自定义)（P1-12 联动）/ 同步方向（P0-7）。**移动端仅 P1-5（`settings_enablestatusbar_info`，自定义状态栏项）保持禁用**，与 upstream 设计一致。详见 §9 AC34 与 §8 R18。</u>
+- <u>**v1.9 追加**：v0.0.2 移植时误把 P1-7 ~ P1-12 与 P0-7 / P0-8 共 **9 项**圈进 `if (!Platform.isMobileApp)` 块，导致移动端**不可见**；v0.0.4 修复后这 9 项**恢复可见**：同步配置文件夹（P1-9 / `settings_configdir`）/ 同步书签（P1-10）/ 并发数（P1-7）/ 同步下划线文件（P1-8）/ 删除到哪（P1-11）/ 冲突处理（P0-8）/ 保护修改百分比（P1-12）/ 保护修改百分比(自定义)（P1-12 联动）/ 同步方向（P0-7）。**移动端仅 P1-5（`settings_enablestatusbar_info`，自定义状态栏项）保持禁用**，与 upstream 设计一致。详见 §9 AC34 与 §8 R18。</u> <u>【v0.0.6 变更注】P1-5 已随 D1 删除，移动端不再存在「仅此一项禁用」的情形；`if (!Platform.isMobileApp)` 守卫块在 `src/settings.ts` 中**整体消失**，桌面端与移动端设置项完全一致。</u>
 
 ### 3.3 P2 硬编码（代码存在但 UI 不显示）
 
@@ -331,7 +338,7 @@
 |---|---|---|
 | `id` | `remotely-save` | `cstcloud-sync` |
 | `name` | `Remotely Save` | `cstcloud-sync` |
-| `version` | `0.5.25` | <u>`0.0.5`</u> <u>（发布版本号，老板 2026-10-28 书面指定；此前 0.0.2 为开发基线口径，已收口）</u> <u>【v1.9 变更注：原为 `0.0.3`（v1.7 发版口径），经 v0.0.4 / v0.0.5 两轮发版后更新为 `0.0.5`；现与 `manifest.json` / `package.json` / `versions.json` 四处一致】</u> |
+| `version` | `0.5.25` | <u>`0.0.5`</u> <u>（发布版本号，老板 2026-10-28 书面指定；此前 0.0.2 为开发基线口径，已收口）</u> <u>【v1.9 变更注：原为 `0.0.3`（v1.7 发版口径），经 v0.0.4 / v0.0.5 两轮发版后更新为 `0.0.5`；现与 `manifest.json` / `package.json` / `versions.json` 四处一致】</u> <u>`0.0.6`</u> <u>（v0.0.6 发版口径；此前 0.0.5 为已上线版本）</u> <u>⛔ **待回填**：版本号推进（`manifest.json` / `package.json` / `versions.json` 三处）**尚未执行**，本单元格先行落值为 `0.0.6` 目标口径，实际四处一致须待版本号落地后复核</u> |
 | `description` | `Yet another unofficial plugin...` | <u>`基于 cstcloud.cn 对象存储的 Obsidian 双向同步插件`</u> |
 | `author` | `fyears` | <u>`cstcloud`</u> <u>（v1.3 A5 默认方案，author 字符串待老板最终确认）</u> |
 | <u>`authorUrl`</u> | <u>`https://github.com/fyears`</u> | <u>`https://github.com/studynt47/cstcloud-sync`（v1.8 修正：v1.3 A5 原定的 cstcloud/cstcloud-sync 仓库不存在，实测 404；Obsidian 商店审核要求 authorUrl 为可访问的公开仓库地址）</u> |
@@ -641,7 +648,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | 19 | 删除 `settings.ts:1150-1932` dropboxDiv / onedriveDiv / webdavDiv / webdisDiv / 所有 PRO Setting 调用 | `settings.ts` |
 | 20 | 删除 `settings.ts:1938-2029` serviceType dropdown（改为隐藏或删除） | `settings.ts` |
 | 21 | 删除 `settings.ts:2038-2086` password + encryptionMethod Setting | `settings.ts` |
-| 22 | 删除 `settings.ts:2154-2173` syncOnSave Setting | `settings.ts` |
+| 22 | 删除 `settings.ts:2154-2173` syncOnSave Setting <u>【v0.0.6 变更注】v0.0.6 起 `src/main.ts` 侧的保存后同步实现亦已整条删除（§8 R2），本 Step 由「删 UI」升级为「删整链」</u> | `settings.ts` |
 | 23 | 删除 `settings.ts:2229-2274` ignorePaths + onlyAllowPaths Setting | `settings.ts` |
 | 24 | 删除 `settings.ts:2426` generateClearDupFilesSettingsPart 调用 | `settings.ts` |
 | 25 | 删除 `settings.ts:2574-2770` import/export 区块 + proDiv | `settings.ts` |
@@ -657,7 +664,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | 30 | 修改 `esbuild.config.mjs`：删除 L16-30 OAuth 环境变量（15 个 const DEFAULT_..._APP_KEY/SECRET 等），删除 L67-81 global define（15 个 global.DEFAULT_*） | `esbuild.config.mjs` |
 | 31 | 修改 `main.ts DEFAULT_SETTINGS`：硬编码 serviceType="s3" / currLogLevel="info" / obfuscateSettingFile=true | `main.ts:115-157` |
 | 32 | 修改 `fsS3.ts DEFAULT_S3_CONFIG`：硬编码 endpoint/region/forcePathStyle | `fsS3.ts:179-192` |
-| 33 | 修改 `main.ts:loadSettings()`：新增 6 项强制覆盖（`s3.generateFolderObject=false` / `ignorePaths=[]` / `onlyAllowPaths=[]` / `enableStatusBarInfo=true` / `syncOnSaveAfterMilliseconds=-1` / `deleteToWhere="system"`，行 1410-1427）。`serviceType="s3"` / `currLogLevel="info"` 已在 `main.ts:115-157` DEFAULT_SETTINGS 默认值（Step 31 范畴） | `main.ts:1338-1512` |
+| 33 | 修改 `main.ts:loadSettings()`：新增 6 项强制覆盖（`s3.generateFolderObject=false` / `ignorePaths=[]` / `onlyAllowPaths=[]` / `enableStatusBarInfo=true` / `syncOnSaveAfterMilliseconds=-1` / `deleteToWhere="system"`，行 1410-1427）<u>【v0.0.6 变更注：其中 `ignorePaths` / `onlyAllowPaths` 已于 v1.x 改为 `delete` 语义；`syncOnSaveAfterMilliseconds` 的消费链已于 v0.0.6 整条删除，强制覆盖保留为防复活闸门；`enableStatusBarInfo=true` 与 `deleteToWhere="system"` 因 D1 决策**继续保留**（UI 已删除 → 能力恒定）】</u>。`serviceType="s3"` / `currLogLevel="info"` 已在 `main.ts:115-157` DEFAULT_SETTINGS 默认值（Step 31 范畴） | `main.ts:1338-1512` |
 | 34 | 新建 `src/sync.ts`：从 `pro/src/sync.ts` 提取 syncer 主体；**同时新建 `src/conflictLogic.ts`（从 `pro/src/conflictLogic.ts` 提取 `isMergable / twoWayMerge / threeWayMerge / getFileRenameForDup` 4 个函数 + 依赖的 `MERGABLE_SIZE` 常量）+ 合并 `pro/src/localdb.ts` 4 个函数到 `src/localdb.ts`（upsertFileContentHistoryByVaultAndProfile / getFileContentHistoryByVaultAndProfile / clearFileContentHistoryByVaultAndProfile / clearAllFileContentHistoryByVault）+ 删除 `checkProRunnableAndFixInplace` 调用（cstcloud-sync 无 PRO）** | `src/sync.ts` + `src/conflictLogic.ts` + `src/localdb.ts` |
 | 35 | 修改 `main.ts:65`：将 `import { syncer } from "../pro/src/sync"` 改为 `import { syncer } from "./sync"`（main.ts:488 是 `await syncer(...)` 调用，无需改） | `main.ts` |
 | 36 | 修改 `fsGetter.ts`：switch 仅剩 s3 case，default 抛出 `cstcloud-sync only supports S3` | `fsGetter.ts` |
@@ -703,7 +710,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 |---|---|---|---|
 | <u>1.5</u> | <u>[x] 已完成</u> | <u>已于 Phase 5 Step 59（A1）补做：`tests/fsWebdis.test.ts` 已删除（`ls tests/fsWebdis.test.ts` → No such file），`tsc --noEmit` 0 error / `npm run build2` exit 0 / `npm test` 142 passing 已恢复</u> | <u>Phase 5 Step 59（A1）补做</u> |
 | <u>11</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（删除 `importExport.ts` 内的 onedrive 收缩函数），该文件已在 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
-| <u>22</u> | <u>[x] 已完成</u> | <u>删除 `settings.ts` 的 `syncOnSave` Setting <u>已执行</u>：<u>`src/settings.ts` 中 `syncOnSave` 零命中（`grep -n "syncOnSave" src/settings.ts` → 0 命中，PM 实测），该空壳 Setting 已随 Step 67（A8「设置页空壳元素清理」，commit `f376a9f`）一并删除</u>。<u>v1.5 及之前版本记为「未完成」，系 PRD 文本未回填，与实际实施状态不符</u>。§2.3 已将 syncOnSave 列为非场景，§3.1 P0-14 强制 `syncOnSaveAfterMilliseconds=-1`（该项属自动同步间隔定时器，是另一功能，勿与本 Step 混判）</u> | <u>Phase 5 Step 67（A8）已补做</u> |
+| <u>22</u> | <u>[x] 已完成</u> | <u>删除 `settings.ts` 的 `syncOnSave` Setting <u>已执行</u>：<u>`src/settings.ts` 中 `syncOnSave` 零命中（`grep -n "syncOnSave" src/settings.ts` → 0 命中，PM 实测），该空壳 Setting 已随 Step 67（A8「设置页空壳元素清理」，commit `f376a9f`）一并删除</u>。<u>v1.5 及之前版本记为「未完成」，系 PRD 文本未回填，与实际实施状态不符</u>。§2.3 已将 syncOnSave 列为非场景，§3.1 P0-14 强制 `syncOnSaveAfterMilliseconds=-1`（该项属自动同步间隔定时器，是另一功能，勿与本 Step 混判）</u> <u>【v0.0.6 变更注】v0.0.6 起 `src/main.ts` 侧的保存后同步实现亦已整条删除（§8 R2），本 Step 由「删 UI」升级为「删整链」</u> | <u>Phase 5 Step 67（A8）已补做</u> |
 | <u>37</u> | <u>[ ] 被覆盖</u> | <u>v1.0 阶段动作（限制 `exportQrCodeUri` 支持范围），该函数已随 Step 48 整体删除</u> | <u>无需执行，保留 `[ ]` 归档</u> |
 
 <u>**另记（Step 20 局部残留）**：Step 20「删除 serviceType dropdown」已完成，但 `src/settings.ts:133-134` 的 `settings_chooseservice` 标题（"选择服务"）仍在渲染，dropdown 本身已不存在，属标题孤儿。<u>（v1.6 复核：该孤儿标题亦已随 Step 67（A8）删除——`grep -n "settings_chooseservice" src/settings.ts src/langs/*.json` → 0 命中，故 Step 20 无残留，AC19 成立）</u></u>
@@ -787,7 +794,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 | Step | 动作 | 文件位置 | 完成判据 |
 |---|---|---|---|
-| 83 | <u>**（v0.0.4）** 修正 `if (!Platform.isMobileApp)` 块边界，恢复移动端高级设置区可见</u> | <u>`src/settings.ts`（原 376→654 行 / 279 行的 if 块，收回为 **376→389 行 / 14 行**，仅含 `settings_enablestatusbar_info`；`advDiv` 及下属 9 项移出）</u> | <u>① `npm test` **142 passing / 0 failing** ② `tsc --noEmit` **0 error** ③ `npm run build2` **exit 0** ④ 编译产物经 **AST 解析**确认移动端守卫区间由 **5,448 字符缩至 347 字符**（只含状态栏项），`settings_configdir` 位于守卫外 ⑤ `git diff -w` 验证**唯一非空白改动为大括号位置**，设置项内部逻辑一字未改</u> |
+| 83 | <u>**（v0.0.4）** 修正 `if (!Platform.isMobileApp)` 块边界，恢复移动端高级设置区可见</u> | <u>`src/settings.ts`（原 376→654 行 / 279 行的 if 块，收回为 **376→389 行 / 14 行**，仅含 `settings_enablestatusbar_info`；`advDiv` 及下属 9 项移出）</u> | <u>① `npm test` **142 passing / 0 failing** ② `tsc --noEmit` **0 error** ③ `npm run build2` **exit 0** ④ 编译产物经 **AST 解析**确认移动端守卫区间由 **5,448 字符缩至 347 字符**（只含状态栏项），`settings_configdir` 位于守卫外 ⑤ `git diff -w` 验证**唯一非空白改动为大括号位置**，设置项内部逻辑一字未改 <u>【v0.0.6 变更注】因块内唯一项 P1-5 随 D1 删除，该守卫块在 `src/settings.ts` 中**已整体移除**，`Platform` import 同步删除；Step 83 的历史判据原样保留不改</u> |
 | 84 | <u>**（v0.0.5）** 品牌口径统一「聚沄同步 / juiyun sync」+ 修 i18n 中 6 处 404 链接</u> | <u>`src/main.ts:462`（ribbon tooltip 改走 i18n）、`src/settings.ts:125`（设置页 H1 改走 i18n）、`src/langs/en.json` / `zh_cn.json` / `zh_tw.json`（各 +4 行 / −2 行，新增 2 个 key + 品牌字样统一 + 链接修正）</u> | <u>① `npm test` **142 passing / 0 failing** ② `npm run build2` **exit 0** ③ 三语言 json 各 **171 行 / 169 key / key 集合完全一致** ④ 旧 404 链接 **0 次**、新链接每文件 **2 次** ⑤ 产物 `main.js` 内「聚沄同步」**8 次**、「juiyun sync」**4 次**</u> |
 
 <u>**Step 83 根因与对照证据（已实测）**：</u>
@@ -800,6 +807,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 - <u>**修复前可行性核查**：隐藏区内**无任何桌面专属 API 依赖**；`syncConfigDir` 在 `src/sync.ts` 为纯路径判断（`isInsideObsFolder` / `isBookmarksFile`），与平台无关 → **移动端技术上完全可用**；i18n key 齐全 → **不是 i18n 缺失、不是文案问题、不是平台不支持**。</u>
 - <u>**移动端恢复可见的 9 项**：同步配置文件夹 / 同步书签 / 并发数 / 同步下划线文件 / 删除到哪 / 冲突处理 / 保护修改百分比 / 保护修改百分比(自定义) / 同步方向。</u>
 - <u>**本地 commit**：`92d3b4b`（源码修复）/ `59e6952`（版本号）/ `54eccf0`（重建 main.js）。**线上**：commit `72f0716d2a930e8d08d75d363182844060808549`，tag `0.0.4`，Release `https://github.com/studynt47/cstcloud-sync/releases/tag/0.0.4`。</u>
+- <u>**Step 83 说明段的 v0.0.6 变更注**：因块内唯一项 P1-5 随 D1 删除，该守卫块在 `src/settings.ts` 中**已整体移除**（`Platform` import 同步删除，`src/settings.ts` 中 `Platform` 引用为 **0**）；本说明段中「块内唯一项 P1-5」「376→389 行 14 行」等均为 **v0.0.4 历史事实**，原样保留不改。</u>
 
 <u>**Step 84 改动明细（5 文件 / +17 −9）**：</u>
 
@@ -820,7 +828,16 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 <u>**Step 84 明确不动（老板 2026-10-28 逐条拍板）**：README 标题 / `manifest.json` 的 `id`·`name` / `cstcloud.cn`·`s3.cstcloud.cn` 域名 / 链接锚文本。老板拍板原文：`1✅ 2✅ 3改 4不改 5不改 6发0.0.5 7改`。</u>
 
-<u>**Step 84 本地 commit**：`35aed42`（源码 + 文案）/ `978d020`（版本号）/ `55ab530`（重建 main.js）。**线上**：commit `f0a460cd3a9c8499b56185cda2e523761c4f730d`（3 个干净 commit），tag `0.0.5`，Release `https://github.com/studynt47/cstcloud-sync/releases/tag/0.0.5`（assets：`manifest.json` / `main.js` / `cstcloud-sync0.0.5.zip`）。</u>
+<u>**Step 84 本地 commit**：`35aed42`（源码 + 文案）/ `978d020`（版本号）/ `55ab530`（重建 main.js）。**线上**：commit `f0a460cd3a9c8499b56185cda2e523761c4f730d`（3 个干净 commit），tag `0.0.5`，Release `https://github.com/studynt47/cstcloud-sync/releases/tag/0.0.5`（assets：`manifest.json` / `main.js` / `cstcloud-sync0.0.5.zip`）。</u> <u>【v2.0 变更注：本节升为 **v0.0.6 目标交付物形态**；v0.0.5 的实际交付包事实原样保留为历史记录】</u>
+
+### <u>Phase 10：v0.0.6 · B 类决策收口（批次 A / B / C / D）</u>
+
+<u>**说明**：本 Phase 记录 **v0.0.6** 的 B 类 12 项决策落地，编号自 **Step 85** 起续编。既有 **Step 1~84** 的编号与判据文字原样保留；§6 历史 checklist 的 **59 个条目**计数与例外项（Step 11 / 37）**不受影响**（AC17 判据不动）。批次 A / B / C / D 的源码改动**已提交并复核通过**，对应本地 commit：A `9e71b14` / B `b55449e` / C `0f4f96e` / D `c97a7ca`。<u>⛔ **版本号推进（0.0.5 → 0.0.6）与 `main.js` 重建尚未执行**，故本 Phase 内凡涉及版本号落值、产物 MD5 与产物计数的判据一律标 ⛔ 待回填。</u></u>
+
+| Step | 动作 | 文件位置 | 完成判据 |
+|---|---|---|---|
+| 85 | <u>**（v0.0.6 · B-4）** 删除「保存后同步」整条死链：`toggleSyncOnSaveIfSet` / `_checkCurrFileModified` / `_syncOnSaveEvent1` / `_syncOnSaveEvent2` / `syncOnSaveIntervalID` / `syncEvent` / `hasPendingSyncOnSave` / `auto_sync_on_save` 触发源；`syncOnSaveAfterMilliseconds` 字段保留为 `@deprecated` 兼容占位 + `loadSettings()` 强制覆盖 `-1` 防复活</u> | <u>`src/main.ts`（批次 B，commit `b55449e`）</u> | <u>① 上述 8 个符号在 `src/` 中**全部 0 命中** ② `syncOnSaveAfterMilliseconds` 仅余 3 处：`src/baseTypes.ts:62`（`@deprecated` 字段声明）/ `src/main.ts:51`（DEFAULT_SETTINGS 默认 `-1`）/ `src/main.ts:584`（`loadSettings()` 强制覆盖 `-1`）③ 旧配置**不再有任何触发路径**（§8 R2 实质消解）④ `npm test` → 142 passing、`tsc --noEmit` → 0 error、`npm run build2` → exit 0</u> |
+| 86 | <u>**（v0.0.6 · D1）** 移除 `src/settings.ts` 的 `settings_enablestatusbar_info` 与 `settings_deletetowhere` 两个 Setting 及对应 7 个 i18n 键；`src/main.ts` Step 33 的 6 项强制覆盖**全部保留**</u> | <u>`src/settings.ts`（批次 D，commit `c97a7ca`）、`src/langs/en.json` / `zh_cn.json` / `zh_tw.json`</u> | <u>① `grep -n "settings_enablestatusbar\|settings_deletetowhere" src/settings.ts src/langs/*.json` → **0 命中** ② 三语言 `settings_enablestatusbar_*`（3 键）与 `settings_deletetowhere_*`（4 键）共 **7 键已删除** ③ `grep -n "Platform" src/settings.ts` → **0 命中**、`if (!Platform.isMobileApp)` 守卫块**整体移除**，桌面端与移动端设置项完全一致 ④ `src/main.ts` 中 `enableStatusBarInfo = true`（行 583）与 `deleteToWhere = "system"`（行 585）**仍在** `loadSettings()` 内，Step 33 的 6 项强制覆盖**一行未改** ⑤ `npm test` → 142 passing、`tsc --noEmit` → 0 error、`npm run build2` → exit 0 <u>⛔ 本轮 `main.js` 重建尚未执行，产物类判据待回填</u></u> |
 
 
 ---
@@ -845,8 +862,8 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>M7：质量验证</u> | <u>B1 加载测试 + B3 双向同步 E2E + B4 单测补齐 + B5 产物自检</u> | <u>69、71-73</u> | <u>12h</u> |
 | <u>M8：瘦身</u> | <u>C1 加密后端移除 + C2 profiler 移除 + C3 dropbox 死分支 + C4 依赖清理 + C5 i18n 复核</u> | <u>74-81</u> | <u>14h</u> |
 | <u>M9：阻塞项</u> | <u>B2 S3 真实连通性测试（依赖老板提供 cstcloud.cn AccessKey / SecretKey / Bucket）</u> | <u>70</u> | <u>2h</u> |
-| <u>M10：发布</u> | <u>产出 v0.0.3 插件包（§7.1 交付物形态）+ 副本同步至 `/home/WPS/ls/cstcloud-sync/`</u> <u>【v1.9 状态：✅ 已完成 —— 发布版本号已推进至 **0.0.5**，分发包 `cstcloud-sync0.0.5.zip`（312,048 字节 / md5 `3460177d84f8cafbd56d7c4a7462f969`）已产出并上线为 Release `0.0.5`】</u> | <u>—</u> | <u>1h</u> |
-| <u>M11：发版版本号统一</u> | <u>老板指定发布版本号（≥ 0.0.3）并同步 manifest.json / package.json / PRD §4.3</u> <u>【v1.9 状态：✅ 已完成 —— 老板 2026-10-28 书面指定发布版本号 **0.0.5**，`manifest.json` / `package.json` / `versions.json` / PRD §4.3 四处一致；线上 tag `0.0.4` / `0.0.5` 已发布】</u> | <u>—</u> | <u>0.5h</u> |
+| <u>M10：发布</u> | <u>产出 v0.0.3 插件包（§7.1 交付物形态）+ 副本同步至 `/home/WPS/ls/cstcloud-sync/`</u> <u>【v1.9 状态：✅ 已完成 —— 发布版本号已推进至 **0.0.5**，分发包 `cstcloud-sync0.0.5.zip`（312,048 字节 / md5 `3460177d84f8cafbd56d7c4a7462f969`）已产出并上线为 Release `0.0.5`】</u> <u>【v2.0 状态：⛔ 发布版本号推进至 **0.0.6**、分发包 `cstcloud-sync0.0.6.zip` —— **尚未执行**，待回填；v0.0.5 交付包事实（312,048 字节 / md5 `3460177d84f8cafbd56d7c4a7462f969`）原样保留】</u> | <u>—</u> | <u>1h</u> |
+| <u>M11：发版版本号统一</u> | <u>老板指定发布版本号（≥ 0.0.3）并同步 manifest.json / package.json / PRD §4.3</u> <u>【v1.9 状态：✅ 已完成 —— 老板 2026-10-28 书面指定发布版本号 **0.0.5**，`manifest.json` / `package.json` / `versions.json` / PRD §4.3 四处一致；线上 tag `0.0.4` / `0.0.5` 已发布】</u> <u>【v2.0 状态：⛔ 发布版本号推进至 **0.0.6**（`manifest.json` / `package.json` / `versions.json` / PRD §4.3 四处）—— **尚未执行**，待回填】</u> | <u>—</u> | <u>0.5h</u> |
 
 <u>**v1.3 总估时：35h（约 4.5 人日）**，不含 B2 阻塞等待时间与 D/E 类（待定/暂缓）。</u>
 
@@ -868,23 +885,25 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 <u>**v1.4 依赖关系**：Step 82 依赖 Phase 7 已完成（`src/obsFolderLister.ts` 在 C 类中未被改动，但依赖 A/C 两类的 `npm test` 基线全绿作为前置）；Step 82 完成后须由 AC33 复核 §5.4 所述排除清单的最终生效状态。</u>
 
-<u>### 7.1 v0.0.5 目标交付物形态</u> <u>【v1.9 变更注：原标题为「7.1 v0.0.3 目标交付物形态」（v1.7 发版口径），v0.0.4 / v0.0.5 两轮发版后升为 v0.0.5】</u>
+<u>### 7.1 v0.0.6 目标交付物形态</u> <u>【v1.9 变更注：原标题为「7.1 v0.0.3 目标交付物形态」（v1.7 发版口径），v0.0.4 / v0.0.5 两轮发版后升为 v0.0.5】</u>
 
 <u>Obsidian 插件分发包（zip）应包含下列文件，目录层级为插件 id `cstcloud-sync/`：</u>
 
 | <u>文件</u> | <u>必需</u> | <u>说明</u> |
 |---|---|---|
 | <u>`main.js`</u> | <u>必需</u> | <u>esbuild 产物，C1/C2/C3 完成后重新构建</u> |
-| <u>`manifest.json`</u> | <u>必需</u> | <u>version = 0.0.5，author = cstcloud（待确认）</u> <u>【v1.9：原为 version = 0.0.3】</u> |
+| <u>`manifest.json`</u> | <u>必需</u> | <u>version = 0.0.5，author = cstcloud（待确认）</u> <u>【v1.9：原为 version = 0.0.3】</u> <u>【v2.0 变更注：v0.0.6 口径 → version = **0.0.6**；⛔ 版本号推进尚未执行，实际 manifest.json 落值待回填】</u> |
 | <u>`LICENSE`</u> | <u>必需</u> | <u>A9 更新后的 Apache-2.0 文本 + 派生自 remotely-save v0.5.25（Copyright fyears）声明</u> |
 | <u>`README.md`</u> | <u>必需</u> | <u>A4 品牌化后的英文 README，含 Apache-2.0 归属与上游致谢</u> |
 | <u>`README.zh-cn.md`</u> | <u>推荐</u> | <u>A4 品牌化后的中文 README</u> |
-| <u>`versions.json`</u> | <u>推荐</u> | <u>BRAT / 手动安装用户依赖；<u>当前仅有上游 `0.3.2` / `0.3.25` 两条，须补 `"0.0.3": "0.13.21"`</u> <u>【v1.9 变更注：v0.0.4 / v0.0.5 发版后，`versions.json` 须含 `"0.0.5": "0.13.21"`，现有 **5 条**（`0.3.2` / `0.3.25` / `0.0.3` / `0.0.4` / `0.0.5`）；原「须补 `"0.0.3"`」为 v1.7 口径，保留不改】</u></u> |
+| <u>`versions.json`</u> | <u>推荐</u> | <u>BRAT / 手动安装用户依赖；<u>当前仅有上游 `0.3.2` / `0.3.25` 两条，须补 `"0.0.3": "0.13.21"`</u> <u>【v1.9 变更注：v0.0.4 / v0.0.5 发版后，`versions.json` 须含 `"0.0.5": "0.13.21"`，现有 **5 条**（`0.3.2` / `0.3.25` / `0.0.3` / `0.0.4` / `0.0.5`）；原「须补 `"0.0.3"`」为 v1.7 口径，保留不改】</u><u>【v2.0 变更注：v0.0.6 发版口径 —— `versions.json` 追加 `"0.0.6": "0.13.21"` 后为 **6 条**（现状 **5 条**：`0.3.2` / `0.3.25` / `0.0.3` / `0.0.4` / `0.0.5`，追加 `"0.0.6": "0.13.21"` 1 条后为 6 条）；⛔ 追加动作尚未执行，待回填】</u></u> |
 | <u>`styles.css`</u> | <u>不适用</u> | <u>manifest 未声明 `styles` 字段，本插件不使用自定义样式</u> |
 
 <u>不需要包含：`node_modules/`、`src/`、`tests/`、`package.json`（Obsidian 运行时不需要）、`manifest-beta.json`（上游遗留、内容仍为 remotely-save 0.5.25，<u>应在本轮删除或同步更新，避免误装</u>）。</u>
 
 <u>**v1.9 实际交付包（v0.0.5）**：分发包 `cstcloud-sync0.0.5.zip`，**312,048 字节**，md5 `3460177d84f8cafbd56d7c4a7462f969`，目录层级 `cstcloud-sync/`，含 `main.js`(1,043,853 B) / `manifest.json`(301 B) / `versions.json` / `README.md` / `README.zh-cn.md` / `LICENSE` 共 **6 个文件**；**§7.1 形态判据 11/11 通过**。已上线为 GitHub Release `https://github.com/studynt47/cstcloud-sync/releases/tag/0.0.5`（assets：`manifest.json` / `main.js` / `cstcloud-sync0.0.5.zip`）。</u>
+
+<u>**v2.0 目标交付包（v0.0.6）· ⛔ 待回填**：分发包 `cstcloud-sync0.0.6.zip`，形态同 §7.1 表（6 个文件）；<u>⛔ **版本号推进与 `main.js` 重建尚未执行**，本包的字节数 / md5 / 上线 Release 均**尚未产出**，不得填写预测值；重建前 `main.js` md5 为 `26105bde8e16815ead12167f12afa42c`（**非**重建后口径）。待回填项：① `manifest.json` 的 version ② `versions.json` 追加 `"0.0.6": "0.13.21"`（追加后 **6 条**）③ `main.js` 重建后 md5 ④ 分发包字节数与 md5 ⑤ 上线 tag / Release 地址。</u>
 
 ---
 
@@ -892,8 +911,8 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 
 | ID | 风险 | 等级 | 缓解 |
 |---|---|---|---|
-| R1 | `main.ts:1412-1416` 在 `loadSettings()` 读取 `ignorePaths`/`onlyAllowPaths`，UI 删除后字段仍被处理 | 中 | Step 33 已在 `loadSettings()` 中强制覆盖为 `[]`（行 1413/1416） |
-| R2 | `syncOnSaveAfterMilliseconds` 逻辑已保留但无 UI，旧配置可能触发意外行为 | 中 | `loadSettings()` 中强制覆盖为 `-1` |
+| R1 | `main.ts:1412-1416` 在 `loadSettings()` 读取 `ignorePaths`/`onlyAllowPaths`，UI 删除后字段仍被处理 | 中 | Step 33 已在 `loadSettings()` 中强制覆盖为 `[]`（行 1413/1416） <u>【v0.0.6 变更注】现行源码 `src/main.ts:577-578` 已改为 `delete (this.settings as any).ignorePaths;` / `delete (this.settings as any).onlyAllowPaths;`，行号与语义均已变化</u> |
+| R2 | `syncOnSaveAfterMilliseconds` 逻辑已保留但无 UI，旧配置可能触发意外行为 <u>**（已消解 · v0.0.6）** `syncOnSaveAfterMilliseconds` 的消费链已整条删除（`toggleSyncOnSaveIfSet` / `_checkCurrFileModified` / `_syncOnSaveEvent1` / `_syncOnSaveEvent2` / `syncOnSaveIntervalID` / `syncEvent` / `hasPendingSyncOnSave` / `auto_sync_on_save` 触发源），旧配置**不再有任何触发路径**；仅保留字段声明（`@deprecated`）、DEFAULT_SETTINGS 默认 `-1` 与 `loadSettings()` 强制覆盖 `-1` 作为**防复活闸门**</u> | <u>低</u> <u>【v0.0.6 变更注：原等级为「中」，随消费链整条删除下调为「低」】</u> | <u>~~`loadSettings()` 中强制覆盖为 `-1`~~ → 消费链已删，R2 实质消解</u> |
 | R3 | 旧 data.json 含 PRO 字段，`loadSettings()` backward compat 可能产生副作用 | 低 | 验证 `loadSettings()` 不对 PRO 字段进行任何填充/读取 |
 | R4 | `pro/src/sync.ts` 提取到 `src/sync.ts` 时遗漏 pro 内部依赖（account/conflictLogic/localdb × 3 个 import） | **高** | Step 34 详细化：新建 `src/conflictLogic.ts` + 合并 `src/localdb.ts` 类型 + 删除 PRO 校验调用；提取后编译验证 |
 | R5 | `fsS3.ts` 保留完整，但 `ObsHttpHandler`（Obsidian requestUrl 封装）可能在 S3 cstcloud.cn 上有兼容问题 | 低 | M4 E2E 验证时重点测试连接 |
@@ -909,8 +928,10 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>R15</u> | <u>C4 误删仍在使用的依赖：`dotenv` 被勘察列为残留，但 `esbuild.config.mjs:1` 与 `webpack.config.js:1` 仍在 import/require，删除后构建链直接断裂；`jsdom` 被 `tests/misc.test.ts` 使用</u> | <u>中</u> | <u>Step 80 完成判据中已逐项标注「删除 / 保留」及判定依据；C4 完成后必须跑通 `npm run build2` + `npm test`</u> |
 | <u>R16</u> | <u>C5 误删仍在渲染的 i18n 键：`settings_chooseservice` / `settings_synconsave` / `settings_synconsave_desc` 当前仍被 UI 引用，若先于 A8 删除，设置页将渲染出 undefined</u> | <u>低</u> | <u>§6 Step 81 已把这 3 键列为「条件删除（须先做 A8）」；执行顺序固定为 A8（Step 67）→ C5（Step 81）</u> |
 | <u>R17</u> | <u>**配置目录同步为全量不可调**：`src/main.ts:593-597` 已将 `ignorePaths` / `onlyAllowPaths` 从 settings 中 `delete`，用户无法排除 `.obsidian` 内任何单个文件（例如其他插件含明文凭据的 `data.json`）。一旦开启，`.obsidian` 内全部内容（排除项除外）均会进入 bucket</u> | <u>**高**</u> | <u>① 仅在测试 vault 开启 ② bucket 私有 + 服务端加密 ③ 开启前人工清点 `.obsidian` 内高敏凭据 ④ 若需精细化排除，须新开 D 类需求实现白名单机制 ⑤ 开启后需重启 Obsidian，并留意桌面/移动端配置互相覆盖</u> |
-| <u>R18</u> | <u>**移植类缺陷：条件块边界错位**。从 upstream 移植代码时，大括号位置被改动，使 `if (!Platform.isMobileApp)` 块从「仅含 2 个状态栏项（36 行）」膨胀到「从状态栏项一直包到 `display()` 末尾（279 行）」，把整个高级设置区（`advDiv`）圈进移动端禁用范围 → **移动端用户看不到「同步配置文件夹」等 9 项设置**。该缺陷在 v0.0.2（commit `4f383e6`）移植时引入，**编译期与单测均无法发现**（语法完全合法、142 项单测全绿），属**静默功能性缺陷**，直到移动端真机安装才暴露</u> | <u>**高**</u> | <u>① **从 upstream 移植后必须用 AST / 括号配平核对条件块的归属范围**，不得依赖肉眼看 diff 或字符串 grep ② **编译产物用 acorn 解析守卫区间**，而非对 `main.js` 做字符串 grep —— v0.0.4 即以 AST 确认移动端守卫区间由 5,448 字符缩至 347 字符 ③ 条件块内只允许保留**确属平台专属**的调用（如自定义状态栏项），任何"该平台不支持"的判断必须逐条给出 API 级依据 ④ 移植类改动统一用 `git diff -w` 验证「唯一非空白改动为预期的那一处」 ⑤ 见 §6 Step 83 与 §9 AC34</u> |
+| <u>R18</u> | <u>**移植类缺陷：条件块边界错位**。从 upstream 移植代码时，大括号位置被改动，使 `if (!Platform.isMobileApp)` 块从「仅含 2 个状态栏项（36 行）」膨胀到「从状态栏项一直包到 `display()` 末尾（279 行）」，把整个高级设置区（`advDiv`）圈进移动端禁用范围 → **移动端用户看不到「同步配置文件夹」等 9 项设置**。该缺陷在 v0.0.2（commit `4f383e6`）移植时引入，**编译期与单测均无法发现**（语法完全合法、142 项单测全绿），属**静默功能性缺陷**，直到移动端真机安装才暴露</u> | <u>**高**</u> | <u>① **从 upstream 移植后必须用 AST / 括号配平核对条件块的归属范围**，不得依赖肉眼看 diff 或字符串 grep ② **编译产物用 acorn 解析守卫区间**，而非对 `main.js` 做字符串 grep —— v0.0.4 即以 AST 确认移动端守卫区间由 5,448 字符缩至 347 字符 ③ 条件块内只允许保留**确属平台专属**的调用（如自定义状态栏项），任何"该平台不支持"的判断必须逐条给出 API 级依据 ④ 移植类改动统一用 `git diff -w` 验证「唯一非空白改动为预期的那一处」 ⑤ 见 §6 Step 83 与 §9 AC34 <u>【v0.0.6 变更注】v0.0.6 起该守卫块在 `src/settings.ts` 中**整体不存在**（块内唯一项 P1-5 已删），R18 的缓解措施②③④（AST 核对守卫区间）随块消失而不再适用；本风险条目保留为历史记录</u> |
 | <u>R19</u> | <u>**品牌/仓库地址变更需全仓 grep（含 i18n）**。v1.8 修 `manifest.json` 的 `authorUrl` 时只改了 manifest，**漏掉三份 i18n**（`src/langs/en.json` / `zh_cn.json` / `zh_tw.json`），导致升级弹窗里「文档网站」「访问 GitHub 页面」共 **6 处链接点进去全是 404**（`https://github.com/cstcloud/cstcloud-sync` 实测 HTTP 404）。i18n 中的品牌字样与链接散落三份语言文件，逐份手改极易漏改或改得不一致</u> | <u>中</u> | <u>① 任何仓库地址 / 品牌口径变更，必须**全仓 grep 覆盖 `manifest.json` + `package.json` + `versions.json` + 三份 i18n + README×2**，并以 `grep -o \| wc -l` 逐文件计数核对 ② 地址变更后须**实测 HTTP 状态码**（`api.github.com/repos/<owner>/<repo>` → 404 即为不存在），不能凭「应该是这个地址」的推测 ③ 三语言 key 集合须**完全一致**（现各 169 键），新增/删除 key 必须三份同改 ④ 品牌字样改动后核对编译产物（v0.0.5 实测 `main.js` 内「聚沄同步」8 次、「juiyun sync」4 次）⑤ 见 §6 Step 84 与 §9 AC35</u> |
+| <u>R20</u> | <u>**R20 · 界面与能力不一致（D1 决策）**：`enableStatusBarInfo` 与 `deleteToWhere` 的 UI 控件在 0.0.5 中可见但**无效**（`loadSettings()` 每次启动强制覆盖），用户操作后重启即失效，属静默功能性缺陷（编译期与单测均无法发现）。v0.0.6 按 D1 决策**移除 UI、保留强制覆盖**，使界面与能力一致</u> | <u>中</u> | <u>① 同步更新 §3.2 P1-5 / P1-11 为「已删除」② 删除对应的 7 个 i18n 键 ③ 新增 AC36 固化「设置页不再出现状态栏开关与删除到哪下拉」④ 状态栏恒显示、删除恒走系统回收站的行为写入 §3.1 P0-11 / P0-14</u> |
+| <u>R21</u> | <u>**R21 · 品牌 / tooltip 文案漂移与孤儿键长期积压**：`ribbon` tooltip 的 `aria-label` 在 `src/main.ts` 里有**三处写入点**（注册处、同步结束回写处、同步中回写处），**后写者胜**；v0.0.5 的品牌改造只改了注册处、漏改回写处，导致同步完成后桌面端显示仓库 id `cstcloud-sync`、移动端显示品牌名「聚沄同步」，两端不一致。根因与三处写入点位置见技术勘察报告 `_pm_survey_2026-11-13-tooltip.md`</u> | <u>中</u> | <u>① 回写处改取 `t("plugin_display_name")`，与注册处**取值同源**（批次 C `0f4f96e` 已落地：同步结束回写处 `src/main.ts:330-331`、同步中回写处 `src/main.ts:318-323` 现均取 `t("plugin_display_name")`）② 三个品牌键 `ribbon_sync_tooltip` / `settings_plugin_title` / `plugin_display_name` 在**每种语言中取值必须完全一致** ③ 验收口径定为「**取值一致**」，而非「两端渲染完全相同」——Obsidian 桌面端与移动端对同一属性的**读取时机**存在平台差异，该差异本机无法验证 ④ 真机 ⑤⑥⑦ 由老板实测，未完成前标 ⛔ ⑤ 后续任何品牌文案变更须**同时复核三处写入点**，不得只改其一 ⑥ `src/localdb.ts:161` 仍有 **1 处** `Remotely Save`（迁移指引文案），属**保留项**、本轮不改 ⑦ 另有 **40 个孤儿 i18n 键**（含 `modal_sizesconflict_title`）另开批次清理，**不在本轮 0.0.6 范围**</u> |
 
 ---
 
@@ -919,13 +940,13 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | ID | AC | 验证方式 |
 |---|---|---|
 | AC1 | 插件安装后 plugin id 为 `cstcloud-sync`，名称为 `cstcloud-sync` | 读取 manifest.json 验证 |
-| AC2 | 设置页面仅显示 AccessKey / SecretKey / Bucket 三个 S3 必填字段 + <u>12 个 P1 可选字段（v1.1 删除 P1-13/P1-14）</u>，无其他云服务 | 手动检查 UI |
+| AC2 | 设置页面仅显示 AccessKey / SecretKey / Bucket 三个 S3 必填字段 + <u>12 个 P1 可选字段（v1.1 删除 P1-13/P1-14）</u>，无其他云服务 <u>【v0.0.6 变更注】v0.0.6 起 P1 可选字段为 **10 个 P1 可选字段**（v1.1 删除 P1-13/P1-14；<u>**v0.0.6 D1 再删 P1-5 / P1-11**</u>）；上方「12 个」为 v1.1 历史判据、原样保留不回改。建议把硬编码数字判据改为「按 §3.2 表逐条核对仍在 UI 中的 P1 项」，避免数字随实现漂移</u> | 手动检查 UI |
 | AC3 | Endpoint / Region / S3 URL Style / Log Level / Obfuscate 均不在 UI 中显示 | 手动检查 UI |
 | AC4 | "检查连接"按钮点击后成功验证 S3 连通性（或返回明确错误） | E2E 测试 |
 | AC5 | Ribbon 图标点击触发 `start-sync`，命令面板两个命令均可用 | E2E 测试 |
 | AC6 | `npm run build2` 无错误完成，生成 `main.js` | CI / 本地构建 |
 | AC7 | `npm test` 无新增测试失败（上游 mocha 测试） | CI / 本地测试 |
-| AC8 | 插件加载后 `data.json` 中 6 项关键字段被强制覆盖（`loadSettings()` 行 1410-1427）：`s3.generateFolderObject=false` / `ignorePaths=[]` / `onlyAllowPaths=[]` / `enableStatusBarInfo=true` / `syncOnSaveAfterMilliseconds=-1` / `deleteToWhere="system"`。`serviceType="s3"` / `currLogLevel="info"` 已在 `main.ts:115-157` DEFAULT_SETTINGS 默认值（Step 31 范畴，旧 data.json 加载后即覆盖为 "s3"/"info"） | 首次加载后读取 data.json |
+| AC8 | 插件加载后 `data.json` 中 6 项关键字段被强制覆盖（`loadSettings()` 行 1410-1427）：`s3.generateFolderObject=false` / `ignorePaths=[]` / `onlyAllowPaths=[]` / `enableStatusBarInfo=true` / `syncOnSaveAfterMilliseconds=-1` / `deleteToWhere="system"`。`serviceType="s3"` / `currLogLevel="info"` 已在 `main.ts:115-157` DEFAULT_SETTINGS 默认值（Step 31 范畴，旧 data.json 加载后即覆盖为 "s3"/"info"） <u>【v0.0.6 变更注：6 项强制覆盖全部保留、一行未改；`ignorePaths` 与 `onlyAllowPaths` 已删除（现行源码 `src/main.ts:577-578` 用 `delete` 语义移除，行号与语义均已变化）；`enableStatusBarInfo` 与 `deleteToWhere` 因 D1 决策改为「UI 已删、能力恒定」】</u> | 首次加载后读取 data.json |
 | <u>AC9</u> | <u>同步算法说明弹窗在 3 个 langs（en / zh_cn / zh_tw）中均正确显示对应语言文案，6 个 key（`syncalgov3_title` / `syncalgov3_texts` / `syncalgov3_checkbox_manual_backup` / `syncalgov3_checkbox_requiremultidevupdate` / `syncalgov3_button_agree` / `syncalgov3_button_disagree`）均有值；复选框 2 文案包含"仅支持 S3 协议 + 默认端点 cstcloud.cn"语义；GitHub 链接占位为 `https://github.com/cstcloud/cstcloud-sync`</u> <u>【v1.9 变更注：v0.0.5 已把 `syncalgov3_texts` 中的 2 处链接占位由 `https://github.com/cstcloud/cstcloud-sync` 改为 `https://github.com/studynt47/cstcloud-sync`（前者实测 404），锚文本未动；本条历史判据文字保留不改】</u> | <u>E2E 测试：分别切换 3 种语言触发弹窗，肉眼核对文案</u> |
 | <u>AC10</u> | <u>Settings 页面中"导入/导出设置"区块和"调试"区块均已消失；`src/importExport.ts` 和 `src/debugMode.ts` 文件不存在</u> | <u>Step 48~54（importExport）/ Step 55~58（debugMode）后检查文件存在性 + 手动检查 Settings UI</u> |
 | <u>AC11</u> | <u>`src/syncAlgoV3Notice.ts` TS 结构未被修改（弹窗触发/同意行为保持不变）</u> | <u>代码审查 `src/syncAlgoV3Notice.ts` + `main.ts:570, 903-907`</u> |
@@ -945,7 +966,7 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC16</u> | <u>**（A5）** `manifest.json` 身份为 cstcloud 口径：`author` = `cstcloud`（<u>待老板确认</u>）、`authorUrl` = `https://github.com/cstcloud/cstcloud-sync`、`description` 不含 "fork 自 remotely-save"</u> | <u>读 `manifest.json` 三字段逐一比对；`grep -n "fork" manifest.json` → 无命中</u> <u>【v1.8 修正】authorUrl 最终为 https://github.com/studynt47/cstcloud-sync；`author` = `cstcloud` 不变，description 不含 "fork" 不变</u> |
 | <u>AC17</u> | <u>**（A6）** §6 历史 checklist 59 个条目全部完成勾选，<u>2 个例外项（Step 11 / 37）保留 `[ ]` 并注明原因</u>（<u>Step 1.5 已于 Step 59 补做完成；Step 22 亦已完成——`src/settings.ts` 中 `syncOnSave` 零命中，Setting 已随 Step 67（A8）删除</u>）。<u>计数口径：57 条 `[x]` + 2 条 `[ ]` = 59 条</u> <u>【v1.9 变更注：本条「历史 checklist 59 个条目」计数口径**不变**；§6 新增的 Phase 9（Step 83 / 84）为已实施事实回填，不计入该 59 条。i18n 键数判据随 v0.0.5 新增 2 键由 167 更新为 **169**，详见 AC30】</u></u> | <u>通读 §6 checklist 区块，确认无未处理项</u> |
 | <u>AC18</u> | <u>**（A7）** 设置页顶部标题为 `cstcloud-sync`，不再显示 `Remotely Save`</u> | <u>`grep -n '"Remotely Save"' src/settings.ts` → 无命中；Obsidian 设置页肉眼核对 H1</u> |
-| <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中。<u>已满足（2026-10-27 实测）：commit `31c7a30` 清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable` 后，三语言各 167 键、键集合完全一致，`grep -rn "settings_synconsave" src/langs/` → 0 命中，`grep -c "settings_synconsave" main.js` → 0</u> <u>【v1.9 变更注：i18n 键数判据随 v0.0.5 新增 2 键（`ribbon_sync_tooltip` / `settings_plugin_title`）由 167 更新为 **169**，实测三语言各 169 键、键集合完全一致；`settings_synconsave*` 仍为 0 命中】</u></u> |
+| <u>AC19</u> | <u>**（A8）** 设置页不再出现"选择服务"孤儿标题与"保存时自动同步"空标签；对应 i18n 键已清理</u> | <u>`grep -n "settings_chooseservice\|settings_synconsave" src/settings.ts src/langs/*.json` → 全部无命中。<u>已满足（2026-10-27 实测）：commit `31c7a30` 清理 2 个孤儿键 `settings_synconsave_disable` / `settings_synconsave_enable` 后，三语言各 167 键、键集合完全一致，`grep -rn "settings_synconsave" src/langs/` → 0 命中，`grep -c "settings_synconsave" main.js` → 0</u> <u>【v1.9 变更注：i18n 键数判据随 v0.0.5 新增 2 键（`ribbon_sync_tooltip` / `settings_plugin_title`）由 167 更新为 **169**，实测三语言各 169 键、键集合完全一致；`settings_synconsave*` 仍为 0 命中】</u> <u>【v0.0.6 变更注：i18n 键数判据由 169 更新为 **167**（沿革：169 − 1（批次 B 删 `statusbar_sync_source_auto_sync_on_save`）+ 6（批次 C 新增 6 键：`plugin_display_name` / `syncstatus_running` / `synctriggersource_auto` / `synctriggersource_auto_once_init` / `synctriggersource_dry` / `synctriggersource_manual`）− 7（批次 D 删 7 键）= **167**）；实测三语言各 **167** 键、键集合完全一致；`settings_synconsave*` 仍为 0 命中】</u></u> |
 | <u>AC20</u> | <u>**（A9）** 根 `LICENSE` 已删除失效的 `pro/` → PolyForm Strict License 条款，改为 Apache-2.0 + 派生自 remotely-save v0.5.25（Copyright fyears）声明</u> | <u>`grep -n "PolyForm\|pro" LICENSE` → 无 PolyForm 相关命中；文件中含 "Apache"、"remotely-save"、"fyears"</u> |
 | <u>AC21</u> | <u>**（B1）** Obsidian 桌面版加载测试通过：manifest 校验通过、插件可启用无报错、设置页可渲染、ribbon 图标可见可点、命令面板出现 `start-sync` 与 `start-sync-dry-run`</u> | <u>Obsidian 内加载 `main.js` + `manifest.json`；开发者控制台无报错；命令面板搜索 `sync` 见 2 条命令</u> |
 | <u>AC22</u> | <u>**（B2）** S3 真实连通性通过：设置页「检查连接」按钮 → HeadBucket + ListObjectsV2 均成功。<u>**凭证未到位时本条状态为「阻塞」，不计为通过**</u> <u>【v1.9 状态：⛔ 仍待老板本人实测（未完成）—— 需真实 cstcloud.cn 桶 + AccessKey / SecretKey，截至 v1.9 凭证仍未到位】</u></u> | <u>填入老板提供的 AccessKey / SecretKey / Bucket → 点击「检查连接」→ UI 提示成功且控制台无 S3 错误码</u> |
@@ -956,14 +977,19 @@ main.ts: updateLastSyncMsg() → StatusBar 刷新
 | <u>AC27</u> | <u>**（C2）** profiler 确已移除：`src/profiler.ts` 不存在；`src/` 内 `profiler` / `Profiler` 引用为 0（含 `baseTypes.ts` 的 `ProfilerConfig` 与悬空 i18n 键 `"profiler_results_exported_on_"`）</u> | <u>`ls src/profiler.ts` → No such file；`grep -rni "profiler" src/` → 0；`npm run build2` + `npm test` → exit 0</u> |
 | <u>AC28</u> | <u>**（C3）** `src/sync.ts` 中 4 处 `serviceType === "dropbox"` 死分支已清理，仅保留 `serviceType === "s3"`</u> | <u>`grep -n "dropbox" src/sync.ts` → 仅命中 L1381 的历史沿革注释，<u>无 `serviceType === "dropbox"` 条件</u>；`npm run build2` → exit 0</u> |
 | <u>AC29</u> | <u>**（C4）** devDependencies 残留已清理：`webdav-server` / `openapi-typescript` / `npm-check-updates` / `@types/chai` / `@types/chai-as-promised` / `esbuild-plugin-inline-worker` / `worker-loader` 已从 `package.json` 移除；<u>`dotenv` / `jsdom` / `@types/jsdom` 保留</u></u> | <u>`grep -n "webdav-server\|openapi-typescript\|npm-check-updates\|@types/chai\|esbuild-plugin-inline-worker\|worker-loader" package.json` → 0；`grep -n "\"dotenv\"\|\"jsdom\"" package.json` → 有命中；`npm run build2` + `npm test` → exit 0</u> |
-| <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 <u>169 键</u></u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 <u>169</u>；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u>。<u>计数沿革：Step 81（C5）复检时各 169 键 → AC19 收口（commit `31c7a30`）再删 2 个孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）→ 现各 167 键 <u>【v1.9 变更注：v0.0.5 新增 2 键 `ribbon_sync_tooltip` / `settings_plugin_title` → 现各 **169 键**，键集合仍完全一致】</u></u></u> |
-| <u>AC31</u> | <u>**（发布）** v0.0.3 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；<u>`versions.json` 含 `"0.0.3": "0.13.21"`</u></u> <u>（v1.7 发版口径：发布版本号为 0.0.3，0.0.2 为开发基线；本轮将由 M10（发布）执行产出 `cstcloud-sync0.0.3.zip`，目录层级 `cstcloud-sync/`，含 main.js / manifest.json / LICENSE / README.md / README.zh-cn.md / versions.json 共 6 个文件）</u> <u>【v1.9 变更注：v0.0.4 / v0.0.5 两轮发版后，当前发布版本号为 **0.0.5**，交付包为 `cstcloud-sync0.0.5.zip`（**312,048 字节** / md5 `3460177d84f8cafbd56d7c4a7462f969`），目录层级 `cstcloud-sync/`，含 `main.js`(1,043,853 B) / `manifest.json`(301 B) / `versions.json` / `README.md` / `README.zh-cn.md` / `LICENSE` 共 6 个文件；**§7.1 形态判据 11/11 通过**；`versions.json` 现有 5 条（`0.3.2` / `0.3.25` / `0.0.3` / `0.0.4` / `0.0.5`），含 `"0.0.5": "0.13.21"`。已上线为 Release `https://github.com/studynt47/cstcloud-sync/releases/tag/0.0.5`。上方 v0.0.3 历史判据文字原样保留】</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 <u>`"0.0.3": "0.13.21"`</u> <u>（v1.9：同时含 `"0.0.5": "0.13.21"`）</u>；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
-| <u>AC32</u> | <u>**✅ 已满足**（v1.7）：老板 2026-10-28 书面指定发布版本号 **0.0.3**；`manifest.json` / `package.json` / PRD §4.3 三处一致；分发包 `cstcloud-sync0.0.3.zip`。</u> <u>（原判据保留：发版前置——A/B/C 全部 Step（<u>59–82</u>）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布）</u> <u>【v1.9 变更注：当前发布版本号已推进至 **0.0.5**，`manifest.json` / `package.json` / `versions.json` / PRD §4.3 **四处一致**；线上 tag `0.0.3` / `0.0.4` / `0.0.5` 均已发布，最新 commit `f0a460cd3a9c8499b56185cda2e523761c4f730d`。本条「已满足」结论不变】</u> | <u>老板书面确认 + grep 三处版本号一致 <u>（v1.9：四处一致，含 `versions.json`）</u></u> |
+| <u>AC30</u> | <u>**（C5）** i18n 复核完成：40 处死键已删（31 处直接删 + 9 处随 A8 删）；3 个 langs 文件键集合完全一致，各 <u>169 键</u> <u>【v0.0.6 变更注：键数判据由 169 更新为 **167**（v0.0.6 口径）；沿革：169 − 1（批次 B 删 `statusbar_sync_source_auto_sync_on_save`）+ 6（批次 C 新增 6 键）− 7（批次 D 删 7 键）= **167**，实测三语言各 167 键、键集合完全一致；上方「169」为 v1.9 历史判据，原样保留】</u></u> | <u>`python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 <u>169</u> <u>【v0.0.6：三个文件均输出 **167**】</u>；`grep -rn "settings_remoteprefix_s3\|settings_remotebasedir\|settings_s3_reverse_proxy_no_sign_url\|settings_debuglevel\|settings_obfuscatesettingfile\|settings_outputsettingsconsole\|settings_viewconsolelog\|protocol_callbacknotsupported" src/langs/` → 0；<u>`settings_protectmodifypercentage*` / `syncalgov3_*` / `settings_s3_prod*` 仍在（AC9 相关键不得误删）</u>。<u>计数沿革：Step 81（C5）复检时各 169 键 → AC19 收口（commit `31c7a30`）再删 2 个孤儿键（`settings_synconsave_disable` / `_enable`，源码 0 引用）→ 现各 167 键 <u>【v1.9 变更注：v0.0.5 新增 2 键 `ribbon_sync_tooltip` / `settings_plugin_title` → 现各 **169 键**，键集合仍完全一致】</u></u></u> |
+| <u>AC31</u> | <u>**（发布）** v0.0.3 交付包形态符合 §7.1：含 `main.js` / `manifest.json` / `LICENSE` / `README.md`（+ `README.zh-cn.md` / `versions.json`），不含 `node_modules/` / `src/` / `tests/` / `manifest-beta.json`；<u>`versions.json` 含 `"0.0.3": "0.13.21"`</u></u> <u>（v1.7 发版口径：发布版本号为 0.0.3，0.0.2 为开发基线；本轮将由 M10（发布）执行产出 `cstcloud-sync0.0.3.zip`，目录层级 `cstcloud-sync/`，含 main.js / manifest.json / LICENSE / README.md / README.zh-cn.md / versions.json 共 6 个文件）</u> <u>【v1.9 变更注：v0.0.4 / v0.0.5 两轮发版后，当前发布版本号为 **0.0.5**，交付包为 `cstcloud-sync0.0.5.zip`（**312,048 字节** / md5 `3460177d84f8cafbd56d7c4a7462f969`），目录层级 `cstcloud-sync/`，含 `main.js`(1,043,853 B) / `manifest.json`(301 B) / `versions.json` / `README.md` / `README.zh-cn.md` / `LICENSE` 共 6 个文件；**§7.1 形态判据 11/11 通过**；`versions.json` 现有 5 条（`0.3.2` / `0.3.25` / `0.0.3` / `0.0.4` / `0.0.5`），含 `"0.0.5": "0.13.21"`。已上线为 Release `https://github.com/studynt47/cstcloud-sync/releases/tag/0.0.5`。上方 v0.0.3 历史判据文字原样保留】</u> <u>【v2.0 变更注：当前发布版本号 **0.0.6**；`versions.json` 追加 `"0.0.6": "0.13.21"` 后为 **6 条**（现状 **5 条** + 追加 1 条）；分发包 `cstcloud-sync0.0.6.zip` —— ⛔ **版本号推进与分发包产出尚未执行，待回填**；v0.0.5 的交付包事实原样保留】</u> | <u>解包 zip 逐文件核对；`cat versions.json` → 含 <u>`"0.0.3": "0.13.21"`</u> <u>（v1.9：同时含 `"0.0.5": "0.13.21"`）</u>；副本仅同步至 `/home/WPS/ls/cstcloud-sync/`，<u>不写 `/home/WPS/NEW/`</u></u> |
+| <u>AC32</u> | <u>**✅ 已满足**（v1.7）：老板 2026-10-28 书面指定发布版本号 **0.0.3**；`manifest.json` / `package.json` / PRD §4.3 三处一致；分发包 `cstcloud-sync0.0.3.zip`。</u> <u>（原判据保留：发版前置——A/B/C 全部 Step（<u>59–82</u>）执行完毕并验收通过后，正式发版前必须由老板统一指定发布版本号（须 ≥ 0.0.3），且 manifest.json / package.json / PRD §4.3 三处版本号一致；未完成本条不得对外发布）</u> <u>【v1.9 变更注：当前发布版本号已推进至 **0.0.5**，`manifest.json` / `package.json` / `versions.json` / PRD §4.3 **四处一致**；线上 tag `0.0.3` / `0.0.4` / `0.0.5` 均已发布，最新 commit `f0a460cd3a9c8499b56185cda2e523761c4f730d`。本条「已满足」结论不变】</u> <u>【v2.0 变更注：当前发布版本号 **0.0.6**；`versions.json` 追加 `"0.0.6": "0.13.21"` 后为 **6 条**（现状 **5 条** + 追加 1 条）；分发包 `cstcloud-sync0.0.6.zip` —— ⛔ **版本号推进与分发包产出尚未执行，待回填**；v0.0.5 的「已满足」结论原样保留】</u> | <u>老板书面确认 + grep 三处版本号一致 <u>（v1.9：四处一致，含 `versions.json`）</u></u> |
 | <u>AC33</u> | <u>**（v1.4 · 配置目录同步（实验性））** ① `syncConfigDir` 开关可在 `设置 → 高级` 正常开启（走 `modal_syncconfig_attn` → `modal_syncconfig_secondconfirm` → `modal_syncconfig_notice` 三键二次确认链路）；② 开启后 `.obsidian` **整个配置目录**进入同步清单（顶层 `app.json` / `appearance.json` / `core-plugins.json` / `community-plugins.json` / `hotkeys.json` / `bookmarks.json` 与各插件目录均可见）；③ §5.4.3 的 14 项排除项**确实被排除**（尤其 `workspace` / `workspace.json` / `workspace-mobile.json` / `.git` / `node_modules`）；④ 本插件目录 `.obsidian/plugins/cstcloud-sync/` **只同步白名单 5 文件**（`data.json` / `main.js` / `manifest.json` / `.gitignore` / `styles.css`），`plugins/cstcloud-sync/LICENSE` **不被同步**；⑤ 其他插件目录为全量放行</u> | <u>在测试 vault 中开启开关并执行一次 dry-run（`start-sync-dry-run`），逐条比对同步清单：① 开关 UI 链路可走通 ② `.obsidian` 顶层文件均在清单内 ③ 14 项排除项均不在清单内 ④ 本插件目录仅 5 文件在清单内、`LICENSE` 不在 ⑤ 其他插件目录文件均在清单内。<u>另：`grep -n "workspace-mobile.json" src/obsFolderLister.ts` 命中 2 处（Step 82 已实施）</u> <u>【v1.9 状态：⛔ 仍待老板本人实测（未完成）—— 需真实桶 + 开启「同步配置文件夹」开关后执行一次 dry-run。**v0.0.4 修复移动端守卫块边界后，移动端该开关已恢复可见（见 AC34），实测条件已具备**，但仍缺真实桶与凭证】</u></u> |
 
 <u>**v1.9 新增验收项：AC34 / AC35**（对应已实施并已上线的 v0.0.4 / v0.0.5 两轮）。v1.9 的新增条目自 **AC34** 起编号，AC1–AC33 全部保持不变；既有条目的判据文字原样保留，仅在必要处加 v1.9 变更注。</u>
 
+<u>**v2.0 新增验收项：AC36 / AC37**（对应 v0.0.6 的 **D1 界面与能力一致** 与 **用户可见文案 i18n**）。v2.0 的新增条目自 **AC36** 起编号，**AC1–AC35 全部保持不变**；既有条目的判据文字原样保留，仅在必要处加 v0.0.6 变更注。</u>
+
 | ID | AC | 验证方式 |
 |---|---|---|
-| <u>AC34</u> | <u>**（v0.0.4 · 移动端设置项可见性）** ① 移动端从 GitHub 安装后，`设置 → 高级` 区域**完整可见**，下列 **9 项**均能正常显示与操作：同步配置文件夹（`settings_configdir`）/ 同步书签（`settings_bookmarks`）/ 并发数（`settings_concurrency`）/ 同步下划线文件（`settings_syncunderscore`）/ 删除到哪（`settings_deletetowhere`）/ 冲突处理（`settings_conflictaction`）/ 保护修改百分比（`settings_protectmodifypercentage`）/ 保护修改百分比(自定义)（`settings_protectmodifypercentage_customfield`）/ 同步方向（`setting_syncdirection`）；② `src/settings.ts` 的 `if (!Platform.isMobileApp)` 块收回到 **376→389 行（14 行）**，其内**只含** `settings_enablestatusbar_info`（本项目无 upstream 的 `settings_resetstatusbar_time`），`advDiv` 及其下属 9 项**均在守卫之外**；③ 上述 9 项**不含任何桌面专属 API 依赖**，在移动端功能上完全可用（`syncConfigDir` 在 `src/sync.ts` 为纯路径判断，与平台无关）；④ 移动端**仅**自定义状态栏项（`settings_enablestatusbar_info`）保持禁用，与 upstream 设计一致</u> | <u>① 编译产物经 **AST 解析**（acorn）确认移动端守卫区间由 **5,448 字符缩至 347 字符**，且 `settings_configdir` 位于守卫外 —— **禁止用字符串 grep 判定守卫边界**（见 §8 R18）② `npm test` → **142 passing / 0 failing** ③ `tsc --noEmit` → **0 error** ④ `npm run build2` → **exit 0** ⑤ `git diff -w` 验证唯一非空白改动为大括号位置，设置项内部逻辑一字未改 ⑥ 移动端真机安装 v0.0.4 后逐项肉眼核对设置页 9 项可见（**⛔ 该真机项仍待老板本人实测**）</u> |
-| <u>AC35</u> | <u>**（v0.0.5 · 品牌口径统一与链接有效性）** ① 执行主体口径全仓统一为「聚沄同步 / juiyun sync」：ribbon tooltip（`src/main.ts:462`）与设置页标题（`src/settings.ts:125`）**均走 i18n**，不再有硬编码中文；② 新增 2 个 i18n key —— `ribbon_sync_tooltip` 与 `settings_plugin_title`，三语言取值分别为 en `juiyun sync` / zh_cn `聚沄同步` / zh_tw `聚沄同步`；③ `syncalgov3` 系列品牌字样已统一（`syncalgov3_title` 与 `syncalgov3_texts` 欢迎语）；④ `syncalgov3_texts` 三语言各 2 处、共 **6 处** GitHub 链接指向 `https://github.com/studynt47/cstcloud-sync` 且**实测可访问（HTTP 200）**，旧地址 `https://github.com/cstcloud/cstcloud-sync` 出现 **0 次**（实测 HTTP 404）；⑤ 链接**锚文本未动**；⑥ 明确不动：README 标题 / `manifest.json` 的 `id`·`name` / `cstcloud.cn`·`s3.cstcloud.cn` 域名；⑦ 三语言 json 键集合**完全一致**，各 **169 键**</u> | <u>① `grep -n "ribbon_sync_tooltip" src/main.ts` → 命中 `t("ribbon_sync_tooltip")`；`grep -n "settings_plugin_title" src/settings.ts` → 命中 `t("settings_plugin_title")` ② `python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 **169**，键集合完全一致 ③ `grep -o "github.com/cstcloud/cstcloud-sync" src/langs/*.json \| wc -l` → **0**；`grep -o "github.com/studynt47/cstcloud-sync" src/langs/*.json` → **每文件 2 次** ④ `curl -sI https://api.github.com/repos/studynt47/cstcloud-sync` → **HTTP 200**；`.../repos/cstcloud/cstcloud-sync` → **HTTP 404** ⑤ 产物 `main.js` 内「聚沄同步」**8 次**、「juiyun sync」**4 次** ⑥ `npm test` → **142 passing / 0 failing**；`npm run build2` → **exit 0**</u> |
+| <u>AC34</u> | <u>**（v0.0.4 · 移动端设置项可见性）** ① 移动端从 GitHub 安装后，`设置 → 高级` 区域**完整可见**，下列 **9 项**均能正常显示与操作：同步配置文件夹（`settings_configdir`）/ 同步书签（`settings_bookmarks`）/ 并发数（`settings_concurrency`）/ 同步下划线文件（`settings_syncunderscore`）/ 删除到哪（`settings_deletetowhere`）/ 冲突处理（`settings_conflictaction`）/ 保护修改百分比（`settings_protectmodifypercentage`）/ 保护修改百分比(自定义)（`settings_protectmodifypercentage_customfield`）/ 同步方向（`setting_syncdirection`）；② `src/settings.ts` 的 `if (!Platform.isMobileApp)` 块收回到 **376→389 行（14 行）**，其内**只含** `settings_enablestatusbar_info`（本项目无 upstream 的 `settings_resetstatusbar_time`），`advDiv` 及其下属 9 项**均在守卫之外**；③ 上述 9 项**不含任何桌面专属 API 依赖**，在移动端功能上完全可用（`syncConfigDir` 在 `src/sync.ts` 为纯路径判断，与平台无关）；④ 移动端**仅**自定义状态栏项（`settings_enablestatusbar_info`）保持禁用，与 upstream 设计一致 <u>【v0.0.6 变更注（D1）】① 移动端高级设置区可见项由 **9 项减为 8 项**（删除「删除到哪」，其 Setting 与 4 个 i18n 键已删）；② `src/settings.ts` 的 `if (!Platform.isMobileApp)` 守卫块**已整体移除**（其内唯一项 P1-5 已删），`Platform` import 同步移除，桌面端与移动端设置项完全一致；③ AC34 原文作为 **v0.0.4 的历史判据原样保留不改**</u> | <u>① 编译产物经 **AST 解析**（acorn）确认移动端守卫区间由 **5,448 字符缩至 347 字符**，且 `settings_configdir` 位于守卫外 —— **禁止用字符串 grep 判定守卫边界**（见 §8 R18）② `npm test` → **142 passing / 0 failing** ③ `tsc --noEmit` → **0 error** ④ `npm run build2` → **exit 0** ⑤ `git diff -w` 验证唯一非空白改动为大括号位置，设置项内部逻辑一字未改 ⑥ 移动端真机安装 v0.0.4 后逐项肉眼核对设置页 9 项可见（**⛔ 该真机项仍待老板本人实测**）</u> |
+| <u>AC35</u> | <u>**（v0.0.5 · 品牌口径统一与链接有效性）** ① 执行主体口径全仓统一为「聚沄同步 / juiyun sync」：ribbon tooltip（`src/main.ts:462`）与设置页标题（`src/settings.ts:125`）**均走 i18n**，不再有硬编码中文；② 新增 2 个 i18n key —— `ribbon_sync_tooltip` 与 `settings_plugin_title`，三语言取值分别为 en `juiyun sync` / zh_cn `聚沄同步` / zh_tw `聚沄同步`；③ `syncalgov3` 系列品牌字样已统一（`syncalgov3_title` 与 `syncalgov3_texts` 欢迎语）；④ `syncalgov3_texts` 三语言各 2 处、共 **6 处** GitHub 链接指向 `https://github.com/studynt47/cstcloud-sync` 且**实测可访问（HTTP 200）**，旧地址 `https://github.com/cstcloud/cstcloud-sync` 出现 **0 次**（实测 HTTP 404）；⑤ 链接**锚文本未动**；⑥ 明确不动：README 标题 / `manifest.json` 的 `id`·`name` / `cstcloud.cn`·`s3.cstcloud.cn` 域名；⑦ 三语言 json 键集合**完全一致**，各 **169 键** <u>【v0.0.6 变更注：本条为 v0.0.5 历史判据，原样保留；键数演进见 AC19 / AC30 与 AC36 / AC37】</u> | <u>① `grep -n "ribbon_sync_tooltip" src/main.ts` → 命中 `t("ribbon_sync_tooltip")`；`grep -n "settings_plugin_title" src/settings.ts` → 命中 `t("settings_plugin_title")` ② `python3 -c "import json;print(len(json.load(open('src/langs/en.json'))))"` 等 → 三个文件均输出 **169**，键集合完全一致 ③ `grep -o "github.com/cstcloud/cstcloud-sync" src/langs/*.json \| wc -l` → **0**；`grep -o "github.com/studynt47/cstcloud-sync" src/langs/*.json` → **每文件 2 次** ④ `curl -sI https://api.github.com/repos/studynt47/cstcloud-sync` → **HTTP 200**；`.../repos/cstcloud/cstcloud-sync` → **HTTP 404** ⑤ 产物 `main.js` 内「聚沄同步」**8 次**、「juiyun sync」**4 次** ⑥ `npm test` → **142 passing / 0 failing**；`npm run build2` → **exit 0**</u> |
+| <u>AC36</u> | <u>**AC36 ·（v0.0.6 · D1 界面与能力一致）** ① `src/settings.ts` 设置页**不再出现**「在状态栏显示上一次成功的同步」开关（`settings_enablestatusbar_info`）与「删除文件到哪里」下拉（`settings_deletetowhere`）；② 桌面端与移动端**均无** `if (!Platform.isMobileApp)` 守卫块，`src/settings.ts` 中 `Platform` 导入为 0；③ 状态栏**恒显示**上次成功同步时间（`enableStatusBarInfo` 由 `loadSettings()` 强制为 `true`）；④ 同步删除本地文件**恒走系统回收站**（`deleteToWhere` 强制为 `"system"`）；⑤ 三语言 `settings_enablestatusbar_*`（3 键）与 `settings_deletetowhere_*`（4 键）共 7 键**已删除**；⑥ `src/main.ts` 中 `loadSettings()` 的 6 项强制覆盖**一行未改**</u> | <u>① `grep -n "settings_enablestatusbar\|settings_deletetowhere" src/settings.ts src/langs/*.json` → 0 命中 ② `grep -n "Platform" src/settings.ts` → 0 命中 ③ `npm test` → 142 passing ④ `tsc --noEmit` → 0 error ⑤ `npm run build2` → exit 0 ⑥ 编译产物经 **AST 解析**确认 `settings.ts` 内不再存在 `Platform.isMobileApp` 守卫（**禁止用字符串 grep 判定**，见 §8 R18）<u>⛔ 本轮 `main.js` 重建尚未执行，产物类判据待回填</u></u> |
+| <u>AC37</u> | <u>**AC37 ·（v0.0.6 · 用户可见文案 i18n）** ① 同步中 / 同步结束 / 「已在运行」三类提示中**不出现**英文仓库 id `cstcloud-sync`；② `src/main.ts` 中 `this.manifest.name` 引用为 **0**；③ 新增 i18n 键 `plugin_display_name`（en `juiyun sync` / zh_cn `聚沄同步` / zh_tw `聚沄同步`）与 `syncstatus_running`（en `running` / zh_cn `运行中` / zh_tw `執行中`）；④ `manifest.json` 的 `id` / `name` **保持 `cstcloud-sync` 不变**（红线）；⑤ 品牌三键 `ribbon_sync_tooltip` / `settings_plugin_title` / `plugin_display_name` 在**每种语言中取值完全一致**；⑥ **⛔ 待实测**：重建后产物 `main.js` 内品牌计数（`\u805A` 预计 **28** / `juiyun sync` 预计 **14**）—— **预测值、尚未实测**；⑦ **⛔ 待老板真机实测**：桌面端跑完一次同步后 ribbon tooltip 仍为「聚沄同步」；移动端「未跑同步 / 跑完同步」两态一致；⑧ 验收口径为「**取值一致**」，而非「两端渲染完全相同」——Obsidian 桌面端与移动端对同一属性的**读取时机**存在平台差异，该差异本机无法验证</u> | <u>① `grep -n "this.manifest.name" src/main.ts` → 0 ② 三语言键集合完全一致、各 **167** 键 ③ `npm test` → 142 passing ④ `npm run build2` → exit 0 ⑤ 逐语言核对 `plugin_display_name` / `syncstatus_running` / `ribbon_sync_tooltip` / `settings_plugin_title` 取值三语言一致 ⑥ ⛔ 重建后 `grep -o '\u805A' main.js \| wc -l` 与 `grep -o 'juiyun sync' main.js \| wc -l` 与预测值比对（**必须按大写 Unicode 转义形式统计，禁止直接用中文字符 grep**——esbuild 产物内为转义形式，小写 `u805a` 命中恒为 0）⑦ ⛔ 真机：桌面端 / 移动端同步前后 tooltip 肉眼核对 ⑧ ⛔ `main.js` **重建后**的 MD5（本轮尚未重建；重建前 md5 `26105bde8e16815ead12167f12afa42c`，**非**重建后口径）</u> |
+| <u>（编号映射说明）</u> | <u>**v2.0 编号映射（供与勘察报告对账）**：技术勘察报告 `_pm_survey_2026-11-13-tooltip.md` 中出现的临时编号「AC36 / AC37」是**定稿前的临时占位**，在 v2.0 定稿中的映射为：**品牌三键逐语言取值完全一致** + **产物层与真机项 ⑤⑥⑦** → 归入 **AC37**（文案 i18n 条目）；**界面与能力一致（设置页不再出现状态栏开关与「删除到哪」下拉、状态栏恒显示、删除恒走系统回收站）** → 归入 **AC36**</u> | <u>避免两份文档编号对不上</u> |
