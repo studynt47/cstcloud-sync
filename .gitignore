@@ -35,3 +35,9 @@ USER.md
 IDENTITY.md
 TOOLS.md
 HEARTBEAT.md
+
+# 内部规划文档：PRD.md 自 root commit 起即被 Git 跟踪，`.git/info/exclude` 中的
+# `/PRD.md` 私有排除规则只对「未跟踪文件」生效、从未真正生效过（故公开仓一直可见）。
+# 2026-11-15 老板决定 ②：以 `git rm --cached PRD.md` 退出公开仓跟踪，本地与交付副本
+# 目录（/home/WPS/ls/cstcloud-sync/PRD.md）保留；本规则用于防止误再次入库。
+PRD.md
